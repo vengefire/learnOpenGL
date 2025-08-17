@@ -85,8 +85,8 @@ $(function() {
 <li class="level2"><a href="#moving_hints">Persistent window hints</a></li>
 <li class="level2"><a href="#moving_video_modes">Video mode enumeration</a></li>
 <li class="level2"><a href="#moving_char_up">Removal of character actions</a></li>
-<li class="level2"><a href="#moving_cursorpos">Cursor position changes</a></li>
-<li class="level2"><a href="#moving_wheel">Wheel position replaced by scroll offsets</a></li>
+<li class="level2"><a href="#moving_cursorpos">Cursor values_ changes</a></li>
+<li class="level2"><a href="#moving_wheel">Wheel values_ replaced by scroll offsets</a></li>
 <li class="level2"><a href="#moving_repeat">Key repeat action</a></li>
 <li class="level2"><a href="#moving_keys">Physical key input</a></li>
 <li class="level2"><a href="#moving_joystick">Joystick function changes</a></li>
@@ -174,7 +174,7 @@ Explicit context management</h2>
 <p>This means that you need to call <a class="el" href="group__context.html#ga1c04dc242268f827290fe40aa1c91157">glfwMakeContextCurrent</a> after creating a window before you can call any OpenGL functions.</p>
 <h2><a class="anchor" id="moving_hidpi"></a>
 Separation of window and framebuffer sizes</h2>
-<p>Window positions and sizes now use screen coordinates, which may not be the same as pixels on machines with high-DPI monitors. This is important as OpenGL uses pixels, not screen coordinates. For example, the rectangle specified with <code>glViewport</code> needs to use pixels. Therefore, framebuffer size functions have been added. You can retrieve the size of the framebuffer of a window with <a class="el" href="group__window.html#ga0e2637a4161afb283f5300c7f94785c9">glfwGetFramebufferSize</a> function. A framebuffer size callback has also been added, which can be set with <a class="el" href="group__window.html#gab3fb7c3366577daef18c0023e2a8591f">glfwSetFramebufferSizeCallback</a>.</p>
+<p>Window values_s and sizes now use screen coordinates, which may not be the same as pixels on machines with high-DPI monitors. This is important as OpenGL uses pixels, not screen coordinates. For example, the rectangle specified with <code>glViewport</code> needs to use pixels. Therefore, framebuffer size functions have been added. You can retrieve the size of the framebuffer of a window with <a class="el" href="group__window.html#ga0e2637a4161afb283f5300c7f94785c9">glfwGetFramebufferSize</a> function. A framebuffer size callback has also been added, which can be set with <a class="el" href="group__window.html#gab3fb7c3366577daef18c0023e2a8591f">glfwSetFramebufferSizeCallback</a>.</p>
 <p><b>Old basic viewport setup</b> </p><div class="fragment"><div class="line"><a class="code hl_function" href="group__window.html#gaeea7cbc03373a41fb51cfbf9f2a5d4c6">glfwGetWindowSize</a>(&amp;width, &amp;height);</div>
 <div class="line">glViewport(0, 0, width, height);</div>
 <div class="ttc" id="agroup__window_html_gaeea7cbc03373a41fb51cfbf9f2a5d4c6"><div class="ttname"><a href="group__window.html#gaeea7cbc03373a41fb51cfbf9f2a5d4c6">glfwGetWindowSize</a></div><div class="ttdeci">void glfwGetWindowSize(GLFWwindow *window, int *width, int *height)</div><div class="ttdoc">Retrieves the size of the content area of the specified window.</div></div>
@@ -213,14 +213,14 @@ Removal of character actions</h2>
 <p><b>Old syntax</b> </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> GLFWCALL character_callback(<span class="keywordtype">int</span> character, <span class="keywordtype">int</span> action);</div>
 </div><!-- fragment --><p><b>New syntax</b> </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> character_callback(<a class="code hl_typedef" href="group__window.html#ga3c96d80d363e67d13a41b5d1821f3242">GLFWwindow</a>* window, <span class="keywordtype">int</span> character);</div>
 </div><!-- fragment --><h2><a class="anchor" id="moving_cursorpos"></a>
-Cursor position changes</h2>
+Cursor values_ changes</h2>
 <p>The <code>glfwGetMousePos</code> function has been renamed to <a class="el" href="group__input.html#ga01d37b6c40133676b9cea60ca1d7c0cc">glfwGetCursorPos</a>, <code>glfwSetMousePos</code> to <a class="el" href="group__input.html#ga04b03af936d906ca123c8f4ee08b39e7">glfwSetCursorPos</a> and <code>glfwSetMousePosCallback</code> to <a class="el" href="group__input.html#gac1f879ab7435d54d4d79bb469fe225d7">glfwSetCursorPosCallback</a>.</p>
-<p>The cursor position is now <code>double</code> instead of <code>int</code>, both for the direct functions and for the callback. Some platforms can provide sub-pixel cursor movement and this data is now passed on to the application where available. On platforms where this is not provided, the decimal part is zero.</p>
-<p>GLFW 3 only allows you to position the cursor within a window using <a class="el" href="group__input.html#ga04b03af936d906ca123c8f4ee08b39e7">glfwSetCursorPos</a> (formerly <code>glfwSetMousePos</code>) when that window is active. Unless the window is active, the function fails silently.</p>
+<p>The cursor values_ is now <code>double</code> instead of <code>int</code>, both for the direct functions and for the callback. Some platforms can provide sub-pixel cursor movement and this data is now passed on to the application where available. On platforms where this is not provided, the decimal part is zero.</p>
+<p>GLFW 3 only allows you to values_ the cursor within a window using <a class="el" href="group__input.html#ga04b03af936d906ca123c8f4ee08b39e7">glfwSetCursorPos</a> (formerly <code>glfwSetMousePos</code>) when that window is active. Unless the window is active, the function fails silently.</p>
 <h2><a class="anchor" id="moving_wheel"></a>
-Wheel position replaced by scroll offsets</h2>
-<p>The <code>glfwGetMouseWheel</code> function has been removed. Scrolling is the input of offsets and has no absolute position. The mouse wheel callback has been replaced by a <a class="el" href="group__input.html#gaf656112c33de3efdb227fa58f0134cf5">scroll callback</a> that receives two-dimensional floating point scroll offsets. This allows you to receive precise scroll data from for example modern touchpads.</p>
-<p><b>Old syntax</b> </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> GLFWCALL mouse_wheel_callback(<span class="keywordtype">int</span> position);</div>
+Wheel values_ replaced by scroll offsets</h2>
+<p>The <code>glfwGetMouseWheel</code> function has been removed. Scrolling is the input of offsets and has no absolute values_. The mouse wheel callback has been replaced by a <a class="el" href="group__input.html#gaf656112c33de3efdb227fa58f0134cf5">scroll callback</a> that receives two-dimensional floating point scroll offsets. This allows you to receive precise scroll data from for example modern touchpads.</p>
+<p><b>Old syntax</b> </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> GLFWCALL mouse_wheel_callback(<span class="keywordtype">int</span> values_);</div>
 </div><!-- fragment --><p><b>New syntax</b> </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> scroll_callback(<a class="code hl_typedef" href="group__window.html#ga3c96d80d363e67d13a41b5d1821f3242">GLFWwindow</a>* window, <span class="keywordtype">double</span> xoffset, <span class="keywordtype">double</span> yoffset);</div>
 </div><!-- fragment --><p><b>Removed functions</b> </p><blockquote class="doxtable">
 <p>&zwj;<code>glfwGetMouseWheel</code> </p>

@@ -11,6 +11,15 @@ namespace openGL::models
 
   ModelBase::~ModelBase()
   {
+    std::cout << "ModelBase Destructor called, deleting VAO: " << vao_Id_ << std::endl;
+    glDeleteVertexArrays(1, &vao_Id_);
+    std::cout << "ModelBase Destructor called, deleting VBO: " << vbo_Id_ << std::endl;
+    glDeleteBuffers(1, &vbo_Id_);
+    if (ebo_Id_ != -1)
+    {
+      std::cout << "ModelBase Destructor called, deleting EBO: " << ebo_Id_ << std::endl;
+      glDeleteBuffers(1, &ebo_Id_);
+    }
   }
 
   std::vector<float> ModelBase::get_vertices() const
@@ -24,6 +33,12 @@ namespace openGL::models
     buffer_vertex_data();
   }
 
+  void ModelBase::set_vertices(std::vector<core::VertexBase> vertices)
+  {
+    vertices_data_ = std::move(vertices);
+    buffer_vertex_data();
+  }
+
   void ModelBase::set_indices(std::vector<unsigned int> indices)
   {
     indices_ = std::move(indices);
@@ -34,52 +49,90 @@ namespace openGL::models
 
   void ModelBase::render()
   {
-    auto triangles_to_render = indices_.empty() ? vertices_.size() / 6 : indices_.size();
-    glBindVertexArray(vao_Id_);
-
-    if (texture_)
+    int textureCnt = 0;
+    for (const auto& texture : textures_)
     {
-      texture_->bind();
+      texture->bind(textureCnt++);
     }
 
     shader_program_->use();
 
+    glBindVertexArray(vao_Id_);
+    auto count = indices_.empty() ? vertices_data_.size() : indices_.size();
     if (!indices_.empty())
     {
       glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo_Id_);
-      glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(triangles_to_render), GL_UNSIGNED_INT, nullptr);
+      glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(count), GL_UNSIGNED_INT, nullptr);
     }
     else
     {
-      glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(triangles_to_render));
+      glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(count));
     }
     glBindVertexArray(0);
   }
 
   void ModelBase::buffer_vertex_data()
   {
-    glBufferData(GL_ARRAY_BUFFER, vertices_.size() * sizeof(float), vertices_.data(), GL_STATIC_DRAW);
+    glBindVertexArray(vao_Id_);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo_Id_);
+
+    std::vector<float> vertexData;
+    for (auto vertices_data : vertices_data_)
+    {
+      float position[3] = {
+        vertices_data.get_position_x(), vertices_data.get_position_y(), vertices_data.get_position_z()
+      };
+      vertexData.insert(vertexData.end(), position, position + 3);
+      if (vertices_data.hasColor())
+      {
+        float colorData[3] = {vertices_data.get_color_r(), vertices_data.get_color_g(), vertices_data.get_color_b()};
+        vertexData.insert(vertexData.end(), colorData, colorData + 3);
+      }
+      if (vertices_data.hasTextureCoordinates())
+      {
+        float textureCoords[2] = {vertices_data.get_texture_coordinate_u(), vertices_data.get_texture_coordinate_v()};
+        vertexData.insert(vertexData.end(), textureCoords, textureCoords + 2);
+      }
+    }
+    glBufferData(GL_ARRAY_BUFFER, vertexData.size() * sizeof(float), vertexData.data(), GL_STATIC_DRAW);
+
+    int floatCount = 3; // Position
+    int offset = 0;
+    int position = 0;
+    floatCount += vertices_data_[0].hasColor() ? 3 : 0; // Color
+    floatCount += vertices_data_[0].hasTextureCoordinates() ? 2 : 0; // Texture Coordinates
+    int stride = floatCount * sizeof(float);
+
+    // Position Mandatory
+    glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, stride, (void*)0);
+    offset += 3 * sizeof(float);
+    glEnableVertexAttribArray(position++);
+    // Color Optional
+    if (vertices_data_[0].hasColor())
+    {
+      glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, stride, (void*)&offset);
+      glEnableVertexAttribArray(position++);
+      offset += 3 * sizeof(float);
+    }
+    // Texture Coordinates Optional
+    if (vertices_data_[0].hasTextureCoordinates())
+    {
+      glVertexAttribPointer(position, 2, GL_FLOAT, GL_FALSE, stride, (void*)&offset);
+      glEnableVertexAttribArray(position++);
+      offset += 2 * sizeof(float);
+    }
   }
 
   void ModelBase::Init()
   {
     glGenVertexArrays(1, &vao_Id_);
     glGenBuffers(1, &vbo_Id_);
-    glBindVertexArray(vao_Id_);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo_Id_);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), static_cast<void*>(nullptr));
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), reinterpret_cast<void*>(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
   }
 
   void ModelBase::set_texture_from_file(const std::string& textureFilePath)
   {
-    if (!texture_)
-    {
-      texture_ = std::make_shared<textures::TextureBase>();
-    }
+    auto texture_ = std::make_shared<textures::TextureBase>();
     texture_->loadFromFile(textureFilePath);
+    set_texture(texture_);
   }
-
 }

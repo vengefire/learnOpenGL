@@ -91,10 +91,10 @@
 	this object.
 
 	A relative motion is in the same dimension as regular wl_pointer motion
-	events, except they do not represent an absolute position. For example,
+	events, except they do not represent an absolute values_. For example,
 	moving a pointer from (x, y) to (x', y') would have the equivalent
 	relative motion (x' - x, y' - y). If a pointer motion caused the
-	absolute pointer position to be clipped by for example the edge of the
+	absolute pointer values_ to be clipped by for example the edge of the
 	monitor, the relative motion is unaffected by the clipping and will
 	represent the unclipped motion.
 

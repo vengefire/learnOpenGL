@@ -39,7 +39,7 @@ namespace openGL::shaders
     std::cout << "ShaderProgram with ID [" << id_ << "] destroyed.\n";
   }
 
-  ShaderProgram::ShaderProgram()
+  ShaderProgram::ShaderProgram(const std::string& name) : name_(name)
   {
     // shader Program
     ShaderProgram::Init();
@@ -68,6 +68,7 @@ namespace openGL::shaders
   void ShaderProgram::Init()
   {
     id_ = glCreateProgram();
-    std::cout << "ShaderProgram with ID [" << id_ << "] initialized.\n";
+    //std::cout << "ShaderProgram with ID [" << id_ << "] initialized.\n";
+    std::cout << std::format("ShaderProgram [{}] with ID [{}] initialized.\n", name_,id_) << std::endl;
   }
 }

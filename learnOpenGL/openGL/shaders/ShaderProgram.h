@@ -8,8 +8,8 @@ namespace openGL::shaders
   class ShaderProgram
   {
   public:
+    ShaderProgram(const std::string& name);
     virtual ~ShaderProgram();
-    ShaderProgram();
     void load_shader_from_file(const std::string& shaderSourcePath, GLenum shaderType);
     void linkProgram();
     void use() const;
@@ -27,6 +27,7 @@ namespace openGL::shaders
     std::vector<std::unique_ptr<Shader>> attached_shaders_;
 
   private:
+    std::string name_;
     unsigned int id_ = 0;
   };
 }

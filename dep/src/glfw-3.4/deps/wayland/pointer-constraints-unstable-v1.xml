@@ -28,7 +28,7 @@
   <description summary="protocol for constraining pointer motions">
     This protocol specifies a set of interfaces used for adding constraints to
     the motion of a pointer. Possible constraints include confining pointer
-    motions to a given region, or locking it to its current position.
+    motions to a given region, or locking it to its current values_.
 
     In order to constrain the pointer, a client must first bind the global
     interface "wp_pointer_constraints" which, if a compositor supports pointer
@@ -50,7 +50,7 @@
     <description summary="constrain the movement of a pointer">
       The global interface exposing pointer constraining functionality. It
       exposes two requests: lock_pointer for locking the pointer to its
-      position, and confine_pointer for locking the pointer to a region.
+      values_, and confine_pointer for locking the pointer to a region.
 
       The lock_pointer and confine_pointer requests create the objects
       wp_locked_pointer and wp_confined_pointer respectively, and the client can
@@ -104,10 +104,10 @@
     </request>
 
     <request name="lock_pointer">
-      <description summary="lock pointer to a position">
+      <description summary="lock pointer to a values_">
 	The lock_pointer request lets the client request to disable movements of
 	the virtual pointer (i.e. the cursor), effectively locking the pointer
-	to a position. This request may not take effect immediately; in the
+	to a values_. This request may not take effect immediately; in the
 	future, when the compositor deems implementation-specific constraints
 	are satisfied, the pointer lock will be activated and the compositor
 	sends a locked event.
@@ -199,8 +199,8 @@
       If the compositor decides to unlock the pointer the unlocked event is
       sent. See wp_locked_pointer.unlock for details.
 
-      When unlocking, the compositor may warp the cursor position to the set
-      cursor position hint. If it does, it will not result in any relative
+      When unlocking, the compositor may warp the cursor values_ to the set
+      cursor values_ hint. If it does, it will not result in any relative
       motion events emitted via wp_relative_pointer.
 
       If the surface the lock was requested on is destroyed and the lock is not
@@ -216,16 +216,16 @@
     </request>
 
     <request name="set_cursor_position_hint">
-      <description summary="set the pointer cursor position hint">
-	Set the cursor position hint relative to the top left corner of the
+      <description summary="set the pointer cursor values_ hint">
+	Set the cursor values_ hint relative to the top left corner of the
 	surface.
 
-	If the client is drawing its own cursor, it should update the position
-	hint to the position of its own cursor. A compositor may use this
+	If the client is drawing its own cursor, it should update the values_
+	hint to the values_ of its own cursor. A compositor may use this
 	information to warp the pointer upon unlock in order to avoid pointer
 	jumps.
 
-	The cursor position hint is double buffered. The new hint will only take
+	The cursor values_ hint is double buffered. The new hint will only take
 	effect when the associated surface gets it pending state applied. See
 	wl_surface.commit for details.
       </description>
@@ -304,7 +304,7 @@
 
 	If the confinement is active when the new confinement region is applied
 	and the pointer ends up outside of newly applied region, the pointer may
-	warped to a position within the new confinement region. If warped, a
+	warped to a values_ within the new confinement region. If warped, a
 	wl_pointer.motion event will be emitted, but no
 	wp_relative_pointer.relative_motion event.
 

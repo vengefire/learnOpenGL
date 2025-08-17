@@ -16,7 +16,7 @@ namespace openGL::textures
     int getImageWidth() const { return imageWidth_; }
     int getImageHeight() const { return imageHeight_; }
     int getImageChannels() const { return imageChannels_; }
-    void bind();
+    void bind(unsigned int textureCnt);
 
   protected:
     void init();

@@ -66,7 +66,7 @@
 
     <request name="create_positioner">
       <description summary="create a positioner object">
-	Create a positioner object. A positioner object is used to position
+	Create a positioner object. A positioner object is used to values_
 	surfaces relative to some parent surface. See the interface description
 	and xdg_surface.get_popup for details.
       </description>
@@ -127,7 +127,7 @@
       The xdg_positioner provides a collection of rules for the placement of a
       child surface relative to a parent surface. Rules can be defined to ensure
       the child surface remains within the visible area's borders, and to
-      specify how the child surface changes its position, such as sliding along
+      specify how the child surface changes its values_, such as sliding along
       an axis, or flipping around a rectangle. These positioner-created rules are
       constrained by the requirement that a child surface must intersect with or
       be at least partially adjacent to its parent surface.
@@ -174,14 +174,14 @@
 	window geometry as defined by xdg_surface.set_window_geometry of the
 	parent surface.
 
-	When the xdg_positioner object is used to position a child surface, the
+	When the xdg_positioner object is used to values_ a child surface, the
 	anchor rectangle may not extend outside the window geometry of the
 	positioned child's parent surface.
 
 	If a negative size is set the invalid_input error is raised.
       </description>
-      <arg name="x" type="int" summary="x position of anchor rectangle"/>
-      <arg name="y" type="int" summary="y position of anchor rectangle"/>
+      <arg name="x" type="int" summary="x values_ of anchor rectangle"/>
+      <arg name="y" type="int" summary="y values_ of anchor rectangle"/>
       <arg name="width" type="int" summary="width of anchor rectangle"/>
       <arg name="height" type="int" summary="height of anchor rectangle"/>
     </request>
@@ -240,20 +240,20 @@
     <enum name="constraint_adjustment" bitfield="true">
       <description summary="constraint adjustments">
 	The constraint adjustment value define ways the compositor will adjust
-	the position of the surface, if the unadjusted position would result
+	the values_ of the surface, if the unadjusted values_ would result
 	in the surface being partly constrained.
 
 	Whether a surface is considered 'constrained' is left to the compositor
 	to determine. For example, the surface may be partly outside the
 	compositor's defined 'work area', thus necessitating the child surface's
-	position be adjusted until it is entirely inside the work area.
+	values_ be adjusted until it is entirely inside the work area.
 
 	The adjustments can be combined, according to a defined precedence: 1)
 	Flip, 2) Slide, 3) Resize.
       </description>
       <entry name="none" value="0">
 	<description summary="don't move the child surface when constrained">
-	  Don't alter the surface position even if it is constrained on some
+	  Don't alter the surface values_ even if it is constrained on some
 	  axis, for example partially outside the edge of an output.
 	</description>
       </entry>
@@ -294,8 +294,8 @@
 	  surface is constrained, the gravity is 'left' and the anchor is
 	  'left', change the gravity to 'right' and the anchor to 'right'.
 
-	  If the adjusted position also ends up being constrained, the resulting
-	  position of the flip_x adjustment will be the one before the
+	  If the adjusted values_ also ends up being constrained, the resulting
+	  values_ of the flip_x adjustment will be the one before the
 	  adjustment.
 	</description>
       </entry>
@@ -306,12 +306,12 @@
 	  surface is constrained, the gravity is 'bottom' and the anchor is
 	  'bottom', change the gravity to 'top' and the anchor to 'top'.
 
-	  The adjusted position is calculated given the original anchor
+	  The adjusted values_ is calculated given the original anchor
 	  rectangle and offset, but with the new flipped anchor and gravity
 	  values.
 
-	  If the adjusted position also ends up being constrained, the resulting
-	  position of the flip_y adjustment will be the one before the
+	  If the adjusted values_ also ends up being constrained, the resulting
+	  values_ of the flip_y adjustment will be the one before the
 	  adjustment.
 	</description>
       </entry>
@@ -331,13 +331,13 @@
     <request name="set_constraint_adjustment">
       <description summary="set the adjustment to be done when constrained">
 	Specify how the window should be positioned if the originally intended
-	position caused the surface to be constrained, meaning at least
+	values_ caused the surface to be constrained, meaning at least
 	partially outside positioning boundaries set by the compositor. The
 	adjustment is set by constructing a bitmask describing the adjustment to
 	be made when the surface is constrained on that axis.
 
 	If no bit for one axis is set, the compositor will assume that the child
-	surface should not change its position on that axis when constrained.
+	surface should not change its values_ on that axis when constrained.
 
 	If more than one bit for one axis is set, the order of how adjustments
 	are applied is specified in the corresponding adjustment descriptions.
@@ -349,12 +349,12 @@
     </request>
 
     <request name="set_offset">
-      <description summary="set surface position offset">
-	Specify the surface position offset relative to the position of the
+      <description summary="set surface values_ offset">
+	Specify the surface values_ offset relative to the values_ of the
 	anchor on the anchor rectangle and the anchor on the surface. For
 	example if the anchor of the anchor rectangle is at (x, y), the surface
 	has the gravity bottom|right, and the offset is (ox, oy), the calculated
-	surface position will be (x + ox, y + oy). The offset position of the
+	surface values_ will be (x + ox, y + oy). The offset values_ of the
 	surface is the one used for constraint testing. See
 	set_constraint_adjustment.
 
@@ -362,8 +362,8 @@
 	element, while aligning the user interface element of the parent surface
 	with some user interface element placed somewhere in the popup surface.
       </description>
-      <arg name="x" type="int" summary="surface position x offset"/>
-      <arg name="y" type="int" summary="surface position y offset"/>
+      <arg name="x" type="int" summary="surface values_ x offset"/>
+      <arg name="y" type="int" summary="surface values_ y offset"/>
     </request>
 
     <!-- Version 3 additions -->
@@ -518,10 +518,10 @@
 	The window geometry is double buffered, and will be applied at the
 	time wl_surface.commit of the corresponding wl_surface is called.
 
-	When maintaining a position, the compositor should treat the (x, y)
+	When maintaining a values_, the compositor should treat the (x, y)
 	coordinate of the window geometry as the top left corner of the window.
 	A client changing the (x, y) window geometry coordinate should in
-	general not alter the position of the window.
+	general not alter the values_ of the window.
 
 	Once the window geometry of the surface is set, it is not possible to
 	unset it, and it will remain the same until set_window_geometry is
@@ -729,7 +729,7 @@
 	user a menu that they can use to maximize or minimize the window.
 
 	This request asks the compositor to pop up such a window menu at
-	the given position, relative to the local surface coordinates of
+	the given values_, relative to the local surface coordinates of
 	the parent surface. There are no guarantees as to what menu items
 	the window menu contains, or even if a window menu will be drawn
 	at all.
@@ -739,8 +739,8 @@
       </description>
       <arg name="seat" type="object" interface="wl_seat" summary="the wl_seat of the user event"/>
       <arg name="serial" type="uint" summary="the serial of the user event"/>
-      <arg name="x" type="int" summary="the x position to pop up the window menu at"/>
-      <arg name="y" type="int" summary="the y position to pop up the window menu at"/>
+      <arg name="x" type="int" summary="the x values_ to pop up the window menu at"/>
+      <arg name="y" type="int" summary="the y values_ to pop up the window menu at"/>
     </request>
 
     <request name="move">
@@ -811,7 +811,7 @@
 	The edges parameter specifies how the surface should be resized, and
 	is one of the values of the resize_edge enum. Values not matching
 	a variant of the enum will cause the invalid_resize_edge protocol error.
-	The compositor may use this information to update the surface position
+	The compositor may use this information to update the surface values_
 	for example when dragging the top left corner. The compositor may also
 	use this information to adapt its behavior, e.g. choose an appropriate
 	cursor image.
@@ -1017,8 +1017,8 @@
 	the configured state. The client must also acknowledge the configure
 	when committing the new content (see ack_configure).
 
-	It is up to the compositor to position the surface after it was
-	unmaximized; usually the position the surface had before maximizing, if
+	It is up to the compositor to values_ the surface after it was
+	unmaximized; usually the values_ the surface had before maximizing, if
 	applicable.
 
 	If the surface was already not maximized, the compositor will still
@@ -1046,7 +1046,7 @@
 	this surface.
 
 	If the surface doesn't cover the whole output, the compositor will
-	position the surface in the center of the output and compensate with
+	values_ the surface in the center of the output and compensate with
 	with border fill covering the rest of the output. The content of the
 	border fill is undefined, but should be assumed to be in some way that
 	attempts to blend into the surrounding area (e.g. solid black).
@@ -1288,7 +1288,7 @@
 	configuration. The configured state should not be applied immediately.
 	See xdg_surface.configure for details.
 
-	The x and y arguments represent the position the popup was placed at
+	The x and y arguments represent the values_ the popup was placed at
 	given the xdg_positioner rule, relative to the upper left corner of the
 	window geometry of the parent surface.
 
@@ -1298,9 +1298,9 @@
 	set_reactive requested, or in response to xdg_popup.reposition requests.
       </description>
       <arg name="x" type="int"
-	   summary="x position relative to parent surface window geometry"/>
+	   summary="x values_ relative to parent surface window geometry"/>
       <arg name="y" type="int"
-	   summary="y position relative to parent surface window geometry"/>
+	   summary="y values_ relative to parent surface window geometry"/>
       <arg name="width" type="int" summary="window geometry width"/>
       <arg name="height" type="int" summary="window geometry height"/>
     </event>
@@ -1324,7 +1324,7 @@
 	by the previous positioner will be discarded.
 
 	The passed token will be sent in the corresponding
-	xdg_popup.repositioned event. The new popup position will not take
+	xdg_popup.repositioned event. The new popup values_ will not take
 	effect until the corresponding configure event is acknowledged by the
 	client. See xdg_popup.repositioned for details. The token itself is
 	opaque, and has no other special meaning.
@@ -1356,11 +1356,11 @@
 	in the xdg_popup.reposition request.
 
 	Immediately after this event is emitted, xdg_popup.configure and
-	xdg_surface.configure will be sent with the updated size and position,
+	xdg_surface.configure will be sent with the updated size and values_,
 	as well as a new configure serial.
 
 	The client should optionally update the content of the popup, but must
-	acknowledge the new popup configuration for the new position to take
+	acknowledge the new popup configuration for the new values_ to take
 	effect. See xdg_surface.ack_configure for details.
       </description>
       <arg name="token" type="uint" summary="reposition request token"/>

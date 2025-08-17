@@ -132,6 +132,7 @@
     <ClCompile Include="..\dep\glad\glad.c" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="openGL\core\OpenGLCore.cpp" />
+    <ClCompile Include="openGL\core\Vector3f.cpp" />
     <ClCompile Include="openGL\models\ModelBase.cpp" />
     <ClCompile Include="openGL\shaders\Shader.cpp" />
     <ClCompile Include="openGL\shaders\ShaderProgram.cpp" />
@@ -146,6 +147,9 @@
     <ClInclude Include="openGL\shaders\Shader.h" />
     <ClInclude Include="stb_image_impl.h" />
     <ClInclude Include="openGL\textures\TextureBase.h" />
+    <ClInclude Include="openGL\core\Vector3f.h" />
+    <ClInclude Include="openGL\core\VertexBase.h" />
+    <ClInclude Include="VertexBase.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\shader.fs">

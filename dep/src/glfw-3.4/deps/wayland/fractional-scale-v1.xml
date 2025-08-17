@@ -41,7 +41,7 @@
     be used and the wp_viewport destination rectangle should be 100 px by 50 px.
 
     For toplevel surfaces, the size is rounded halfway away from zero. The
-    rounding algorithm for subsurface position and size is not defined.
+    rounding algorithm for subsurface values_ and size is not defined.
   </description>
 
   <interface name="wp_fractional_scale_manager_v1" version="1">

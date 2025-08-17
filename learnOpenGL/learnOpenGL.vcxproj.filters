@@ -39,6 +39,9 @@
     <ClCompile Include="openGL\textures\TextureBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="openGL\core\Vector3f.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h">
@@ -63,6 +66,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="openGL\textures\TextureBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="openGL\core\Vector3f.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="openGL\core\VertexBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

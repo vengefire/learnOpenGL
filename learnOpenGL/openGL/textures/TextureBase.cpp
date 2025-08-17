@@ -39,10 +39,10 @@ namespace openGL::textures
     std::cout << "Texture loaded successfully: " << textureFilePath << std::endl;
   }
 
-  void TextureBase::bind()
+  void TextureBase::bind(unsigned int textureCnt)
   {
+    glActiveTexture(GL_TEXTURE0 + textureCnt);
     glBindTexture(GL_TEXTURE_2D, textureID_);
-    std::cout << "Texture with ID: " << textureID_ << " bound." << std::endl;
   }
 
 } // namespace openGL::textures

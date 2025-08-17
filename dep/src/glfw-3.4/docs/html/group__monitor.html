@@ -101,7 +101,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:gac3adb24947eb709e1874028272e5dfc5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the primary monitor.  <br /></td></tr>
 <tr class="separator:gac3adb24947eb709e1874028272e5dfc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga102f54e7acc9149edbcf0997152df8c9" id="r_ga102f54e7acc9149edbcf0997152df8c9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__monitor.html#ga102f54e7acc9149edbcf0997152df8c9">glfwGetMonitorPos</a> (<a class="el" href="group__monitor.html#ga8d9efd1cde9426692c73fe40437d0ae3">GLFWmonitor</a> *monitor, int *xpos, int *ypos)</td></tr>
-<tr class="memdesc:ga102f54e7acc9149edbcf0997152df8c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the position of the monitor's viewport on the virtual screen.  <br /></td></tr>
+<tr class="memdesc:ga102f54e7acc9149edbcf0997152df8c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the values_ of the monitor's viewport on the virtual screen.  <br /></td></tr>
 <tr class="separator:ga102f54e7acc9149edbcf0997152df8c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7387a3bdb64bfe8ebf2b9e54f5b6c9d0" id="r_ga7387a3bdb64bfe8ebf2b9e54f5b6c9d0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__monitor.html#ga7387a3bdb64bfe8ebf2b9e54f5b6c9d0">glfwGetMonitorWorkarea</a> (<a class="el" href="group__monitor.html#ga8d9efd1cde9426692c73fe40437d0ae3">GLFWmonitor</a> *monitor, int *xpos, int *ypos, int *width, int *height)</td></tr>
 <tr class="memdesc:ga7387a3bdb64bfe8ebf2b9e54f5b6c9d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the work area of the monitor.  <br /></td></tr>
@@ -321,8 +321,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This function returns the position, in screen coordinates, of the upper-left corner of the specified monitor.</p>
-<p>Any or all of the position arguments may be <code>NULL</code>. If an error occurs, all non-<code>NULL</code> position arguments will be set to zero.</p>
+<p>This function returns the values_, in screen coordinates, of the upper-left corner of the specified monitor.</p>
+<p>Any or all of the values_ arguments may be <code>NULL</code>. If an error occurs, all non-<code>NULL</code> values_ arguments will be set to zero.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">monitor</td><td>The monitor to query. </td></tr>
@@ -381,8 +381,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This function returns the position, in screen coordinates, of the upper-left corner of the work area of the specified monitor along with the work area size in screen coordinates. The work area is defined as the area of the monitor not occluded by the window system task bar where present. If no task bar exists then the work area is the monitor resolution in screen coordinates.</p>
-<p>Any or all of the position and size arguments may be <code>NULL</code>. If an error occurs, all non-<code>NULL</code> position and size arguments will be set to zero.</p>
+<p>This function returns the values_, in screen coordinates, of the upper-left corner of the work area of the specified monitor along with the work area size in screen coordinates. The work area is defined as the area of the monitor not occluded by the window system task bar where present. If no task bar exists then the work area is the monitor resolution in screen coordinates.</p>
+<p>Any or all of the values_ and size arguments may be <code>NULL</code>. If an error occurs, all non-<code>NULL</code> values_ and size arguments will be set to zero.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">monitor</td><td>The monitor to query. </td></tr>

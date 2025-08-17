@@ -120,7 +120,7 @@ Typedefs</h2></td></tr>
 <tr class="memdesc:ga0184dcb59f6d85d735503dcaae809727"><td class="mdescLeft">&#160;</td><td class="mdescRight">The function pointer type for mouse button callbacks.  <br /></td></tr>
 <tr class="separator:ga0184dcb59f6d85d735503dcaae809727"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad6fae41b3ac2e4209aaa87b596c57f68" id="r_gad6fae41b3ac2e4209aaa87b596c57f68"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__input.html#gad6fae41b3ac2e4209aaa87b596c57f68">GLFWcursorposfun</a>) (<a class="el" href="group__window.html#ga3c96d80d363e67d13a41b5d1821f3242">GLFWwindow</a> *window, double xpos, double ypos)</td></tr>
-<tr class="memdesc:gad6fae41b3ac2e4209aaa87b596c57f68"><td class="mdescLeft">&#160;</td><td class="mdescRight">The function pointer type for cursor position callbacks.  <br /></td></tr>
+<tr class="memdesc:gad6fae41b3ac2e4209aaa87b596c57f68"><td class="mdescLeft">&#160;</td><td class="mdescRight">The function pointer type for cursor values_ callbacks.  <br /></td></tr>
 <tr class="separator:gad6fae41b3ac2e4209aaa87b596c57f68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa93dc4818ac9ab32532909d53a337cbe" id="r_gaa93dc4818ac9ab32532909d53a337cbe"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__input.html#gaa93dc4818ac9ab32532909d53a337cbe">GLFWcursorenterfun</a>) (<a class="el" href="group__window.html#ga3c96d80d363e67d13a41b5d1821f3242">GLFWwindow</a> *window, int entered)</td></tr>
 <tr class="memdesc:gaa93dc4818ac9ab32532909d53a337cbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">The function pointer type for cursor enter/leave callbacks.  <br /></td></tr>
@@ -171,10 +171,10 @@ Functions</h2></td></tr>
 <tr class="memdesc:gac1473feacb5996c01a7a5a33b5066704"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the last reported state of a mouse button for the specified window.  <br /></td></tr>
 <tr class="separator:gac1473feacb5996c01a7a5a33b5066704"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga01d37b6c40133676b9cea60ca1d7c0cc" id="r_ga01d37b6c40133676b9cea60ca1d7c0cc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__input.html#ga01d37b6c40133676b9cea60ca1d7c0cc">glfwGetCursorPos</a> (<a class="el" href="group__window.html#ga3c96d80d363e67d13a41b5d1821f3242">GLFWwindow</a> *window, double *xpos, double *ypos)</td></tr>
-<tr class="memdesc:ga01d37b6c40133676b9cea60ca1d7c0cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the position of the cursor relative to the content area of the window.  <br /></td></tr>
+<tr class="memdesc:ga01d37b6c40133676b9cea60ca1d7c0cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the values_ of the cursor relative to the content area of the window.  <br /></td></tr>
 <tr class="separator:ga01d37b6c40133676b9cea60ca1d7c0cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga04b03af936d906ca123c8f4ee08b39e7" id="r_ga04b03af936d906ca123c8f4ee08b39e7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__input.html#ga04b03af936d906ca123c8f4ee08b39e7">glfwSetCursorPos</a> (<a class="el" href="group__window.html#ga3c96d80d363e67d13a41b5d1821f3242">GLFWwindow</a> *window, double xpos, double ypos)</td></tr>
-<tr class="memdesc:ga04b03af936d906ca123c8f4ee08b39e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the position of the cursor, relative to the content area of the window.  <br /></td></tr>
+<tr class="memdesc:ga04b03af936d906ca123c8f4ee08b39e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the values_ of the cursor, relative to the content area of the window.  <br /></td></tr>
 <tr class="separator:ga04b03af936d906ca123c8f4ee08b39e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga556f604f73af156c0db0e97c081373c3" id="r_ga556f604f73af156c0db0e97c081373c3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__input.html#ga89261ae18c75e863aaf2656ecdd238f4">GLFWcursor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__input.html#ga556f604f73af156c0db0e97c081373c3">glfwCreateCursor</a> (const <a class="el" href="struct_g_l_f_wimage.html">GLFWimage</a> *image, int xhot, int yhot)</td></tr>
 <tr class="memdesc:ga556f604f73af156c0db0e97c081373c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a custom cursor.  <br /></td></tr>
@@ -201,7 +201,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:ga6ab84420974d812bee700e45284a723c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the mouse button callback.  <br /></td></tr>
 <tr class="separator:ga6ab84420974d812bee700e45284a723c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac1f879ab7435d54d4d79bb469fe225d7" id="r_gac1f879ab7435d54d4d79bb469fe225d7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__input.html#gad6fae41b3ac2e4209aaa87b596c57f68">GLFWcursorposfun</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__input.html#gac1f879ab7435d54d4d79bb469fe225d7">glfwSetCursorPosCallback</a> (<a class="el" href="group__window.html#ga3c96d80d363e67d13a41b5d1821f3242">GLFWwindow</a> *window, <a class="el" href="group__input.html#gad6fae41b3ac2e4209aaa87b596c57f68">GLFWcursorposfun</a> callback)</td></tr>
-<tr class="memdesc:gac1f879ab7435d54d4d79bb469fe225d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the cursor position callback.  <br /></td></tr>
+<tr class="memdesc:gac1f879ab7435d54d4d79bb469fe225d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the cursor values_ callback.  <br /></td></tr>
 <tr class="separator:gac1f879ab7435d54d4d79bb469fe225d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad27f8ad0142c038a281466c0966817d8" id="r_gad27f8ad0142c038a281466c0966817d8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__input.html#gaa93dc4818ac9ab32532909d53a337cbe">GLFWcursorenterfun</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__input.html#gad27f8ad0142c038a281466c0966817d8">glfwSetCursorEnterCallback</a> (<a class="el" href="group__window.html#ga3c96d80d363e67d13a41b5d1821f3242">GLFWwindow</a> *window, <a class="el" href="group__input.html#gaa93dc4818ac9ab32532909d53a337cbe">GLFWcursorenterfun</a> callback)</td></tr>
 <tr class="memdesc:gad27f8ad0142c038a281466c0966817d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the cursor enter/leave callback.  <br /></td></tr>
@@ -388,7 +388,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This is the function pointer type for cursor position callbacks. A cursor position callback function has the following signature: </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> function_name(<a class="code hl_typedef" href="group__window.html#ga3c96d80d363e67d13a41b5d1821f3242">GLFWwindow</a>* window, <span class="keywordtype">double</span> xpos, <span class="keywordtype">double</span> ypos);</div>
+<p>This is the function pointer type for cursor values_ callbacks. A cursor values_ callback function has the following signature: </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> function_name(<a class="code hl_typedef" href="group__window.html#ga3c96d80d363e67d13a41b5d1821f3242">GLFWwindow</a>* window, <span class="keywordtype">double</span> xpos, <span class="keywordtype">double</span> ypos);</div>
 </div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">window</td><td>The window that received the event. </td></tr>
@@ -397,7 +397,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="input_guide.html#cursor_pos">Cursor position</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="input_guide.html#cursor_pos">Cursor values_</a> </dd>
 <dd>
 <a class="el" href="group__input.html#gac1f879ab7435d54d4d79bb469fe225d7">glfwSetCursorPosCallback</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>Added in version 3.0. Replaces <code>GLFWmouseposfun</code>. </dd></dl>
@@ -957,10 +957,10 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This function returns the position of the cursor, in screen coordinates, relative to the upper-left corner of the content area of the specified window.</p>
-<p>If the cursor is disabled (with <code>GLFW_CURSOR_DISABLED</code>) then the cursor position is unbounded and limited only by the minimum and maximum values of a <code>double</code>.</p>
+<p>This function returns the values_ of the cursor, in screen coordinates, relative to the upper-left corner of the content area of the specified window.</p>
+<p>If the cursor is disabled (with <code>GLFW_CURSOR_DISABLED</code>) then the cursor values_ is unbounded and limited only by the minimum and maximum values of a <code>double</code>.</p>
 <p>The coordinate can be converted to their integer equivalents with the <code>floor</code> function. Casting directly to an integer type works for positive coordinates, but fails for negative ones.</p>
-<p>Any or all of the position arguments may be <code>NULL</code>. If an error occurs, all non-<code>NULL</code> position arguments will be set to zero.</p>
+<p>Any or all of the values_ arguments may be <code>NULL</code>. If an error occurs, all non-<code>NULL</code> values_ arguments will be set to zero.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">window</td><td>The desired window. </td></tr>
@@ -971,7 +971,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section user"><dt>Errors</dt><dd>Possible errors include <a class="el" href="group__errors.html#ga2374ee02c177f12e1fa76ff3ed15e14a">GLFW_NOT_INITIALIZED</a> and <a class="el" href="group__errors.html#gad44162d78100ea5e87cdd38426b8c7a1">GLFW_PLATFORM_ERROR</a>.</dd></dl>
 <dl class="section user"><dt>Thread safety</dt><dd>This function must only be called from the main thread.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="input_guide.html#cursor_pos">Cursor position</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="input_guide.html#cursor_pos">Cursor values_</a> </dd>
 <dd>
 <a class="el" href="group__input.html#ga04b03af936d906ca123c8f4ee08b39e7">glfwSetCursorPos</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>Added in version 3.0. Replaces <code>glfwGetMousePos</code>. </dd></dl>
@@ -1009,9 +1009,9 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This function sets the position, in screen coordinates, of the cursor relative to the upper-left corner of the content area of the specified window. The window must have input focus. If the window does not have input focus when this function is called, it fails silently.</p>
+<p>This function sets the values_, in screen coordinates, of the cursor relative to the upper-left corner of the content area of the specified window. The window must have input focus. If the window does not have input focus when this function is called, it fails silently.</p>
 <p><b>Do not use this function</b> to implement things like camera controls. GLFW already provides the <code>GLFW_CURSOR_DISABLED</code> cursor mode that hides the cursor, transparently re-centers it and provides unconstrained cursor motion. See <a class="el" href="group__input.html#gaa92336e173da9c8834558b54ee80563b">glfwSetInputMode</a> for more information.</p>
-<p>If the cursor mode is <code>GLFW_CURSOR_DISABLED</code> then the cursor position is unconstrained and limited only by the minimum and maximum values of a <code>double</code>.</p>
+<p>If the cursor mode is <code>GLFW_CURSOR_DISABLED</code> then the cursor values_ is unconstrained and limited only by the minimum and maximum values of a <code>double</code>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">window</td><td>The desired window. </td></tr>
@@ -1023,7 +1023,7 @@ Functions</h2></td></tr>
 <dl class="section user"><dt>Errors</dt><dd>Possible errors include <a class="el" href="group__errors.html#ga2374ee02c177f12e1fa76ff3ed15e14a">GLFW_NOT_INITIALIZED</a>, <a class="el" href="group__errors.html#gad44162d78100ea5e87cdd38426b8c7a1">GLFW_PLATFORM_ERROR</a> and <a class="el" href="group__errors.html#ga526fba20a01504a8086c763b6ca53ce5">GLFW_FEATURE_UNAVAILABLE</a> (see remarks).</dd></dl>
 <dl class="section remark"><dt>Remarks</dt><dd><b>Wayland:</b> This function will only work when the cursor mode is <code>GLFW_CURSOR_DISABLED</code>, otherwise it will emit <a class="el" href="group__errors.html#ga526fba20a01504a8086c763b6ca53ce5">GLFW_FEATURE_UNAVAILABLE</a>.</dd></dl>
 <dl class="section user"><dt>Thread safety</dt><dd>This function must only be called from the main thread.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="input_guide.html#cursor_pos">Cursor position</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="input_guide.html#cursor_pos">Cursor values_</a> </dd>
 <dd>
 <a class="el" href="group__input.html#ga01d37b6c40133676b9cea60ca1d7c0cc">glfwGetCursorPos</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>Added in version 3.0. Replaces <code>glfwSetMousePos</code>. </dd></dl>
@@ -1425,7 +1425,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This function sets the cursor position callback of the specified window, which is called when the cursor is moved. The callback is provided with the position, in screen coordinates, relative to the upper-left corner of the content area of the window.</p>
+<p>This function sets the cursor values_ callback of the specified window, which is called when the cursor is moved. The callback is provided with the values_, in screen coordinates, relative to the upper-left corner of the content area of the window.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">window</td><td>The window whose callback to set. </td></tr>
@@ -1438,7 +1438,7 @@ Functions</h2></td></tr>
 </div><!-- fragment --> For more information about the callback parameters, see the <a class="el" href="group__input.html#gad6fae41b3ac2e4209aaa87b596c57f68">function pointer type</a>.</dd></dl>
 <dl class="section user"><dt>Errors</dt><dd>Possible errors include <a class="el" href="group__errors.html#ga2374ee02c177f12e1fa76ff3ed15e14a">GLFW_NOT_INITIALIZED</a>.</dd></dl>
 <dl class="section user"><dt>Thread safety</dt><dd>This function must only be called from the main thread.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="input_guide.html#cursor_pos">Cursor position</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="input_guide.html#cursor_pos">Cursor values_</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>Added in version 3.0. Replaces <code>glfwSetMousePosCallback</code>. </dd></dl>
 
 </div>

@@ -3,6 +3,7 @@
 #include "../../config.h"
 #include "../shaders/ShaderProgram.h"
 #include "../textures/TextureBase.h"
+#include "../core/VertexBase.h"
 
 namespace openGL::models
 {
@@ -26,17 +27,18 @@ namespace openGL::models
       shader_program_ = shader_program;
     }
 
-    std::shared_ptr<textures::TextureBase> get_texture() const
+    std::vector<std::shared_ptr<textures::TextureBase>> get_textures() const
     {
-      return texture_;
+      return textures_;
     };
 
-    void set_texture(std::shared_ptr<textures::TextureBase> texture)
+    void set_texture(const std::shared_ptr<textures::TextureBase>& texture)
     {
-      texture_ = texture;
+      textures_.push_back(texture);
     }
 
     void set_vertices(std::vector<float> vertices);
+    void set_vertices(std::vector<core::VertexBase> vertices);
     void set_indices(std::vector<unsigned int> indices);
 
     void render();
@@ -47,7 +49,8 @@ namespace openGL::models
   private:
     void Init();
     std::shared_ptr<shaders::ShaderProgram> shader_program_;
-    std::shared_ptr<textures::TextureBase> texture_;
+    std::vector<std::shared_ptr<textures::TextureBase>> textures_;
+    std::vector<core::VertexBase> vertices_data_;
     std::vector<float> vertices_;
     std::vector<unsigned int> indices_;
     unsigned int vao_Id_ = -1;

@@ -79,7 +79,7 @@ $(function() {
 <li class="level1"><a href="#monitor_properties">Monitor properties</a><ul><li class="level2"><a href="#monitor_modes">Video modes</a></li>
 <li class="level2"><a href="#monitor_size">Physical size</a></li>
 <li class="level2"><a href="#monitor_scale">Content scale</a></li>
-<li class="level2"><a href="#monitor_pos">Virtual position</a></li>
+<li class="level2"><a href="#monitor_pos">Virtual values_</a></li>
 <li class="level2"><a href="#monitor_workarea">Work area</a></li>
 <li class="level2"><a href="#monitor_name">Human-readable name</a></li>
 <li class="level2"><a href="#monitor_userptr">User pointer</a></li>
@@ -99,8 +99,8 @@ $(function() {
 <h1><a class="anchor" id="monitor_object"></a>
 Monitor objects</h1>
 <p>A monitor object represents a currently connected monitor and is represented as a pointer to the <a href="https://en.wikipedia.org/wiki/Opaque_data_type">opaque</a> type <a class="el" href="group__monitor.html#ga8d9efd1cde9426692c73fe40437d0ae3">GLFWmonitor</a>. Monitor objects cannot be created or destroyed by the application and retain their addresses until the monitors they represent are disconnected or until the library is <a class="el" href="intro_guide.html#intro_init_terminate">terminated</a>.</p>
-<p>Each monitor has a current video mode, a list of supported video modes, a virtual position, a human-readable name, an estimated physical size and a gamma ramp. One of the monitors is the primary monitor.</p>
-<p>The virtual position of a monitor is in <a class="el" href="intro_guide.html#coordinate_systems">screen coordinates</a> and, together with the current video mode, describes the viewports that the connected monitors provide into the virtual desktop that spans them.</p>
+<p>Each monitor has a current video mode, a list of supported video modes, a virtual values_, a human-readable name, an estimated physical size and a gamma ramp. One of the monitors is the primary monitor.</p>
+<p>The virtual values_ of a monitor is in <a class="el" href="intro_guide.html#coordinate_systems">screen coordinates</a> and, together with the current video mode, describes the viewports that the connected monitors provide into the virtual desktop that spans them.</p>
 <p>To see how GLFW views your monitor setup and its available video modes, run the <code>monitors</code> test program.</p>
 <h2><a class="anchor" id="monitor_monitors"></a>
 Retrieving monitors</h2>
@@ -135,7 +135,7 @@ Monitor configuration changes</h2>
 </div><!-- fragment --><p>If a monitor is disconnected, all windows that are full screen on it will be switched to windowed mode before the callback is called. Only <a class="el" href="group__monitor.html#ga7af83e13489d90379588fb331b9e4b68">glfwGetMonitorName</a> and <a class="el" href="group__monitor.html#ga1adbfbfb8cd58b23cfee82e574fbbdc5">glfwGetMonitorUserPointer</a> will return useful values for a disconnected monitor and only before the monitor callback returns.</p>
 <h1><a class="anchor" id="monitor_properties"></a>
 Monitor properties</h1>
-<p>Each monitor has a current video mode, a list of supported video modes, a virtual position, a content scale, a human-readable name, a user pointer, an estimated physical size and a gamma ramp.</p>
+<p>Each monitor has a current video mode, a list of supported video modes, a virtual values_, a content scale, a human-readable name, a user pointer, an estimated physical size and a gamma ramp.</p>
 <h2><a class="anchor" id="monitor_modes"></a>
 Video modes</h2>
 <p>GLFW generally does a good job selecting a suitable video mode when you create a full screen window, change its video mode or make a windowed one full screen, but it is sometimes useful to know exactly which video modes are supported.</p>
@@ -163,11 +163,11 @@ Content scale</h2>
 <div class="ttc" id="agroup__monitor_html_gad3152e84465fa620b601265ebfcdb21b"><div class="ttname"><a href="group__monitor.html#gad3152e84465fa620b601265ebfcdb21b">glfwGetMonitorContentScale</a></div><div class="ttdeci">void glfwGetMonitorContentScale(GLFWmonitor *monitor, float *xscale, float *yscale)</div><div class="ttdoc">Retrieves the content scale for the specified monitor.</div></div>
 </div><!-- fragment --><p>For more information on what the content scale is and how to use it, see <a class="el" href="window_guide.html#window_scale">window content scale</a>.</p>
 <h2><a class="anchor" id="monitor_pos"></a>
-Virtual position</h2>
-<p>The position of the monitor on the virtual desktop, in <a class="el" href="intro_guide.html#coordinate_systems">screen coordinates</a>, can be retrieved with <a class="el" href="group__monitor.html#ga102f54e7acc9149edbcf0997152df8c9">glfwGetMonitorPos</a>.</p>
+Virtual values_</h2>
+<p>The values_ of the monitor on the virtual desktop, in <a class="el" href="intro_guide.html#coordinate_systems">screen coordinates</a>, can be retrieved with <a class="el" href="group__monitor.html#ga102f54e7acc9149edbcf0997152df8c9">glfwGetMonitorPos</a>.</p>
 <div class="fragment"><div class="line"><span class="keywordtype">int</span> xpos, ypos;</div>
 <div class="line"><a class="code hl_function" href="group__monitor.html#ga102f54e7acc9149edbcf0997152df8c9">glfwGetMonitorPos</a>(monitor, &amp;xpos, &amp;ypos);</div>
-<div class="ttc" id="agroup__monitor_html_ga102f54e7acc9149edbcf0997152df8c9"><div class="ttname"><a href="group__monitor.html#ga102f54e7acc9149edbcf0997152df8c9">glfwGetMonitorPos</a></div><div class="ttdeci">void glfwGetMonitorPos(GLFWmonitor *monitor, int *xpos, int *ypos)</div><div class="ttdoc">Returns the position of the monitor's viewport on the virtual screen.</div></div>
+<div class="ttc" id="agroup__monitor_html_ga102f54e7acc9149edbcf0997152df8c9"><div class="ttname"><a href="group__monitor.html#ga102f54e7acc9149edbcf0997152df8c9">glfwGetMonitorPos</a></div><div class="ttdeci">void glfwGetMonitorPos(GLFWmonitor *monitor, int *xpos, int *ypos)</div><div class="ttdoc">Returns the values_ of the monitor's viewport on the virtual screen.</div></div>
 </div><!-- fragment --><h2><a class="anchor" id="monitor_workarea"></a>
 Work area</h2>
 <p>The area of a monitor not occupied by global task bars or menu bars is the work area. This is specified in <a class="el" href="intro_guide.html#coordinate_systems">screen coordinates</a> and can be retrieved with <a class="el" href="group__monitor.html#ga7387a3bdb64bfe8ebf2b9e54f5b6c9d0">glfwGetMonitorWorkarea</a>.</p>

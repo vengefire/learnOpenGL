@@ -7,5 +7,5 @@ uniform vec4 uniformColor;
 void main()
 {
    FragColor = vertexColor;
-   // FragColor = vertexPosition;
+   //FragColor = vertexPosition;
 }

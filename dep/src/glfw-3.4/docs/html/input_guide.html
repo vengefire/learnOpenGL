@@ -78,7 +78,7 @@ $(function() {
 <li class="level2"><a href="#input_key_name">Key names</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#input_mouse">Mouse input</a><ul><li class="level2"><a href="#cursor_pos">Cursor position</a></li>
+<li class="level1"><a href="#input_mouse">Mouse input</a><ul><li class="level2"><a href="#cursor_pos">Cursor values_</a></li>
 <li class="level2"><a href="#cursor_mode">Cursor mode</a></li>
 <li class="level2"><a href="#raw_mouse_motion">Raw mouse motion</a></li>
 <li class="level2"><a href="#cursor_object">Cursor objects</a><ul><li class="level3"><a href="#cursor_custom">Custom cursor creation</a></li>
@@ -208,18 +208,18 @@ Key names</h2>
 Mouse input</h1>
 <p>Mouse input comes in many forms, including mouse motion, button presses and scrolling offsets. The cursor appearance can also be changed, either to a custom image or a standard cursor shape from the system theme.</p>
 <h2><a class="anchor" id="cursor_pos"></a>
-Cursor position</h2>
-<p>If you wish to be notified when the cursor moves over the window, set a cursor position callback.</p>
-<div class="fragment"><div class="line"><a class="code hl_function" href="group__input.html#gac1f879ab7435d54d4d79bb469fe225d7">glfwSetCursorPosCallback</a>(window, cursor_position_callback);</div>
-<div class="ttc" id="agroup__input_html_gac1f879ab7435d54d4d79bb469fe225d7"><div class="ttname"><a href="group__input.html#gac1f879ab7435d54d4d79bb469fe225d7">glfwSetCursorPosCallback</a></div><div class="ttdeci">GLFWcursorposfun glfwSetCursorPosCallback(GLFWwindow *window, GLFWcursorposfun callback)</div><div class="ttdoc">Sets the cursor position callback.</div></div>
-</div><!-- fragment --><p>The callback functions receives the cursor position, measured in screen coordinates but relative to the top-left corner of the window content area. On platforms that provide it, the full sub-pixel cursor position is passed on.</p>
-<div class="fragment"><div class="line"><span class="keyword">static</span> <span class="keywordtype">void</span> cursor_position_callback(<a class="code hl_typedef" href="group__window.html#ga3c96d80d363e67d13a41b5d1821f3242">GLFWwindow</a>* window, <span class="keywordtype">double</span> xpos, <span class="keywordtype">double</span> ypos)</div>
+Cursor values_</h2>
+<p>If you wish to be notified when the cursor moves over the window, set a cursor values_ callback.</p>
+<div class="fragment"><div class="line"><a class="code hl_function" href="group__input.html#gac1f879ab7435d54d4d79bb469fe225d7">glfwSetCursorPosCallback</a>(window, cursor_values__callback);</div>
+<div class="ttc" id="agroup__input_html_gac1f879ab7435d54d4d79bb469fe225d7"><div class="ttname"><a href="group__input.html#gac1f879ab7435d54d4d79bb469fe225d7">glfwSetCursorPosCallback</a></div><div class="ttdeci">GLFWcursorposfun glfwSetCursorPosCallback(GLFWwindow *window, GLFWcursorposfun callback)</div><div class="ttdoc">Sets the cursor values_ callback.</div></div>
+</div><!-- fragment --><p>The callback functions receives the cursor values_, measured in screen coordinates but relative to the top-left corner of the window content area. On platforms that provide it, the full sub-pixel cursor values_ is passed on.</p>
+<div class="fragment"><div class="line"><span class="keyword">static</span> <span class="keywordtype">void</span> cursor_values__callback(<a class="code hl_typedef" href="group__window.html#ga3c96d80d363e67d13a41b5d1821f3242">GLFWwindow</a>* window, <span class="keywordtype">double</span> xpos, <span class="keywordtype">double</span> ypos)</div>
 <div class="line">{</div>
 <div class="line">}</div>
-</div><!-- fragment --><p>The cursor position is also saved per-window and can be polled with <a class="el" href="group__input.html#ga01d37b6c40133676b9cea60ca1d7c0cc">glfwGetCursorPos</a>.</p>
+</div><!-- fragment --><p>The cursor values_ is also saved per-window and can be polled with <a class="el" href="group__input.html#ga01d37b6c40133676b9cea60ca1d7c0cc">glfwGetCursorPos</a>.</p>
 <div class="fragment"><div class="line"><span class="keywordtype">double</span> xpos, ypos;</div>
 <div class="line"><a class="code hl_function" href="group__input.html#ga01d37b6c40133676b9cea60ca1d7c0cc">glfwGetCursorPos</a>(window, &amp;xpos, &amp;ypos);</div>
-<div class="ttc" id="agroup__input_html_ga01d37b6c40133676b9cea60ca1d7c0cc"><div class="ttname"><a href="group__input.html#ga01d37b6c40133676b9cea60ca1d7c0cc">glfwGetCursorPos</a></div><div class="ttdeci">void glfwGetCursorPos(GLFWwindow *window, double *xpos, double *ypos)</div><div class="ttdoc">Retrieves the position of the cursor relative to the content area of the window.</div></div>
+<div class="ttc" id="agroup__input_html_ga01d37b6c40133676b9cea60ca1d7c0cc"><div class="ttname"><a href="group__input.html#ga01d37b6c40133676b9cea60ca1d7c0cc">glfwGetCursorPos</a></div><div class="ttdeci">void glfwGetCursorPos(GLFWwindow *window, double *xpos, double *ypos)</div><div class="ttdoc">Retrieves the values_ of the cursor relative to the content area of the window.</div></div>
 </div><!-- fragment --><h2><a class="anchor" id="cursor_mode"></a>
 Cursor mode</h2>
 <p><a class="anchor" id="GLFW_CURSOR"></a>The <code>GLFW_CURSOR</code> input mode provides several cursor modes for special forms of mouse motion input. By default, the cursor mode is <code>GLFW_CURSOR_NORMAL</code>, meaning the regular arrow cursor (or another cursor set with <a class="el" href="group__input.html#gad3b4f38c8d5dae036bc8fa959e18343e">glfwSetCursor</a>) is used and cursor motion is not limited.</p>
@@ -227,7 +227,7 @@ Cursor mode</h2>
 <div class="fragment"><div class="line"><a class="code hl_function" href="group__input.html#gaa92336e173da9c8834558b54ee80563b">glfwSetInputMode</a>(window, <a class="code hl_define" href="glfw3_8h.html#aade31da5b884a84a7625c6b059b9132c">GLFW_CURSOR</a>, <a class="code hl_define" href="glfw3_8h.html#a2315b99a329ce53e6a13a9d46fd5ca88">GLFW_CURSOR_DISABLED</a>);</div>
 <div class="ttc" id="aglfw3_8h_html_a2315b99a329ce53e6a13a9d46fd5ca88"><div class="ttname"><a href="glfw3_8h.html#a2315b99a329ce53e6a13a9d46fd5ca88">GLFW_CURSOR_DISABLED</a></div><div class="ttdeci">#define GLFW_CURSOR_DISABLED</div><div class="ttdef"><b>Definition</b> glfw3.h:1160</div></div>
 <div class="ttc" id="aglfw3_8h_html_aade31da5b884a84a7625c6b059b9132c"><div class="ttname"><a href="glfw3_8h.html#aade31da5b884a84a7625c6b059b9132c">GLFW_CURSOR</a></div><div class="ttdeci">#define GLFW_CURSOR</div><div class="ttdef"><b>Definition</b> glfw3.h:1152</div></div>
-</div><!-- fragment --><p>This will hide the cursor and lock it to the specified window. GLFW will then take care of all the details of cursor re-centering and offset calculation and providing the application with a virtual cursor position. This virtual position is provided normally via both the cursor position callback and through polling.</p>
+</div><!-- fragment --><p>This will hide the cursor and lock it to the specified window. GLFW will then take care of all the details of cursor re-centering and offset calculation and providing the application with a virtual cursor values_. This virtual values_ is provided normally via both the cursor values_ callback and through polling.</p>
 <dl class="section note"><dt>Note</dt><dd>You should not implement your own version of this functionality using other features of GLFW. It is not supported and will not work as robustly as <code>GLFW_CURSOR_DISABLED</code>.</dd></dl>
 <p>If you only wish the cursor to become hidden when it is over a window but still want it to behave normally, set the cursor mode to <code>GLFW_CURSOR_HIDDEN</code>.</p>
 <div class="fragment"><div class="line"><a class="code hl_function" href="group__input.html#gaa92336e173da9c8834558b54ee80563b">glfwSetInputMode</a>(window, <a class="code hl_define" href="glfw3_8h.html#aade31da5b884a84a7625c6b059b9132c">GLFW_CURSOR</a>, <a class="code hl_define" href="glfw3_8h.html#ac4d5cb9d78de8573349c58763d53bf11">GLFW_CURSOR_HIDDEN</a>);</div>
@@ -240,7 +240,7 @@ Cursor mode</h2>
 <p>To exit out of either of these special modes, restore the <code>GLFW_CURSOR_NORMAL</code> cursor mode.</p>
 <div class="fragment"><div class="line"><a class="code hl_function" href="group__input.html#gaa92336e173da9c8834558b54ee80563b">glfwSetInputMode</a>(window, <a class="code hl_define" href="glfw3_8h.html#aade31da5b884a84a7625c6b059b9132c">GLFW_CURSOR</a>, <a class="code hl_define" href="glfw3_8h.html#ae04dd25c8577e19fa8c97368561f6c68">GLFW_CURSOR_NORMAL</a>);</div>
 <div class="ttc" id="aglfw3_8h_html_ae04dd25c8577e19fa8c97368561f6c68"><div class="ttname"><a href="glfw3_8h.html#ae04dd25c8577e19fa8c97368561f6c68">GLFW_CURSOR_NORMAL</a></div><div class="ttdeci">#define GLFW_CURSOR_NORMAL</div><div class="ttdef"><b>Definition</b> glfw3.h:1158</div></div>
-</div><!-- fragment --><p>If the cursor was disabled, this will move it back to its last visible position.</p>
+</div><!-- fragment --><p>If the cursor was disabled, this will move it back to its last visible values_.</p>
 <p><a class="anchor" id="GLFW_RAW_MOUSE_MOTION"></a></p>
 <h2><a class="anchor" id="raw_mouse_motion"></a>
 Raw mouse motion</h2>
@@ -373,7 +373,7 @@ Joystick input</h1>
 <p>To see all the properties of all connected joysticks in real-time, run the <code>joysticks</code> test program.</p>
 <h2><a class="anchor" id="joystick_axis"></a>
 Joystick axis states</h2>
-<p>The positions of all axes of a joystick are returned by <a class="el" href="group__input.html#gaeb1c0191d3140a233a682987c61eb408">glfwGetJoystickAxes</a>. See the reference documentation for the lifetime of the returned array.</p>
+<p>The values_s of all axes of a joystick are returned by <a class="el" href="group__input.html#gaeb1c0191d3140a233a682987c61eb408">glfwGetJoystickAxes</a>. See the reference documentation for the lifetime of the returned array.</p>
 <div class="fragment"><div class="line"><span class="keywordtype">int</span> count;</div>
 <div class="line"><span class="keyword">const</span> <span class="keywordtype">float</span>* axes = <a class="code hl_function" href="group__input.html#gaeb1c0191d3140a233a682987c61eb408">glfwGetJoystickAxes</a>(<a class="code hl_define" href="group__joysticks.html#gae43281bc66d3fa5089fb50c3e7a28695">GLFW_JOYSTICK_5</a>, &amp;count);</div>
 <div class="ttc" id="agroup__input_html_gaeb1c0191d3140a233a682987c61eb408"><div class="ttname"><a href="group__input.html#gaeb1c0191d3140a233a682987c61eb408">glfwGetJoystickAxes</a></div><div class="ttdeci">const float * glfwGetJoystickAxes(int jid, int *count)</div><div class="ttdoc">Returns the values of all axes of the specified joystick.</div></div>
@@ -492,7 +492,7 @@ Gamepad input</h2>
 <div class="ttc" id="astruct_g_l_f_wgamepadstate_html_a27e9896b51c65df15fba2c7139bfdb9a"><div class="ttname"><a href="struct_g_l_f_wgamepadstate.html#a27e9896b51c65df15fba2c7139bfdb9a">GLFWgamepadstate::buttons</a></div><div class="ttdeci">unsigned char buttons[15]</div><div class="ttdef"><b>Definition</b> glfw3.h:2118</div></div>
 <div class="ttc" id="astruct_g_l_f_wgamepadstate_html_a8b2c8939b1d31458de5359998375c189"><div class="ttname"><a href="struct_g_l_f_wgamepadstate.html#a8b2c8939b1d31458de5359998375c189">GLFWgamepadstate::axes</a></div><div class="ttdeci">float axes[6]</div><div class="ttdef"><b>Definition</b> glfw3.h:2122</div></div>
 </div><!-- fragment --><p>The <a class="el" href="struct_g_l_f_wgamepadstate.html">GLFWgamepadstate</a> struct has two arrays; one for button states and one for axis states. The values for each button and axis are the same as for the <a class="el" href="group__input.html#ga5ffe34739d3dc97efe432ed2d81d9938">glfwGetJoystickButtons</a> and <a class="el" href="group__input.html#gaeb1c0191d3140a233a682987c61eb408">glfwGetJoystickAxes</a> functions, i.e. <code>GLFW_PRESS</code> or <code>GLFW_RELEASE</code> for buttons and -1.0 to 1.0 inclusive for axes.</p>
-<p>The sizes of the arrays and the positions within each array are fixed.</p>
+<p>The sizes of the arrays and the values_s within each array are fixed.</p>
 <p>The <a class="el" href="group__gamepad__buttons.html">button indices</a> are <code>GLFW_GAMEPAD_BUTTON_A</code>, <code>GLFW_GAMEPAD_BUTTON_B</code>, <code>GLFW_GAMEPAD_BUTTON_X</code>, <code>GLFW_GAMEPAD_BUTTON_Y</code>, <code>GLFW_GAMEPAD_BUTTON_LEFT_BUMPER</code>, <code>GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER</code>, <code>GLFW_GAMEPAD_BUTTON_BACK</code>, <code>GLFW_GAMEPAD_BUTTON_START</code>, <code>GLFW_GAMEPAD_BUTTON_GUIDE</code>, <code>GLFW_GAMEPAD_BUTTON_LEFT_THUMB</code>, <code>GLFW_GAMEPAD_BUTTON_RIGHT_THUMB</code>, <code>GLFW_GAMEPAD_BUTTON_DPAD_UP</code>, <code>GLFW_GAMEPAD_BUTTON_DPAD_RIGHT</code>, <code>GLFW_GAMEPAD_BUTTON_DPAD_DOWN</code> and <code>GLFW_GAMEPAD_BUTTON_DPAD_LEFT</code>.</p>
 <p>For those who prefer, there are also the <code>GLFW_GAMEPAD_BUTTON_CROSS</code>, <code>GLFW_GAMEPAD_BUTTON_CIRCLE</code>, <code>GLFW_GAMEPAD_BUTTON_SQUARE</code> and <code>GLFW_GAMEPAD_BUTTON_TRIANGLE</code> aliases for the A, B, X and Y button indices.</p>
 <p>The <a class="el" href="group__gamepad__axes.html">axis indices</a> are <code>GLFW_GAMEPAD_AXIS_LEFT_X</code>, <code>GLFW_GAMEPAD_AXIS_LEFT_Y</code>, <code>GLFW_GAMEPAD_AXIS_RIGHT_X</code>, <code>GLFW_GAMEPAD_AXIS_RIGHT_Y</code>, <code>GLFW_GAMEPAD_AXIS_LEFT_TRIGGER</code> and <code>GLFW_GAMEPAD_AXIS_RIGHT_TRIGGER</code>.</p>

@@ -19,7 +19,7 @@ namespace openGL::core
     void set_viewport_and_framebuffer_callback(int width, int height) const;
     std::shared_ptr<GLFWwindow> getWindow();
 
-    void addModel(const models::ModelBase& model);
+    void addModel(std::shared_ptr<models::ModelBase> model);
 
   protected:
     static void init(int majorVersion, int minorVersion);
@@ -28,6 +28,6 @@ namespace openGL::core
   private:
     bool wireFrameMode = false;
     std::shared_ptr<GLFWwindow> pWindow_;
-    std::vector<models::ModelBase> models_;
+    std::vector<std::shared_ptr<models::ModelBase>> models_;
   };
 }
