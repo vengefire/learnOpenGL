@@ -130,6 +130,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\dep\glad\glad.c" />
+    <ClCompile Include="framework\events\EventPublisher.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="openGL\core\OpenGLCore.cpp" />
     <ClCompile Include="openGL\core\Vector3f.cpp" />
@@ -137,18 +138,24 @@
     <ClCompile Include="openGL\shaders\Shader.cpp" />
     <ClCompile Include="openGL\shaders\ShaderProgram.cpp" />
     <ClCompile Include="openGL\textures\TextureBase.cpp" />
+    <ClCompile Include="openGL\Events\ProcessInputEvent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\dep\stb\stb_image.h" />
     <ClInclude Include="config.h" />
+    <ClInclude Include="framework\events\EventDataBase.h" />
+    <ClInclude Include="framework\events\EventPublisher.h" />
+    <ClInclude Include="framework\events\EventBase.hpp" />
     <ClInclude Include="openGL\core\OpenGLCore.h" />
     <ClInclude Include="openGL\models\ModelBase.h" />
     <ClInclude Include="openGL\shaders\ShaderProgram.h" />
     <ClInclude Include="openGL\shaders\Shader.h" />
+    <ClInclude Include="openGL\Events\ProcessInputEvent.h" />
     <ClInclude Include="stb_image_impl.h" />
     <ClInclude Include="openGL\textures\TextureBase.h" />
     <ClInclude Include="openGL\core\Vector3f.h" />
     <ClInclude Include="openGL\core\VertexBase.h" />
+    <ClInclude Include="framework\events\TEventBase.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\shader.fs">
