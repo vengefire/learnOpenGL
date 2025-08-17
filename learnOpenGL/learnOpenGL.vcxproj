@@ -135,17 +135,30 @@
     <ClCompile Include="openGL\models\ModelBase.cpp" />
     <ClCompile Include="openGL\shaders\Shader.cpp" />
     <ClCompile Include="openGL\shaders\ShaderProgram.cpp" />
+    <ClCompile Include="openGL\textures\TextureBase.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\dep\stb\stb_image.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="openGL\core\OpenGLCore.h" />
     <ClInclude Include="openGL\models\ModelBase.h" />
     <ClInclude Include="openGL\shaders\ShaderProgram.h" />
     <ClInclude Include="openGL\shaders\Shader.h" />
+    <ClInclude Include="stb_image_impl.h" />
+    <ClInclude Include="openGL\textures\TextureBase.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\shaders\shader.fs" />
-    <None Include="res\shaders\shader.vs" />
+    <None Include="res\shaders\shader.fs">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="res\shaders\shader.vs">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\textures\container.jpg">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
