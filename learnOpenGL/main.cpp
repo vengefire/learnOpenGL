@@ -1,6 +1,7 @@
 #include "config.h"
 #include "openGL/models/ModelBase.h"
 #include "openGL/shaders/ShaderProgram.h"
+#include "openGL/core/OpenGLCore.h"
 
 void ProcessInput(GLFWwindow* window)
 {
@@ -14,28 +15,8 @@ int main()
 {
   try
   {
-    glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-    GLFWwindow* window = glfwCreateWindow(800, 600, "LearnOpenGL", nullptr, nullptr);
-    if (window == nullptr)
-    {
-      throw std::runtime_error("Failed to create GLFW window");
-    }
-    glfwMakeContextCurrent(window);
-
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    {
-      throw std::runtime_error("Failed to initialize GLAD");
-    }
-
-    glViewport(0, 0, 800, 600);
-    glfwSetFramebufferSizeCallback(window, [](GLFWwindow* window, int width, int height)
-    {
-      glViewport(0, 0, width, height);
-    });
+    openGL::core::OpenGLCore core(3, 3);
+    core.createWindow(800, 600, "Learn OpenGL");
 
     openGL::models::ModelBase triangleModel1;
     triangleModel1.set_vertices({
@@ -64,7 +45,6 @@ int main()
       1, 2, 3
       });
 
-    // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     openGL::shaders::ShaderProgram defaultShader;
     defaultShader.load_shader_from_file("./res/shaders/shader.vs", GL_VERTEX_SHADER);
     defaultShader.load_shader_from_file("./res/shaders/shader.fs", GL_FRAGMENT_SHADER);
@@ -72,7 +52,8 @@ int main()
     defaultShader.use();
     defaultShader.set_float("offsetX", 0.25f);
 
-    while (!glfwWindowShouldClose(window))
+    core.run();
+    /*while (!glfwWindowShouldClose(window))
     {
       ProcessInput(window);
       glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -85,21 +66,21 @@ int main()
 
       glfwSwapBuffers(window);
       glfwPollEvents();
-    }
+    }*/
 
-    glfwTerminate();
+    //glfwTerminate();
     return 0;
   }
   catch (const std::exception& e)
   {
     std::cerr << "Exception: " << e.what() << '\n';
-    glfwTerminate();
+    //glfwTerminate();
     return -1;
   }
   catch (...)
   {
     std::cerr << "Unknown exception occurred." << '\n';
-    glfwTerminate();
+    //glfwTerminate();
     return -1;
   }
 }
