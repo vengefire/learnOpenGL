@@ -27,12 +27,6 @@ namespace openGL::models
     return vertices_;
   }
 
-  void ModelBase::set_vertices(std::vector<float> vertices)
-  {
-    vertices_ = std::move(vertices);
-    buffer_vertex_data();
-  }
-
   void ModelBase::set_vertices(std::vector<core::VertexBase> vertices)
   {
     vertices_data_ = std::move(vertices);
@@ -98,29 +92,33 @@ namespace openGL::models
 
     int floatCount = 3; // Position
     int offset = 0;
-    int position = 0;
+    unsigned int position = 0;
     floatCount += vertices_data_[0].hasColor() ? 3 : 0; // Color
     floatCount += vertices_data_[0].hasTextureCoordinates() ? 2 : 0; // Texture Coordinates
     int stride = floatCount * sizeof(float);
 
     // Position Mandatory
-    glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, stride, (void*)0);
+    glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, stride, static_cast<void*>(nullptr));
     offset += 3 * sizeof(float);
-    glEnableVertexAttribArray(position++);
+    glEnableVertexAttribArray(position);
+    position++;
     // Color Optional
     if (vertices_data_[0].hasColor())
     {
-      glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, stride, (void*)&offset);
-      glEnableVertexAttribArray(position++);
+      glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(offset));
+      glEnableVertexAttribArray(position);
       offset += 3 * sizeof(float);
+      position++;
     }
     // Texture Coordinates Optional
     if (vertices_data_[0].hasTextureCoordinates())
     {
-      glVertexAttribPointer(position, 2, GL_FLOAT, GL_FALSE, stride, (void*)&offset);
-      glEnableVertexAttribArray(position++);
+      glVertexAttribPointer(position, 2, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(offset));
+      glEnableVertexAttribArray(position);
       offset += 2 * sizeof(float);
     }
+    glBindVertexArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
   }
 
   void ModelBase::Init()

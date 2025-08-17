@@ -68,7 +68,6 @@ namespace openGL::shaders
   void ShaderProgram::Init()
   {
     id_ = glCreateProgram();
-    //std::cout << "ShaderProgram with ID [" << id_ << "] initialized.\n";
-    std::cout << std::format("ShaderProgram [{}] with ID [{}] initialized.\n", name_,id_) << std::endl;
+    std::cout << std::format("ShaderProgram [{}] with ID [{}] initialized.", name_,id_) << std::endl;
   }
 }

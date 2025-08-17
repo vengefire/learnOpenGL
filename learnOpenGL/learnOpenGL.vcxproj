@@ -149,7 +149,6 @@
     <ClInclude Include="openGL\textures\TextureBase.h" />
     <ClInclude Include="openGL\core\Vector3f.h" />
     <ClInclude Include="openGL\core\VertexBase.h" />
-    <ClInclude Include="VertexBase.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\shader.fs">
@@ -166,6 +165,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\textures\awesomeface.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
     <Image Include="res\textures\container.jpg">
       <DeploymentContent>true</DeploymentContent>
     </Image>

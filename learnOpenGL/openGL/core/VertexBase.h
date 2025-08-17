@@ -22,6 +22,12 @@ namespace openGL::core
       VertexBase::set_texture_coordinates(u, v);
     }
 
+    VertexBase(float x, float y, float z, float r, float g, float b, float u, float v) : position_(x, y, z), hasColor_(false), hasTextureCoordinates_(false)
+    {
+      VertexBase::set_color(r, g, b);
+      VertexBase::set_texture_coordinates(u, v);
+    }
+
     virtual ~VertexBase()
     {
     }

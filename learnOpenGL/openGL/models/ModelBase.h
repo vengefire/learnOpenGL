@@ -37,7 +37,6 @@ namespace openGL::models
       textures_.push_back(texture);
     }
 
-    void set_vertices(std::vector<float> vertices);
     void set_vertices(std::vector<core::VertexBase> vertices);
     void set_indices(std::vector<unsigned int> indices);
 
