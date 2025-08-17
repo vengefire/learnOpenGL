@@ -43,13 +43,14 @@ namespace openGL::models
 
   void ModelBase::render()
   {
+    shader_program_->use();
+
     int textureCnt = 0;
     for (const auto& texture : textures_)
     {
+      shader_program_->set_int(std::format("texture{}", textureCnt + 1), textureCnt); // Set texture unit X for textureX
       texture->bind(textureCnt++);
     }
-
-    shader_program_->use();
 
     glBindVertexArray(vao_Id_);
     auto count = indices_.empty() ? vertices_data_.size() : indices_.size();
@@ -100,21 +101,19 @@ namespace openGL::models
     // Position Mandatory
     glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, stride, static_cast<void*>(nullptr));
     offset += 3 * sizeof(float);
-    glEnableVertexAttribArray(position);
-    position++;
+    glEnableVertexAttribArray(position++);
     // Color Optional
     if (vertices_data_[0].hasColor())
     {
       glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(offset));
-      glEnableVertexAttribArray(position);
+      glEnableVertexAttribArray(position++);
       offset += 3 * sizeof(float);
-      position++;
     }
     // Texture Coordinates Optional
     if (vertices_data_[0].hasTextureCoordinates())
     {
       glVertexAttribPointer(position, 2, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(offset));
-      glEnableVertexAttribArray(position);
+      glEnableVertexAttribArray(position++);
       offset += 2 * sizeof(float);
     }
     glBindVertexArray(0);
@@ -127,10 +126,10 @@ namespace openGL::models
     glGenBuffers(1, &vbo_Id_);
   }
 
-  void ModelBase::set_texture_from_file(const std::string& textureFilePath)
+  void ModelBase::set_texture_from_file(const std::string& textureFilePath, bool flip_vertically)
   {
     auto texture_ = std::make_shared<textures::TextureBase>();
-    texture_->loadFromFile(textureFilePath);
+    texture_->loadFromFile(textureFilePath, flip_vertically);
     set_texture(texture_);
   }
 }

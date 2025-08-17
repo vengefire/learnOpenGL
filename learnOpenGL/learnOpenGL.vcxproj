@@ -165,6 +165,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\textures\awesomeface.jpg">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
     <Image Include="res\textures\awesomeface.png">
       <DeploymentContent>true</DeploymentContent>
     </Image>

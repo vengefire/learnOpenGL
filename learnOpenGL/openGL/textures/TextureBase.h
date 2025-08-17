@@ -10,7 +10,7 @@ namespace openGL::textures
     TextureBase();
     virtual ~TextureBase();
 
-    void loadFromFile(std::string textureFilePath);
+    void loadFromFile(std::string textureFilePath, bool flipVertically = true);
 
     unsigned int getTextureID() const { return textureID_; }
     int getImageWidth() const { return imageWidth_; }

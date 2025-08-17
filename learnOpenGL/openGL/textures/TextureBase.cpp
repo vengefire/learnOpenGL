@@ -25,9 +25,10 @@ namespace openGL::textures
     std::cout << "Texture initialized with ID: " << textureID_ << std::endl;
   }
 
-  void TextureBase::loadFromFile(std::string textureFilePath)
+  void TextureBase::loadFromFile(std::string textureFilePath, bool flipVertically)
   {
     std::cout << "Loading texture from file: " << textureFilePath << std::endl;
+    stbi_set_flip_vertically_on_load(flipVertically);
     unsigned char* data = stbi_load(textureFilePath.c_str(), &imageWidth_, &imageHeight_, &imageChannels_, 0);
     if (!data)
     {

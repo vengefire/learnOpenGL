@@ -20,7 +20,7 @@ namespace openGL::models
       return shader_program_;
     }
 
-    void set_texture_from_file(const std::string& textureFilePath);
+    void set_texture_from_file(const std::string& textureFilePath, bool flip_vertically = true);
 
     void set_shader_program(std::shared_ptr<shaders::ShaderProgram> shader_program)
     {
@@ -31,6 +31,15 @@ namespace openGL::models
     {
       return textures_;
     };
+
+    std::shared_ptr<textures::TextureBase> get_texture(unsigned int index) const
+    {
+      if (index < textures_.size())
+      {
+        return textures_[index];
+      }
+      return nullptr;
+    }
 
     void set_texture(const std::shared_ptr<textures::TextureBase>& texture)
     {

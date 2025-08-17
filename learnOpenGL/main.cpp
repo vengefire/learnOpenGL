@@ -41,9 +41,9 @@ int main()
     texturedColouredVertexShader->load_shader_from_file("./res/shaders/texturedshader.fs", GL_FRAGMENT_SHADER);
     texturedColouredVertexShader->linkProgram();
 
-    texturedColouredVertexShader->use();
-    texturedColouredVertexShader->set_int("texture1", 0); // Set texture unit 0 for texture1
-    texturedColouredVertexShader->set_int("texture2", 1); // Set texture unit 1 for texture2
+    //texturedColouredVertexShader->use();
+    //texturedColouredVertexShader->set_int("texture1", 0); // Set texture unit 0 for texture1
+    //texturedColouredVertexShader->set_int("texture2", 1); // Set texture unit 1 for texture2
 
     auto rectModel1 = std::make_shared<openGL::models::ModelBase>();
     rectModel1->set_vertices({
@@ -61,7 +61,7 @@ int main()
 
     rectModel1->set_shader_program(texturedColouredVertexShader);
     rectModel1->set_texture_from_file("./res/textures/container.jpg");
-    rectModel1->set_texture_from_file("./res/textures/awesomeface.png");
+    rectModel1->set_texture_from_file("./res/textures/awesomeface.jpg");
     core.addModel(rectModel1);
 
     core.run();
