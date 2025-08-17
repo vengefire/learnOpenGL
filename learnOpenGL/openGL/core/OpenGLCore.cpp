@@ -82,7 +82,10 @@ namespace openGL::core
       glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
       glClear(GL_COLOR_BUFFER_BIT);
       // Render your models here
-      // ...
+      for (auto model : models_)
+      {
+        model.render();
+      }
       glfwSwapBuffers(pWindow_.get());
       glfwPollEvents();
     }
@@ -99,5 +102,15 @@ namespace openGL::core
     {
       glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
+  }
+
+  std::shared_ptr<GLFWwindow> OpenGLCore::getWindow()
+  {
+    return pWindow_;
+  }
+
+  void OpenGLCore::addModel(const models::ModelBase& model)
+  {
+    models_.push_back(model);
   }
 }

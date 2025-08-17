@@ -3,14 +3,6 @@
 #include "openGL/shaders/ShaderProgram.h"
 #include "openGL/core/OpenGLCore.h"
 
-void ProcessInput(GLFWwindow* window)
-{
-  if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-  {
-    glfwSetWindowShouldClose(window, true);
-  }
-}
-
 int main()
 {
   try
@@ -45,6 +37,10 @@ int main()
       1, 2, 3
       });
 
+    core.addModel(triangleModel1);
+    core.addModel(triangleModel2);
+    core.addModel(rectModel1);
+
     openGL::shaders::ShaderProgram defaultShader;
     defaultShader.load_shader_from_file("./res/shaders/shader.vs", GL_VERTEX_SHADER);
     defaultShader.load_shader_from_file("./res/shaders/shader.fs", GL_FRAGMENT_SHADER);
@@ -53,34 +49,16 @@ int main()
     defaultShader.set_float("offsetX", 0.25f);
 
     core.run();
-    /*while (!glfwWindowShouldClose(window))
-    {
-      ProcessInput(window);
-      glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-      glClear(GL_COLOR_BUFFER_BIT);
-
-      // Models
-      triangleModel1.render();
-      triangleModel2.render();
-      rectModel1.render();
-
-      glfwSwapBuffers(window);
-      glfwPollEvents();
-    }*/
-
-    //glfwTerminate();
     return 0;
   }
   catch (const std::exception& e)
   {
     std::cerr << "Exception: " << e.what() << '\n';
-    //glfwTerminate();
     return -1;
   }
   catch (...)
   {
     std::cerr << "Unknown exception occurred." << '\n';
-    //glfwTerminate();
     return -1;
   }
 }
