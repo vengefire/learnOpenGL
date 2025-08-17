@@ -36,6 +36,14 @@ namespace openGL::models
   {
     auto triangles_to_render = indices_.empty() ? vertices_.size() / 6 : indices_.size();
     glBindVertexArray(vao_Id_);
+
+    if (texture_)
+    {
+      texture_->bind();
+    }
+
+    shader_program_->use();
+
     if (!indices_.empty())
     {
       glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo_Id_);
@@ -64,4 +72,14 @@ namespace openGL::models
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), reinterpret_cast<void*>(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
   }
+
+  void ModelBase::set_texture_from_file(const std::string& textureFilePath)
+  {
+    if (!texture_)
+    {
+      texture_ = std::make_shared<textures::TextureBase>();
+    }
+    texture_->loadFromFile(textureFilePath);
+  }
+
 }

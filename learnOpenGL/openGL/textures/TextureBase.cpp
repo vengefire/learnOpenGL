@@ -38,4 +38,11 @@ namespace openGL::textures
     stbi_image_free(data);
     std::cout << "Texture loaded successfully: " << textureFilePath << std::endl;
   }
+
+  void TextureBase::bind()
+  {
+    glBindTexture(GL_TEXTURE_2D, textureID_);
+    std::cout << "Texture with ID: " << textureID_ << " bound." << std::endl;
+  }
+
 } // namespace openGL::textures

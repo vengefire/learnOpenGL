@@ -11,12 +11,25 @@ int main()
     openGL::core::OpenGLCore core(3, 3);
     core.createWindow(800, 600, "Learn OpenGL");
 
+    // Default shader program for coloured vertices
+    auto defaultColouredVertexShader = std::make_shared<openGL::shaders::ShaderProgram>();
+    defaultColouredVertexShader->load_shader_from_file("./res/shaders/shader.vs", GL_VERTEX_SHADER);
+    defaultColouredVertexShader->load_shader_from_file("./res/shaders/shader.fs", GL_FRAGMENT_SHADER);
+    defaultColouredVertexShader->linkProgram();
+
+    // Texture shader program for textured coloured vertices
+    auto texturedColouredVertexShader = std::make_shared<openGL::shaders::ShaderProgram>();
+    texturedColouredVertexShader->load_shader_from_file("./res/shaders/texturedshader.vs", GL_VERTEX_SHADER);
+    texturedColouredVertexShader->load_shader_from_file("./res/shaders/texturedshader.fs", GL_FRAGMENT_SHADER);
+    texturedColouredVertexShader->linkProgram();
+
     openGL::models::ModelBase triangleModel1;
     triangleModel1.set_vertices({
       -1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, // Bottom Left  - Red
       0.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f, // Bottom Right - Green
       -0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f // Top Center   - Blue
     });
+    triangleModel1.set_shader_program(defaultColouredVertexShader);
 
     openGL::models::ModelBase triangleModel2;
     triangleModel2.set_vertices({
@@ -24,30 +37,29 @@ int main()
       1.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f, // Bottom Right - Green
       0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f // Top Center   - Blue
     });
+    triangleModel2.set_shader_program(defaultColouredVertexShader);
 
     openGL::models::ModelBase rectModel1;
     rectModel1.set_vertices({
-        0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, // top right
-        0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, // bottom right
-        -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, // bottom left
-        -0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 1.0f // top left 
+           // positions         // colors           // texture coords
+           0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
+           0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
+          -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
+          -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left 
       }
     );
+
     rectModel1.set_indices({
       0, 1, 3,
       1, 2, 3
     });
 
+    rectModel1.set_shader_program(texturedColouredVertexShader);
+    rectModel1.set_texture_from_file("./res/textures/container.jpg");
+
     core.addModel(triangleModel1);
     core.addModel(triangleModel2);
     core.addModel(rectModel1);
-
-    openGL::shaders::ShaderProgram defaultShader;
-    defaultShader.load_shader_from_file("./res/shaders/shader.vs", GL_VERTEX_SHADER);
-    defaultShader.load_shader_from_file("./res/shaders/shader.fs", GL_FRAGMENT_SHADER);
-    defaultShader.linkProgram();
-    defaultShader.use();
-    defaultShader.set_float("offsetX", 0.0f);
 
     core.run();
     return 0;
