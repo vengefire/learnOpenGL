@@ -71,8 +71,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\venge\source\cpp\dep\glad;C:\Users\venge\source\cpp\dep\;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\venge\source\cpp\dep\glfw;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)/dep/glad;$(SolutionDir)/dep;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\dep\glfw;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -129,7 +129,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\cpp\dep\glad\glad.c" />
+    <ClCompile Include="..\dep\glad\glad.c" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="openGL\core\OpenGLCore.cpp" />
     <ClCompile Include="openGL\models\ModelBase.cpp" />
@@ -146,7 +146,6 @@
   <ItemGroup>
     <None Include="res\shaders\shader.fs" />
     <None Include="res\shaders\shader.vs" />
-    <None Include="vertex.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
