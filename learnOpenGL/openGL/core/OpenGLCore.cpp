@@ -22,7 +22,29 @@ namespace openGL::core
     std::cout << "OpenGL Init - Version: " << majorVersion << "." << minorVersion << std::endl;
   }
 
-  void OpenGLCore::createWindow(int width, int height, const char* title)
+  void OpenGLCore::set_current_context(GLFWwindow* pWindow)
+  {
+    glfwMakeContextCurrent(pWindow);
+  }
+
+  void OpenGLCore::initialize_glad()
+  {
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+      throw std::runtime_error("Failed to initialize GLAD");
+    }
+  }
+
+  void OpenGLCore::set_viewport_and_framebuffer_callback(int width, int height) const
+  {
+    glViewport(0, 0, width, height);
+    glfwSetFramebufferSizeCallback(pWindow_.get(), [](GLFWwindow* window, int width, int height)
+    {
+      glViewport(0, 0, width, height);
+    });
+  }
+
+  void OpenGLCore::create_glfw_window(int width, int height, const char* title)
   {
     pWindow_ = std::shared_ptr<GLFWwindow>(glfwCreateWindow(width, height, title, nullptr, nullptr),
                                            [](GLFWwindow* window)
@@ -34,19 +56,14 @@ namespace openGL::core
     {
       throw std::runtime_error("Failed to create GLFW window");
     }
+  }
 
-    glfwMakeContextCurrent(pWindow_.get());
-
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    {
-      throw std::runtime_error("Failed to initialize GLAD");
-    }
-
-    glViewport(0, 0, width, height);
-    glfwSetFramebufferSizeCallback(pWindow_.get(), [](GLFWwindow* window, int width, int height)
-    {
-      glViewport(0, 0, width, height);
-    });
+  void OpenGLCore::createWindow(int width, int height, const char* title)
+  {
+    create_glfw_window(width, height, title);
+    set_current_context(pWindow_.get());
+    initialize_glad();
+    set_viewport_and_framebuffer_callback(width, height);
   }
 
   void OpenGLCore::processInput(GLFWwindow* window)
