@@ -42,9 +42,6 @@
     <ClCompile Include="openGL\core\Vector3f.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CameraBase.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h">
@@ -98,7 +95,7 @@
     <ClInclude Include="framework\events\TEventSubscriberBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CameraBase.h">
+    <ClInclude Include="openGL\camera\CameraBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

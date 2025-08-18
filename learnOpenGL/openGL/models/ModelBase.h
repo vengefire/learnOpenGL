@@ -6,6 +6,7 @@
 #include "../core/VertexBase.h"
 #include "../Events/ProcessInputEvent.h"
 #include "../../framework/events/TEventSubscriberBase.h"
+#include "../camera/CameraBase.h"
 
 namespace openGL::models
 {
@@ -14,8 +15,8 @@ namespace openGL::models
   {
   public:
     ModelBase();
-    ModelBase(std::shared_ptr<shaders::ShaderProgram>shaderProgram);
-    virtual ~ModelBase();
+    ModelBase(std::shared_ptr<shaders::ShaderProgram> shaderProgram);
+    ~ModelBase() override;
 
     std::vector<float> get_vertices() const;
 
@@ -29,6 +30,11 @@ namespace openGL::models
     void set_shader_program(std::shared_ptr<shaders::ShaderProgram> shader_program)
     {
       shader_program_ = shader_program;
+    }
+
+    void set_camera(std::shared_ptr<camera::CameraBase> camera)
+    {
+      camera_ = camera;
     }
 
     std::vector<std::shared_ptr<textures::TextureBase>> get_textures() const
@@ -94,6 +100,7 @@ namespace openGL::models
     __declspec(property(get = get_rotation_x, put = set_rotation_x)) float RotationX;
 
   private:
+    std::shared_ptr<camera::CameraBase> camera_;
     float rotationY_ = 0.0f;
     float rotationZ_ = 0.0f;
     // Translation values
