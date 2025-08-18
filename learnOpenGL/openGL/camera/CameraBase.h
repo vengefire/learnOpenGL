@@ -7,10 +7,13 @@
 
 #include "../../framework/events/TEventSubscriberBase.h"
 #include "../Events/ProcessInputEvent.h"
+#include "../Events/FrameRenderEvent.h"
 
 namespace openGL::camera
 {
-  class CameraBase : public framework::events::TEventSubscriberBase<events::ProcessInputEventData>
+  class CameraBase :
+    public framework::events::TEventSubscriberBase<events::ProcessInputEventData>,
+    public framework::events::TEventSubscriberBase<events::FrameRenderEventData>
   {
   public:
     CameraBase() : CameraBase(glm::vec3(0.0f,0.0f,3.0f), glm::vec3(0.0,0.0,4.0))
@@ -36,7 +39,17 @@ namespace openGL::camera
       return glm::lookAt(position_, position_ + front_, up_);
     }
 
-    void handle_event(events::ProcessInputEventData* pEventData)
+    void handle_event(std::shared_ptr<events::FrameRenderEventData> pEventData)
+    {
+      if (!pEventData)
+      {
+        return; // Handle null pointer case
+      }
+
+      camera_speed = pEventData->delta_time * 2.5f; // Adjust camera speed based on delta time
+    }
+
+    void handle_event(std::shared_ptr<events::ProcessInputEventData> pEventData)
     {
       // Handle input events here, e.g., update camera position or orientation based on input
       // This is a placeholder implementation; actual input handling logic should be added.

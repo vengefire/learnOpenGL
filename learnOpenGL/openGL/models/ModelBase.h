@@ -68,7 +68,7 @@ namespace openGL::models
     void Init();
 
   public:
-    void handle_event(events::ProcessInputEventData* pEventData) override;
+    void handle_event(std::shared_ptr<events::ProcessInputEventData> pEventData) override;
 
   private:
     std::shared_ptr<shaders::ShaderProgram> shader_program_;

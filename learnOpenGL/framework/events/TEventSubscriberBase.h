@@ -9,10 +9,10 @@ namespace framework::events
     public:
     virtual ~TEventSubscriberBase() = default;
     // This method should be overridden by derived classes to handle the event
-    virtual void handle_event(TEventData* pEventData) = 0;
-    virtual void handle_event(EventDataBase* pEventData)
+    virtual void handle_event(std::shared_ptr<TEventData> pEventData) = 0;
+    virtual void handle_event(std::shared_ptr<EventDataBase> pEventData)
     {
-      this->handle_event(static_cast<TEventData*>(pEventData));
+      this->handle_event(std::reinterpret_pointer_cast<TEventData>(pEventData));
     }
   };
 }

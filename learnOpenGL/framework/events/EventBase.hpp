@@ -11,14 +11,18 @@ namespace framework::events
   class EventBase
   {
   public:
-    EventBase(std::string event_name, std::unique_ptr<EventDataBase> pEvent_data) : event_name_(std::move(event_name)),
+    EventBase(std::string event_name) : event_name_(std::move(event_name)), pEvent_data_(nullptr)
+    {
+    }
+    EventBase(std::string event_name, std::shared_ptr<EventDataBase> pEvent_data) : event_name_(std::move(event_name)),
       pEvent_data_(std::move(pEvent_data))
     {
     }
 
     virtual ~EventBase() = default;
     virtual const std::string& get_event_name() const { return event_name_; }
-    virtual EventDataBase* get_event_data() const { return pEvent_data_.get(); }
+    virtual std::shared_ptr<EventDataBase> get_event_data() const { return pEvent_data_; }
+    // virtual std::shared_ptr<EventDataBase> get_event_data() const = 0;
 
     virtual void emit_event()
     {
@@ -28,6 +32,7 @@ namespace framework::events
       }
     }
 
+    virtual void emit_event(std::shared_ptr<EventDataBase> pEvent_data) = 0;
     virtual void subscribe(EventSubscriberBase* subscriber)
     {
       if (subscriber)
@@ -38,7 +43,7 @@ namespace framework::events
 
   protected:
     std::string event_name_;
-    std::unique_ptr<EventDataBase> pEvent_data_;
+    std::shared_ptr<EventDataBase> pEvent_data_;
     std::vector<EventSubscriberBase*> subscribers_;
   };
 }

@@ -6,7 +6,6 @@
 
 namespace framework::events
 {
-
   class EventPublisher
   {
   public:
@@ -24,6 +23,19 @@ namespace framework::events
       if (event)
       {
         event->emit_event();
+      }
+      else
+      {
+        std::cout << std::format("Event type {} not found\n", eventType.name());
+      }
+    }
+
+    template <typename TEventDataType> void emit_event(const type_info& eventType, std::shared_ptr<TEventDataType> pEventData) const
+    {
+      EventBase* event = get_event_by_type(eventType);
+      if (event)
+      {
+        event->emit_event(pEventData);
       }
       else
       {

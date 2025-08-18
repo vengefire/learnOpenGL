@@ -140,6 +140,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\dep\stb\stb_image.h" />
+    <ClInclude Include="openGL\Events\FrameRenderEvent.h" />
     <ClInclude Include="openGL\camera\CameraBase.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="framework\events\EventSubscriberBase.h" />

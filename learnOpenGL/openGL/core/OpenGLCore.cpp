@@ -2,7 +2,7 @@
 
 namespace openGL::core
 {
-  void OpenGLCore::handle_event(events::ProcessInputEventData* pEventData)
+  void OpenGLCore::handle_event(std::shared_ptr<events::ProcessInputEventData>  pEventData)
   {
     if (glfwGetKey(pEventData->window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
     {
@@ -66,6 +66,7 @@ namespace openGL::core
     }
 
     add_event(std::make_unique<events::ProcessInputEvent>(pWindow_.get(), 0.0f));
+    add_event(std::make_unique<events::FrameRenderEvent>());
     TEventSubscriberBase<events::ProcessInputEventData>* me = this;
     register_subscriber(me, typeid(events::ProcessInputEvent));
   }
@@ -88,10 +89,16 @@ namespace openGL::core
 
   void OpenGLCore::run() const
   {
+    float lastFrame = 0.0f;
     while (!glfwWindowShouldClose(pWindow_.get()))
     {
+      double currentFrame = glfwGetTime();
+      double deltaTime = currentFrame - lastFrame;
+      lastFrame = currentFrame;
       //processInput(pWindow_.get());
       emit_event(typeid(events::ProcessInputEvent));
+      emit_event(typeid(events::FrameRenderEvent), std::make_shared<events::FrameRenderEventData>(deltaTime, lastFrame));
+
       glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
       // Render your models here

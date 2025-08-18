@@ -5,6 +5,7 @@
 #include "../../framework/events/EventPublisher.h"
 #include "../../framework/events/TEventSubscriberBase.h"
 #include "../Events/ProcessInputEvent.h"
+#include "../Events/FrameRenderEvent.h"
 
 namespace openGL::core
 {
@@ -17,7 +18,11 @@ namespace openGL::core
     {
       return static_cast<events::ProcessInputEvent*>(get_event_by_type(typeid(events::ProcessInputEvent)));
     }
-    void handle_event(events::ProcessInputEventData* pEventData) override;
+    void handle_event(std::shared_ptr<events::ProcessInputEventData> pEventData) override;
+    events::FrameRenderEvent* get_render_event()
+    {
+      return static_cast<events::FrameRenderEvent*>(get_event_by_type(typeid(events::FrameRenderEvent)));
+    }
     OpenGLCore(int majorVersion, int minorVersion);
     virtual ~OpenGLCore();
     void createWindow(int width, int height, const char* title);

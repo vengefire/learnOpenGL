@@ -14,7 +14,9 @@ int main()
 
     auto camera = std::make_shared<openGL::camera::CameraBase>();
     auto inputEvent = core.get_process_input_event();
-    inputEvent->subscribe(camera.get());
+    auto renderEvent = core.get_render_event();
+    renderEvent->subscribe(static_cast<framework::events::TEventSubscriberBase<openGL::events::FrameRenderEventData>*>(camera.get()));
+    inputEvent->subscribe(static_cast<framework::events::TEventSubscriberBase<openGL::events::ProcessInputEventData>*>(camera.get()));
     /*
     // Default shader program for coloured vertices
     auto defaultColouredVertexShader = std::make_shared<openGL::shaders::ShaderProgram>("Default Coloured Shader");

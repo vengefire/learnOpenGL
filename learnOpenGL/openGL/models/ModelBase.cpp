@@ -159,7 +159,7 @@ namespace openGL::models
     glGenBuffers(1, &vbo_Id_);
   }
 
-  void ModelBase::handle_event(events::ProcessInputEventData* pEventData)
+  void ModelBase::handle_event(std::shared_ptr<events::ProcessInputEventData> pEventData)
   {
 
     // Blending
