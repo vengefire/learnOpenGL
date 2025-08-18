@@ -11,6 +11,7 @@ int main()
     openGL::core::OpenGLCore core(3, 3);
     core.createWindow(800, 600, "Learn OpenGL");
 
+    /*
     // Default shader program for coloured vertices
     auto defaultColouredVertexShader = std::make_shared<openGL::shaders::ShaderProgram>("Default Coloured Shader");
     defaultColouredVertexShader->load_shader_from_file("./res/shaders/shader.vs", GL_VERTEX_SHADER);
@@ -34,14 +35,15 @@ int main()
       });
     triModel2->set_shader_program(defaultColouredVertexShader);
     // core.addModel(triModel2);
+    */
 
-    // Texture shader program for textured coloured vertices
-    auto texturedColouredVertexShader = std::make_shared<openGL::shaders::ShaderProgram>("Textured Coloured Shader");
-    texturedColouredVertexShader->load_shader_from_file("./res/shaders/texturedshader.vs", GL_VERTEX_SHADER);
-    texturedColouredVertexShader->load_shader_from_file("./res/shaders/texturedshader.fs", GL_FRAGMENT_SHADER);
-    texturedColouredVertexShader->linkProgram();
+    // Texture shader program for textured vertices
+    auto texturedVertexShader = std::make_shared<openGL::shaders::ShaderProgram>("Textured Shader Program");
+    texturedVertexShader->load_shader_from_file("./res/shaders/texturedshader.vs", GL_VERTEX_SHADER);
+    texturedVertexShader->load_shader_from_file("./res/shaders/texturedshader.fs", GL_FRAGMENT_SHADER);
+    texturedVertexShader->linkProgram();
 
-    auto rectModel1 = std::make_shared<openGL::models::ModelBase>();
+    /*auto rectModel1 = std::make_shared<openGL::models::ModelBase>();
     rectModel1->set_vertices({
          {0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f}, // top right
          {0.5f, -0.5f, 0.0f,0.0f, 1.0f, 0.0f, 1.0f, 0.0f}, // bottom right
@@ -60,7 +62,56 @@ int main()
     rectModel1->set_texture_from_file("./res/textures/awesomeface.jpg");
     core.get_process_input_event()->subscribe(rectModel1.get());
     rectModel1->RotationX = -55.0f; // Rotate the rectangle by 45 degrees around the X-axis
-    core.addModel(rectModel1);
+    core.addModel(rectModel1);*/
+    auto cubeModel = std::make_shared<openGL::models::ModelBase>(texturedVertexShader);
+    cubeModel->set_vertices({
+    {-0.5f, -0.5f, -0.5f,  0.0f, 0.0f},
+     {0.5f, -0.5f, -0.5f,  1.0f, 0.0f},
+     {0.5f,  0.5f, -0.5f,  1.0f, 1.0f},
+     {0.5f,  0.5f, -0.5f,  1.0f, 1.0f},
+    {-0.5f,  0.5f, -0.5f,  0.0f, 1.0f},
+    {-0.5f, -0.5f, -0.5f,  0.0f, 0.0f},
+
+    {-0.5f, -0.5f,  0.5f,  0.0f, 0.0f},
+     {0.5f, -0.5f,  0.5f,  1.0f, 0.0f},
+     {0.5f,  0.5f,  0.5f,  1.0f, 1.0f},
+     {0.5f,  0.5f,  0.5f,  1.0f, 1.0f},
+    {-0.5f,  0.5f,  0.5f,  0.0f, 1.0f},
+    {-0.5f, -0.5f,  0.5f,  0.0f, 0.0f},
+
+    {-0.5f,  0.5f,  0.5f,  1.0f, 0.0f},
+    {-0.5f,  0.5f, -0.5f,  1.0f, 1.0f},
+    {-0.5f, -0.5f, -0.5f,  0.0f, 1.0f},
+    {-0.5f, -0.5f, -0.5f,  0.0f, 1.0f},
+    {-0.5f, -0.5f,  0.5f,  0.0f, 0.0f},
+    {-0.5f,  0.5f,  0.5f,  1.0f, 0.0f},
+
+     {0.5f,  0.5f,  0.5f,  1.0f, 0.0f},
+     {0.5f,  0.5f, -0.5f,  1.0f, 1.0f},
+     {0.5f, -0.5f, -0.5f,  0.0f, 1.0f},
+     {0.5f, -0.5f, -0.5f,  0.0f, 1.0f},
+     {0.5f, -0.5f,  0.5f,  0.0f, 0.0f},
+     {0.5f,  0.5f,  0.5f,  1.0f, 0.0f},
+
+    {-0.5f, -0.5f, -0.5f,  0.0f, 1.0f},
+     {0.5f, -0.5f, -0.5f,  1.0f, 1.0f},
+     {0.5f, -0.5f,  0.5f,  1.0f, 0.0f},
+     {0.5f, -0.5f,  0.5f,  1.0f, 0.0f},
+    {-0.5f, -0.5f,  0.5f,  0.0f, 0.0f},
+    {-0.5f, -0.5f, -0.5f,  0.0f, 1.0f},
+
+    {-0.5f,  0.5f, -0.5f,  0.0f, 1.0f},
+     {0.5f,  0.5f, -0.5f,  1.0f, 1.0f},
+     {0.5f,  0.5f,  0.5f,  1.0f, 0.0f},
+     {0.5f,  0.5f,  0.5f,  1.0f, 0.0f},
+    {-0.5f,  0.5f,  0.5f,  0.0f, 0.0f},
+    {-0.5f,  0.5f, -0.5f,  0.0f, 1.0f} });
+
+    cubeModel->set_texture_from_file("./res/textures/container.jpg");
+    cubeModel->set_texture_from_file("./res/textures/awesomeface.jpg");
+    core.get_process_input_event()->subscribe(cubeModel.get());
+    cubeModel->RotationX = -55.0f; // Rotate the rectangle by 45 degrees around the X-axis
+    core.addModel(cubeModel);
 
     core.run();
     return 0;

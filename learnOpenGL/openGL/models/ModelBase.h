@@ -14,6 +14,7 @@ namespace openGL::models
   {
   public:
     ModelBase();
+    ModelBase(std::shared_ptr<shaders::ShaderProgram>shaderProgram);
     virtual ~ModelBase();
 
     std::vector<float> get_vertices() const;

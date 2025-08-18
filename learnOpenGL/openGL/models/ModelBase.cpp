@@ -12,6 +12,11 @@ namespace openGL::models
     Init();
   }
 
+  ModelBase::ModelBase(std::shared_ptr<shaders::ShaderProgram>shaderProgram) : shader_program_(std::move(shaderProgram))
+  {
+    Init();
+  }
+
   ModelBase::~ModelBase()
   {
     std::cout << "ModelBase Destructor called, deleting VAO: " << vao_Id_ << std::endl;
@@ -126,20 +131,20 @@ namespace openGL::models
     int stride = floatCount * sizeof(float);
 
     // Position Mandatory
-    glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, stride, static_cast<void*>(nullptr));
+    glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, stride, (void*)(0));
     offset += 3 * sizeof(float);
     glEnableVertexAttribArray(position++);
     // Color Optional
     if (vertices_data_[0].hasColor())
     {
-      glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(offset));
+      glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, stride, (void*)(offset));
       glEnableVertexAttribArray(position++);
       offset += 3 * sizeof(float);
     }
     // Texture Coordinates Optional
     if (vertices_data_[0].hasTextureCoordinates())
     {
-      glVertexAttribPointer(position, 2, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(offset));
+      glVertexAttribPointer(position, 2, GL_FLOAT, GL_FALSE, stride, (void*)(offset));
       glEnableVertexAttribArray(position++);
       offset += 2 * sizeof(float);
     }

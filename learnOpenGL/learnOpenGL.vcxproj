@@ -170,6 +170,12 @@
     <None Include="res\shaders\texturedshader.vs">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="res\shaders\textured_colored_shader.fs">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="res\shaders\textured_colored_shader.vs">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\textures\awesomeface.jpg">

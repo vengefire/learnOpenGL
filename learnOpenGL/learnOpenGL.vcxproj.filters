@@ -101,6 +101,8 @@
     <None Include="res\shaders\shader.vs" />
     <None Include="res\shaders\texturedshader.fs" />
     <None Include="res\shaders\texturedshader.vs" />
+    <None Include="res\shaders\textured_colored_shader.fs" />
+    <None Include="res\shaders\textured_colored_shader.vs" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\textures\container.jpg">
