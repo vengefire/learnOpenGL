@@ -4,10 +4,13 @@
 #include "../shaders/ShaderProgram.h"
 #include "../textures/TextureBase.h"
 #include "../core/VertexBase.h"
+#include "../Events/ProcessInputEvent.h"
+#include "../../framework/events/TEventSubscriberBase.h"
 
 namespace openGL::models
 {
   class ModelBase
+    : public framework::events::TEventSubscriberBase<events::ProcessInputEventData>
   {
   public:
     ModelBase();
@@ -56,6 +59,11 @@ namespace openGL::models
 
   private:
     void Init();
+
+  public:
+    void handle_event(events::ProcessInputEventData* pEventData) override;
+
+  private:
     std::shared_ptr<shaders::ShaderProgram> shader_program_;
     std::vector<std::shared_ptr<textures::TextureBase>> textures_;
     std::vector<core::VertexBase> vertices_data_;
@@ -64,5 +72,7 @@ namespace openGL::models
     unsigned int vao_Id_ = -1;
     unsigned int vbo_Id_ = -1;
     unsigned int ebo_Id_ = -1;
+
+    float textureMix_ = 0.02f;
   };
 }

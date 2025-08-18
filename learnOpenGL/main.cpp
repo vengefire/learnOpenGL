@@ -62,6 +62,7 @@ int main()
     rectModel1->set_shader_program(texturedColouredVertexShader);
     rectModel1->set_texture_from_file("./res/textures/container.jpg");
     rectModel1->set_texture_from_file("./res/textures/awesomeface.jpg");
+    core.get_process_input_event()->subscribe(rectModel1.get());
     core.addModel(rectModel1);
 
     core.run();

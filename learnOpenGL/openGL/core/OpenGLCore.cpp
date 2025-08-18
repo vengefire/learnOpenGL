@@ -2,6 +2,14 @@
 
 namespace openGL::core
 {
+  void OpenGLCore::handle_event(events::ProcessInputEventData* pEventData)
+  {
+    if (glfwGetKey(pEventData->window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+    {
+      glfwSetWindowShouldClose(pEventData->window, true);
+    }
+  }
+
   OpenGLCore::OpenGLCore(int majorVersion, int minorVersion)
   {
     init(majorVersion, minorVersion);
@@ -56,6 +64,10 @@ namespace openGL::core
     {
       throw std::runtime_error("Failed to create GLFW window");
     }
+
+    add_event(std::make_unique<events::ProcessInputEvent>(pWindow_.get(), 0.0f));
+    TEventSubscriberBase<events::ProcessInputEventData>* me = this;
+    register_subscriber(me, typeid(events::ProcessInputEvent));
   }
 
   void OpenGLCore::createWindow(int width, int height, const char* title)
@@ -78,7 +90,8 @@ namespace openGL::core
   {
     while (!glfwWindowShouldClose(pWindow_.get()))
     {
-      processInput(pWindow_.get());
+      //processInput(pWindow_.get());
+      emit_event(typeid(events::ProcessInputEvent));
       glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
       glClear(GL_COLOR_BUFFER_BIT);
       // Render your models here

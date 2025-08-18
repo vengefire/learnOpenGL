@@ -16,9 +16,9 @@ namespace framework::events
       // Downcast the base pointer to the derived type
       return static_cast<TEventData*>(framework::events::EventBase::get_event_data());
     }
-    void handle_event() override
+    void emit_event() override
     {
-      // Custom handling logic can be added here if needed
+      EventBase::emit_event();
     }
   protected:
   };

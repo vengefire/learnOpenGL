@@ -126,6 +126,19 @@ namespace openGL::models
     glGenBuffers(1, &vbo_Id_);
   }
 
+  void ModelBase::handle_event(events::ProcessInputEventData* pEventData)
+  {
+    if (glfwGetKey(pEventData->window, GLFW_KEY_UP) == GLFW_PRESS)
+    {
+      textureMix_ += 0.01f;
+    }
+    else if (glfwGetKey(pEventData->window, GLFW_KEY_DOWN) == GLFW_PRESS)
+    {
+      textureMix_ -= 0.01f;
+    }
+    shader_program_->set_float("textureMix", textureMix_);
+  }
+
   void ModelBase::set_texture_from_file(const std::string& textureFilePath, bool flip_vertically)
   {
     auto texture_ = std::make_shared<textures::TextureBase>();

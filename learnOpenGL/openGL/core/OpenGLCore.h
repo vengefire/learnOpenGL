@@ -2,12 +2,22 @@
 
 #include "../../config.h"
 #include "../models/ModelBase.h"
+#include "../../framework/events/EventPublisher.h"
+#include "../../framework/events/TEventSubscriberBase.h"
+#include "../Events/ProcessInputEvent.h"
 
 namespace openGL::core
 {
   class OpenGLCore
+    : public framework::events::EventPublisher,
+      public framework::events::TEventSubscriberBase<events::ProcessInputEventData>
   {
   public:
+    events::ProcessInputEvent* get_process_input_event() const
+    {
+      return static_cast<events::ProcessInputEvent*>(get_event_by_type(typeid(events::ProcessInputEvent)));
+    }
+    void handle_event(events::ProcessInputEventData* pEventData) override;
     OpenGLCore(int majorVersion, int minorVersion);
     virtual ~OpenGLCore();
     void createWindow(int width, int height, const char* title);
@@ -22,7 +32,7 @@ namespace openGL::core
     void addModel(std::shared_ptr<models::ModelBase> model);
 
   protected:
-    static void init(int majorVersion, int minorVersion);
+    void init(int majorVersion, int minorVersion);
     static void processInput(GLFWwindow* window);
 
   private:
