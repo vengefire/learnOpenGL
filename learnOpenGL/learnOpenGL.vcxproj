@@ -130,6 +130,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\dep\glad\glad.c" />
+    <ClCompile Include="CameraBase.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="openGL\core\OpenGLCore.cpp" />
     <ClCompile Include="openGL\core\Vector3f.cpp" />
@@ -140,6 +141,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\dep\stb\stb_image.h" />
+    <ClInclude Include="CameraBase.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="framework\events\EventSubscriberBase.h" />
     <ClInclude Include="framework\events\EventDataBase.h" />
