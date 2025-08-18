@@ -113,6 +113,7 @@ int main()
     cubeModel->RotationX = -55.0f; // Rotate the rectangle by 45 degrees around the X-axis
     core.addModel(cubeModel);
 
+    core.enable_depth_testing();
     core.run();
     return 0;
   }

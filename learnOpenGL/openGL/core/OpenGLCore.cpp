@@ -93,7 +93,7 @@ namespace openGL::core
       //processInput(pWindow_.get());
       emit_event(typeid(events::ProcessInputEvent));
       glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-      glClear(GL_COLOR_BUFFER_BIT);
+      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
       // Render your models here
       for (const auto model : models_)
       {
@@ -115,6 +115,13 @@ namespace openGL::core
     {
       glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
+  }
+
+  void OpenGLCore::enable_depth_testing() const
+  {
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+    std::cout << "Depth testing enabled" << std::endl;
   }
 
   std::shared_ptr<GLFWwindow> OpenGLCore::getWindow()

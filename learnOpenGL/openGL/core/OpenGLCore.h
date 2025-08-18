@@ -23,6 +23,7 @@ namespace openGL::core
     void createWindow(int width, int height, const char* title);
     void run() const;
     void toggleWireFrameMode();
+    void enable_depth_testing() const;
     void create_glfw_window(int width, int height, const char* title);
     static void set_current_context(GLFWwindow* pWindow);
     static void initialize_glad();
