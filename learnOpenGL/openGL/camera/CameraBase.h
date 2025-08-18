@@ -13,15 +13,15 @@ namespace openGL::camera
   class CameraBase : public framework::events::TEventSubscriberBase<events::ProcessInputEventData>
   {
   public:
-    CameraBase() : CameraBase(glm::vec3(0.0f,0.0f,3.0f), glm::vec3(0.0,0.0,0.0))
+    CameraBase() : CameraBase(glm::vec3(0.0f,0.0f,3.0f), glm::vec3(0.0,0.0,4.0))
     {
     }
 
-    CameraBase(glm::vec3 position, glm::vec3 front_orientation) : position_(position)
+    CameraBase(glm::vec3 position, glm::vec3 camera_target) : position_(position)
     {
       // Initialize the front vector to point in the negative z direction
-      front_ = glm::normalize(position_ - front_orientation);
-      // Calculate the right vector as the cross product of the front vector and the world up vector
+      front_ = glm::normalize(position_ - camera_target);
+      // Calculate the right vector as the cross product of the front vector and the default world up vector
       right_ = glm::normalize(glm::cross(front_, glm::vec3(0.0f, 1.0f, 0.0f)));
       // Calculate the up vector as the cross product of the right vector and the front vector
       up_ = glm::normalize(glm::cross(right_, front_));
@@ -94,11 +94,11 @@ namespace openGL::camera
 
       if (glfwGetKey(pEventData->window, GLFW_KEY_R) == GLFW_PRESS)
       {
-        position_ += glm::normalize(glm::cross(up_, right_));
+        position_ -= glm::normalize(glm::cross(front_, right_)) * camera_speed;
       }
       else if (glfwGetKey(pEventData->window, GLFW_KEY_F) == GLFW_PRESS)
       {
-        position_ -= glm::normalize(glm::cross(up_, right_));
+        position_ += glm::normalize(glm::cross(front_, right_)) * camera_speed;
       }
     }
 

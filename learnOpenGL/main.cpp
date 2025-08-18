@@ -12,6 +12,9 @@ int main()
     openGL::core::OpenGLCore core(3, 3);
     core.createWindow(800, 600, "Learn OpenGL");
 
+    auto camera = std::make_shared<openGL::camera::CameraBase>();
+    auto inputEvent = core.get_process_input_event();
+    inputEvent->subscribe(camera.get());
     /*
     // Default shader program for coloured vertices
     auto defaultColouredVertexShader = std::make_shared<openGL::shaders::ShaderProgram>("Default Coloured Shader");
@@ -110,15 +113,12 @@ int main()
 
     cubeModel->set_texture_from_file("./res/textures/container.jpg");
     cubeModel->set_texture_from_file("./res/textures/awesomeface.jpg");
-    auto inputEvent = core.get_process_input_event();
     inputEvent->subscribe(cubeModel.get());
     cubeModel->RotationX = -55.0f; // Rotate the rectangle by 45 degrees around the X-axis
+    cubeModel->set_camera(camera);
     core.addModel(cubeModel);
 
     core.enable_depth_testing();
-
-    auto camera = std::make_shared<openGL::camera::CameraBase>();
-    inputEvent->subscribe(camera.get());
 
     core.run();
     return 0;
