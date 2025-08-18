@@ -74,7 +74,15 @@ namespace openGL::models
     unsigned int ebo_Id_ = -1;
 
     float textureMix_ = 0.02f;
+    // Scale value
     float scale_ = 1.0f;
+    // Rotation values
+    float rotationX_ = 0.0f;
+    float rotationY_ = 0.0f;
     float rotationZ_ = 0.0f;
+    // Translation values
+    float translationX_ = 0.0f;
+    float translationY_ = 0.0f;
+    float translationZ_ = 0.0f;
   };
 }

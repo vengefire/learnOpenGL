@@ -51,7 +51,11 @@ namespace openGL::models
     // Gen an identity matrix
     glm::mat4 trans = glm::mat4(1.0f);
     // Apply rotation
+    trans = glm::rotate(trans, glm::radians(rotationX_), glm::vec3(1.0, 0.0, 0.0));
+    trans = glm::rotate(trans, glm::radians(rotationY_), glm::vec3(0.0, 1.0, 0.0));
     trans = glm::rotate(trans, glm::radians(rotationZ_), glm::vec3(0.0, 0.0, 1.0));
+    // Apply translation
+    trans = glm::translate(trans, glm::vec3(translationX_, translationY_, translationZ_));
     // Apply Scaling
     trans = glm::scale(trans, glm::vec3(scale_, scale_, scale_));
 
@@ -63,6 +67,8 @@ namespace openGL::models
       shader_program_->set_int(std::format("texture{}", textureCnt + 1), textureCnt); // Set texture unit X for textureX
       texture->bind(textureCnt++);
     }
+
+    shader_program_->set_float("textureMix", textureMix_);
 
     glBindVertexArray(vao_Id_);
     auto count = indices_.empty() ? vertices_data_.size() : indices_.size();
@@ -140,34 +146,80 @@ namespace openGL::models
 
   void ModelBase::handle_event(events::ProcessInputEventData* pEventData)
   {
-    if (glfwGetKey(pEventData->window, GLFW_KEY_UP) == GLFW_PRESS)
+    // Blending
+    if (glfwGetKey(pEventData->window, GLFW_KEY_1) == GLFW_PRESS)
     {
       textureMix_ += 0.01f;
     }
-    else if (glfwGetKey(pEventData->window, GLFW_KEY_DOWN) == GLFW_PRESS)
+    else if (glfwGetKey(pEventData->window, GLFW_KEY_2) == GLFW_PRESS)
     {
       textureMix_ -= 0.01f;
     }
 
-    if (glfwGetKey(pEventData->window, GLFW_KEY_W) == GLFW_PRESS)
+    // Scaling
+    if (glfwGetKey(pEventData->window, GLFW_KEY_T) == GLFW_PRESS)
     {
       scale_ += 0.001f;
     }
-    else if (glfwGetKey(pEventData->window, GLFW_KEY_S) == GLFW_PRESS)
+    else if (glfwGetKey(pEventData->window, GLFW_KEY_G) == GLFW_PRESS)
     {
       scale_ -= 0.001f;
     }
 
+    // Rotation
     if (glfwGetKey(pEventData->window, GLFW_KEY_A) == GLFW_PRESS)
     {
-      rotationZ_ += 0.1f;
+      rotationY_ += 0.1f;
     }
     else if (glfwGetKey(pEventData->window, GLFW_KEY_D) == GLFW_PRESS)
     {
-      rotationZ_ -= 0.1f;
+      rotationY_ -= 0.1f;
     }
 
-    shader_program_->set_float("textureMix", textureMix_);
+    if (glfwGetKey(pEventData->window, GLFW_KEY_W) == GLFW_PRESS)
+    {
+      rotationX_ += 0.1f;
+    }
+    else if (glfwGetKey(pEventData->window, GLFW_KEY_S) == GLFW_PRESS)
+    {
+      rotationX_ -= 0.1f;
+    }
+
+    if (glfwGetKey(pEventData->window, GLFW_KEY_Q) == GLFW_PRESS)
+    {
+      rotationZ_ += 0.1f;
+    }
+    else if (glfwGetKey(pEventData->window, GLFW_KEY_E) == GLFW_PRESS)
+    {
+      rotationZ_ -= 0.1f;
+    }
+    // Translation
+    if (glfwGetKey(pEventData->window, GLFW_KEY_UP) == GLFW_PRESS)
+    {
+      translationZ_ += 0.1f;
+    }
+    else if (glfwGetKey(pEventData->window, GLFW_KEY_DOWN) == GLFW_PRESS)
+    {
+      translationZ_ -= 0.1f;
+    }
+
+    if (glfwGetKey(pEventData->window, GLFW_KEY_LEFT) == GLFW_PRESS)
+    {
+      translationX_ -= 0.1f;
+    }
+    else if (glfwGetKey(pEventData->window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+    {
+      translationX_ += 0.1f;
+    }
+
+    if (glfwGetKey(pEventData->window, GLFW_KEY_R) == GLFW_PRESS)
+    {
+      translationY_ += 0.1f;
+    }
+    else if (glfwGetKey(pEventData->window, GLFW_KEY_F) == GLFW_PRESS)
+    {
+      translationY_ -= 0.1f;
+    }
   }
 
   void ModelBase::set_texture_from_file(const std::string& textureFilePath, bool flip_vertically)
