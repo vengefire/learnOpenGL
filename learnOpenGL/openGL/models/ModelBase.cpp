@@ -1,6 +1,9 @@
 #include "ModelBase.h"
 
 #include <utility>
+#include <../../dep/glm/glm.hpp>
+#include <../../dep/glm/gtc/matrix_transform.hpp>
+#include <../../dep/glm/gtc/type_ptr.hpp>
 
 namespace openGL::models
 {
@@ -44,6 +47,15 @@ namespace openGL::models
   void ModelBase::render()
   {
     shader_program_->use();
+
+    // Gen an identity matrix
+    glm::mat4 trans = glm::mat4(1.0f);
+    // Apply rotation
+    trans = glm::rotate(trans, glm::radians(rotationZ_), glm::vec3(0.0, 0.0, 1.0));
+    // Apply Scaling
+    trans = glm::scale(trans, glm::vec3(scale_, scale_, scale_));
+
+    shader_program_->set_mat4("transform", trans);
 
     int textureCnt = 0;
     for (const auto& texture : textures_)
@@ -136,6 +148,25 @@ namespace openGL::models
     {
       textureMix_ -= 0.01f;
     }
+
+    if (glfwGetKey(pEventData->window, GLFW_KEY_W) == GLFW_PRESS)
+    {
+      scale_ += 0.001f;
+    }
+    else if (glfwGetKey(pEventData->window, GLFW_KEY_S) == GLFW_PRESS)
+    {
+      scale_ -= 0.001f;
+    }
+
+    if (glfwGetKey(pEventData->window, GLFW_KEY_A) == GLFW_PRESS)
+    {
+      rotationZ_ += 0.1f;
+    }
+    else if (glfwGetKey(pEventData->window, GLFW_KEY_D) == GLFW_PRESS)
+    {
+      rotationZ_ -= 0.1f;
+    }
+
     shader_program_->set_float("textureMix", textureMix_);
   }
 

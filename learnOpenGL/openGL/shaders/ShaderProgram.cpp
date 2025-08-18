@@ -2,6 +2,9 @@
 
 #include "ShaderProgram.h"
 
+#include <glm/detail/type_mat4x4.hpp>
+#include <glm/gtc/type_ptr.inl>
+
 namespace openGL::shaders
 {
   void ShaderProgram::load_shader_from_file(const std::string& shaderSourcePath, GLenum shaderType)
@@ -63,6 +66,11 @@ namespace openGL::shaders
   void ShaderProgram::set_float(const std::string& name, float value) const
   {
     glUniform1f(glGetUniformLocation(id_, name.c_str()), value);
+  }
+
+  void ShaderProgram::set_mat4(const std::string& name, glm::mat4 mat4)
+  {
+    glUniformMatrix4fv(glGetUniformLocation(id_, name.c_str()), 1, GL_FALSE, glm::value_ptr(mat4));
   }
 
   void ShaderProgram::Init()

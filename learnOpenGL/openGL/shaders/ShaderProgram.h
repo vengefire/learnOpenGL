@@ -1,5 +1,7 @@
 #pragma once
 
+#include <glm/detail/type_mat.hpp>
+
 #include "../../config.h"
 #include "Shader.h"
 
@@ -16,11 +18,12 @@ namespace openGL::shaders
     void set_bool(const std::string& name, bool value) const;
     void set_int(const std::string& name, int value) const;
     void set_float(const std::string& name, float value) const;
+    void set_mat4(const std::string&, glm::mat4 mat4);
 
     unsigned int get_id() const
     {
       return id_;
-    };
+    }
 
   protected:
     virtual void Init();
