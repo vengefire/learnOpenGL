@@ -50,16 +50,25 @@ namespace openGL::models
 
     // Gen an identity matrix
     glm::mat4 trans = glm::mat4(1.0f);
+    // Apply Scaling
+    trans = glm::scale(trans, glm::vec3(scale_, scale_, scale_));
+    // Apply translation
+    trans = glm::translate(trans, glm::vec3(translationX_, translationY_, translationZ_));
     // Apply rotation
     trans = glm::rotate(trans, glm::radians(rotationX_), glm::vec3(1.0, 0.0, 0.0));
     trans = glm::rotate(trans, glm::radians(rotationY_), glm::vec3(0.0, 1.0, 0.0));
     trans = glm::rotate(trans, glm::radians(rotationZ_), glm::vec3(0.0, 0.0, 1.0));
-    // Apply translation
-    trans = glm::translate(trans, glm::vec3(translationX_, translationY_, translationZ_));
-    // Apply Scaling
-    trans = glm::scale(trans, glm::vec3(scale_, scale_, scale_));
+
+    // view
+    glm::mat4 view = glm::mat4(1.0f);
+    view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f)); // Move the camera back
+
+    // projection
+    glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
 
     shader_program_->set_mat4("transform", trans);
+    shader_program_->set_mat4("view", view);
+    shader_program_->set_mat4("projection", projection);
 
     int textureCnt = 0;
     for (const auto& texture : textures_)

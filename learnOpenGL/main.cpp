@@ -24,7 +24,7 @@ int main()
       { -0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f }   // Top Center   - Blue
       });
     triModel1->set_shader_program(defaultColouredVertexShader);
-    core.addModel(triModel1);
+    // core.addModel(triModel1);
 
     auto triModel2 = std::make_shared<openGL::models::ModelBase>();
     triModel2->set_vertices({
@@ -33,7 +33,7 @@ int main()
       { 0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f }   // Top Center   - Blue
       });
     triModel2->set_shader_program(defaultColouredVertexShader);
-    core.addModel(triModel2);
+    // core.addModel(triModel2);
 
     // Texture shader program for textured coloured vertices
     auto texturedColouredVertexShader = std::make_shared<openGL::shaders::ShaderProgram>("Textured Coloured Shader");
@@ -59,6 +59,7 @@ int main()
     rectModel1->set_texture_from_file("./res/textures/container.jpg");
     rectModel1->set_texture_from_file("./res/textures/awesomeface.jpg");
     core.get_process_input_event()->subscribe(rectModel1.get());
+    rectModel1->RotationX = -55.0f; // Rotate the rectangle by 45 degrees around the X-axis
     core.addModel(rectModel1);
 
     core.run();

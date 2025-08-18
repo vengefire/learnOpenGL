@@ -78,6 +78,21 @@ namespace openGL::models
     float scale_ = 1.0f;
     // Rotation values
     float rotationX_ = 0.0f;
+
+  public:
+    [[nodiscard]] float get_rotation_x() const
+    {
+      return rotationX_;
+    }
+
+    void set_rotation_x(float rotation_x)
+    {
+      rotationX_ = rotation_x;
+    }
+
+    __declspec(property(get = get_rotation_x, put = set_rotation_x)) float RotationX;
+
+  private:
     float rotationY_ = 0.0f;
     float rotationZ_ = 0.0f;
     // Translation values
