@@ -186,29 +186,29 @@ namespace openGL::models
     // Rotation
     if (glfwGetKey(pEventData->window, GLFW_KEY_A) == GLFW_PRESS)
     {
-      rotationY_ += 0.1f;
+      yaw_ += 0.1f;
     }
     else if (glfwGetKey(pEventData->window, GLFW_KEY_D) == GLFW_PRESS)
     {
-      rotationY_ -= 0.1f;
+      yaw_ -= 0.1f;
     }
 
     if (glfwGetKey(pEventData->window, GLFW_KEY_W) == GLFW_PRESS)
     {
-      rotationX_ += 0.1f;
+      pitch_ += 0.1f;
     }
     else if (glfwGetKey(pEventData->window, GLFW_KEY_S) == GLFW_PRESS)
     {
-      rotationX_ -= 0.1f;
+      pitch_ -= 0.1f;
     }
 
     if (glfwGetKey(pEventData->window, GLFW_KEY_Q) == GLFW_PRESS)
     {
-      rotationZ_ += 0.1f;
+      roll_ += 0.1f;
     }
     else if (glfwGetKey(pEventData->window, GLFW_KEY_E) == GLFW_PRESS)
     {
-      rotationZ_ -= 0.1f;
+      roll_ -= 0.1f;
     }
     // Translation
     if (glfwGetKey(pEventData->window, GLFW_KEY_UP) == GLFW_PRESS)

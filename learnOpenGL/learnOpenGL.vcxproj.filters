@@ -101,6 +101,9 @@
     <ClInclude Include="openGL\Events\FrameRenderEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="openGL\Events\MouseInputEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\shader.fs" />

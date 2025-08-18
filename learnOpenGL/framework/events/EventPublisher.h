@@ -12,9 +12,10 @@ namespace framework::events
     EventPublisher() = default;
     virtual ~EventPublisher() = default;
 
-    void add_event(std::unique_ptr<EventBase> event)
+    auto add_event(std::unique_ptr<EventBase> event)
     {
       events_.emplace_back(std::move(event));
+      return events_.back().get();
     }
 
     void emit_event(const type_info& eventType) const

@@ -8,14 +8,17 @@
 #include "../../framework/events/TEventSubscriberBase.h"
 #include "../Events/ProcessInputEvent.h"
 #include "../Events/FrameRenderEvent.h"
+#include "../Events/MouseInputEvent.h"
 
 namespace openGL::camera
 {
   class CameraBase :
     public framework::events::TEventSubscriberBase<events::ProcessInputEventData>,
-    public framework::events::TEventSubscriberBase<events::FrameRenderEventData>
+    public framework::events::TEventSubscriberBase<events::FrameRenderEventData>,
+    public framework::events::TEventSubscriberBase<events::MouseInputEventData>
   {
   public:
+
     CameraBase() : CameraBase(glm::vec3(0.0f,0.0f,3.0f), glm::vec3(0.0,0.0,4.0))
     {
     }
@@ -41,12 +44,42 @@ namespace openGL::camera
 
     void handle_event(std::shared_ptr<events::FrameRenderEventData> pEventData)
     {
-      if (!pEventData)
+      if (!pEventData) return; // Handle null pointer case
+      camera_speed = pEventData->delta_time * 2.5f; // Adjust camera speed based on delta time
+    }
+
+    void handle_event(std::shared_ptr<events::MouseInputEventData> pEventData) override
+    {
+      static auto firstMouse = true; // Flag to check if it's the first mouse movement
+      if (!pEventData) return; // Handle null pointer case
+
+      if (firstMouse)
       {
-        return; // Handle null pointer case
+        lastX_ = pEventData->x_pos; // Initialize lastX_ with the current mouse position
+        lastY_ = pEventData->y_pos; // Initialize lastY_ with the current mouse position
+        firstMouse = false; // Set the flag to false after the first mouse movement
       }
 
-      camera_speed = pEventData->delta_time * 2.5f; // Adjust camera speed based on delta time
+      auto xOffSet = pEventData->x_pos - lastX_;
+      auto yOffSet = lastY_ - pEventData->y_pos; // Invert y-axis for mouse movement
+      lastX_ = pEventData->x_pos;
+      lastY_ = pEventData->y_pos;
+      xOffSet *= yaw_sensitivity;
+      yOffSet *= pitch_sensitivity;
+      yaw_ += xOffSet;
+      pitch_ += yOffSet;
+      // Clamp the pitch value to prevent flipping
+      if (pitch_ > 89.0f) pitch_ = 89.0f;
+      if (pitch_ < -89.0f) pitch_ = -89.0f;
+      // Update the front vector based on yaw and pitch
+      glm::vec3 front;
+      front.x = cos(glm::radians(yaw_)) * cos(glm::radians(pitch_));
+      front.y = sin(glm::radians(pitch_));
+      front.z = sin(glm::radians(yaw_)) * cos(glm::radians(pitch_));
+      front_ = glm::normalize(front);
+      // Update the right and up vectors
+      right_ = glm::normalize(glm::cross(front_, glm::vec3(0.0f, 1.0f, 0.0f)));
+      up_ = glm::normalize(glm::cross(right_, front_));
     }
 
     void handle_event(std::shared_ptr<events::ProcessInputEventData> pEventData)
@@ -61,29 +94,29 @@ namespace openGL::camera
       // Rotation
       if (glfwGetKey(pEventData->window, GLFW_KEY_A) == GLFW_PRESS)
       {
-        rotationY_ += 0.1f;
+        yaw_ += 0.1f;
       }
       else if (glfwGetKey(pEventData->window, GLFW_KEY_D) == GLFW_PRESS)
       {
-        rotationY_ -= 0.1f;
+        yaw_ -= 0.1f;
       }
 
       if (glfwGetKey(pEventData->window, GLFW_KEY_W) == GLFW_PRESS)
       {
-        rotationX_ += 0.1f;
+        pitch_ += 0.1f;
       }
       else if (glfwGetKey(pEventData->window, GLFW_KEY_S) == GLFW_PRESS)
       {
-        rotationX_ -= 0.1f;
+        pitch_ -= 0.1f;
       }
 
       if (glfwGetKey(pEventData->window, GLFW_KEY_Q) == GLFW_PRESS)
       {
-        rotationZ_ += 0.1f;
+        roll_ += 0.1f;
       }
       else if (glfwGetKey(pEventData->window, GLFW_KEY_E) == GLFW_PRESS)
       {
-        rotationZ_ -= 0.1f;
+        roll_ -= 0.1f;
       }
 
       // Translation / Movement
@@ -120,9 +153,15 @@ namespace openGL::camera
     glm::vec3 front_;
     glm::vec3 right_;
     glm::vec3 up_;
+
     float camera_speed = 0.05f; // Adjust the speed of the camera movement
-    float rotationY_;
-    float rotationX_;
-    float rotationZ_;
+
+    float yaw_sensitivity = 0.1f; 
+    float pitch_sensitivity = 0.1f;
+    float roll_sensitivity = 0.1f;
+    float lastX_ = 400, lastY_ = 300;
+    float yaw_ = -90.0f; // Yaw
+    float pitch_ = 0.0f; // Pitch
+    float roll_ = 0.0f; // Roll
   };
 }
