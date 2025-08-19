@@ -67,17 +67,36 @@ namespace openGL::core
 
     add_event(std::make_unique<events::ProcessInputEvent>(pWindow_.get(), 0.0f));
     add_event(std::make_unique<events::FrameRenderEvent>());
+
     toggleCursorCaptureMode();
     static auto mouseInputEvent = add_event(std::make_unique<events::MouseInputEvent>());
-    auto callback = [](GLFWwindow* window, double xpos, double ypos)
-    {
-      if (!mouseInputEvent)
+    glfwSetCursorPosCallback(pWindow_.get(), [](GLFWwindow* window, double xpos, double ypos)
       {
-        return;
-      }
-      mouseInputEvent->emit_event(std::make_shared<events::MouseInputEventData>(xpos, ypos, 0, 0));
-    };
-    glfwSetCursorPosCallback(pWindow_.get(), callback);
+        if (!mouseInputEvent)
+        {
+          return;
+        }
+        mouseInputEvent->emit_event(std::make_shared<events::MouseInputEventData>(xpos, ypos, 0, 0, 0, 0));
+      });
+
+    glfwSetMouseButtonCallback(pWindow_.get(), [](GLFWwindow* window, int button, int action, int mods)
+      {
+        if (!mouseInputEvent)
+        {
+          return;
+        }
+        mouseInputEvent->emit_event(std::make_shared<events::MouseInputEventData>(0, 0, 0, 0, button, action));
+      });
+
+    glfwSetScrollCallback(pWindow_.get(), [](GLFWwindow* window, double xoffset, double yoffset)
+      {
+        if (!mouseInputEvent)
+        {
+          return;
+        }
+        mouseInputEvent->emit_event(std::make_shared<events::MouseInputEventData>(0, 0, xoffset, yoffset, 0, 0));
+      });
+
     TEventSubscriberBase<events::ProcessInputEventData>* me = this;
     register_subscriber(me, typeid(events::ProcessInputEvent));
   }

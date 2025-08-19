@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <glm/detail/type_vec.hpp>
 #include <glm/detail/type_vec3.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -18,8 +19,7 @@ namespace openGL::camera
     public framework::events::TEventSubscriberBase<events::MouseInputEventData>
   {
   public:
-
-    CameraBase() : CameraBase(glm::vec3(0.0f,0.0f,3.0f), glm::vec3(0.0,0.0,4.0))
+    CameraBase() : CameraBase(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0, 0.0, 4.0))
     {
     }
 
@@ -33,7 +33,7 @@ namespace openGL::camera
       up_ = glm::normalize(glm::cross(right_, front_));
     }
 
-    virtual ~CameraBase()
+    ~CameraBase() override
     {
     }
 
@@ -42,10 +42,27 @@ namespace openGL::camera
       return glm::lookAt(position_, position_ + front_, up_);
     }
 
-    void handle_event(std::shared_ptr<events::FrameRenderEventData> pEventData)
+    float near_plane_ = 0.1f;
+    float far_plane_ = 100.0f;
+
+    float width_ = 800;
+    float _height = 600;
+    float get_aspect_ratio() const { return width_ / _height; }
+
+    virtual glm::mat4 get_projection_matrix()
+    {
+      return getProjectionMatrix(get_aspect_ratio(), near_plane_, far_plane_);
+    }
+
+    virtual glm::mat4 getProjectionMatrix(float aspect_ratio, float near_plane, float far_plane)
+    {
+      return glm::perspective(glm::radians(camera_zoom_), aspect_ratio, near_plane, far_plane);
+    }
+
+    void handle_event(std::shared_ptr<events::FrameRenderEventData> pEventData) override
     {
       if (!pEventData) return; // Handle null pointer case
-      camera_speed = pEventData->delta_time * 2.5f; // Adjust camera speed based on delta time
+      camera_speed_ = pEventData->delta_time * 2.5f; // Adjust camera speed based on delta time
     }
 
     void handle_event(std::shared_ptr<events::MouseInputEventData> pEventData) override
@@ -55,34 +72,46 @@ namespace openGL::camera
 
       if (firstMouse)
       {
-        lastX_ = pEventData->x_pos; // Initialize lastX_ with the current mouse position
-        lastY_ = pEventData->y_pos; // Initialize lastY_ with the current mouse position
+        last_x_ = pEventData->x_pos; // Initialize lastX_ with the current mouse position
+        last_y_ = pEventData->y_pos; // Initialize lastY_ with the current mouse position
         firstMouse = false; // Set the flag to false after the first mouse movement
       }
+      // Handle zooming in and out
+      camera_zoom_ -= pEventData->y_offset; // Adjust zoom based on mouse scroll
+      camera_zoom_ = std::max(camera_zoom_, 1.0f); // Prevent zooming in too much
+      camera_zoom_ = std::min(camera_zoom_, 45.0f); // Prevent zooming out too much
 
-      auto xOffSet = pEventData->x_pos - lastX_;
-      auto yOffSet = lastY_ - pEventData->y_pos; // Invert y-axis for mouse movement
-      lastX_ = pEventData->x_pos;
-      lastY_ = pEventData->y_pos;
-      xOffSet *= yaw_sensitivity;
-      yOffSet *= pitch_sensitivity;
+      if (pEventData->x_pos == 0 && pEventData->y_pos == 0)
+      {
+        return; // Ignore events with zero position
+      }
+
+      auto xOffSet = pEventData->x_pos - last_x_;
+      auto yOffSet = last_y_ - pEventData->y_pos; // Invert y-axis for mouse movement
+      last_x_ = pEventData->x_pos;
+      last_y_ = pEventData->y_pos;
+      xOffSet *= yaw_sensitivity_;
+      yOffSet *= pitch_sensitivity_;
       yaw_ += xOffSet;
       pitch_ += yOffSet;
+
       // Clamp the pitch value to prevent flipping
-      if (pitch_ > 89.0f) pitch_ = 89.0f;
-      if (pitch_ < -89.0f) pitch_ = -89.0f;
+      pitch_ = std::min(pitch_, 89.0f);
+      pitch_ = std::max(pitch_, -89.0f);
+
       // Update the front vector based on yaw and pitch
       glm::vec3 front;
       front.x = cos(glm::radians(yaw_)) * cos(glm::radians(pitch_));
       front.y = sin(glm::radians(pitch_));
       front.z = sin(glm::radians(yaw_)) * cos(glm::radians(pitch_));
       front_ = glm::normalize(front);
+
       // Update the right and up vectors
       right_ = glm::normalize(glm::cross(front_, glm::vec3(0.0f, 1.0f, 0.0f)));
       up_ = glm::normalize(glm::cross(right_, front_));
     }
 
-    void handle_event(std::shared_ptr<events::ProcessInputEventData> pEventData)
+    void handle_event(std::shared_ptr<events::ProcessInputEventData> pEventData) override
     {
       // Handle input events here, e.g., update camera position or orientation based on input
       // This is a placeholder implementation; actual input handling logic should be added.
@@ -122,29 +151,29 @@ namespace openGL::camera
       // Translation / Movement
       if (glfwGetKey(pEventData->window, GLFW_KEY_UP) == GLFW_PRESS)
       {
-        position_ += front_ * camera_speed;
+        position_ += front_ * camera_speed_;
       }
       else if (glfwGetKey(pEventData->window, GLFW_KEY_DOWN) == GLFW_PRESS)
       {
-        position_ -= front_ * camera_speed;
+        position_ -= front_ * camera_speed_;
       }
 
       if (glfwGetKey(pEventData->window, GLFW_KEY_LEFT) == GLFW_PRESS)
       {
-        position_ -= glm::normalize(glm::cross(front_, up_)) * camera_speed;
+        position_ -= glm::normalize(glm::cross(front_, up_)) * camera_speed_;
       }
       else if (glfwGetKey(pEventData->window, GLFW_KEY_RIGHT) == GLFW_PRESS)
       {
-        position_ += glm::normalize(glm::cross(front_, up_)) * camera_speed;
+        position_ += glm::normalize(glm::cross(front_, up_)) * camera_speed_;
       }
 
       if (glfwGetKey(pEventData->window, GLFW_KEY_R) == GLFW_PRESS)
       {
-        position_ -= glm::normalize(glm::cross(front_, right_)) * camera_speed;
+        position_ -= glm::normalize(glm::cross(front_, right_)) * camera_speed_;
       }
       else if (glfwGetKey(pEventData->window, GLFW_KEY_F) == GLFW_PRESS)
       {
-        position_ += glm::normalize(glm::cross(front_, right_)) * camera_speed;
+        position_ += glm::normalize(glm::cross(front_, right_)) * camera_speed_;
       }
     }
 
@@ -154,12 +183,13 @@ namespace openGL::camera
     glm::vec3 right_;
     glm::vec3 up_;
 
-    float camera_speed = 0.05f; // Adjust the speed of the camera movement
+    float camera_zoom_ = 45.0f;
+    float camera_speed_ = 0.05f; // Adjust the speed of the camera movement
 
-    float yaw_sensitivity = 0.1f; 
-    float pitch_sensitivity = 0.1f;
-    float roll_sensitivity = 0.1f;
-    float lastX_ = 400, lastY_ = 300;
+    float yaw_sensitivity_ = 0.1f;
+    float pitch_sensitivity_ = 0.1f;
+    float roll_sensitivity_ = 0.1f;
+    float last_x_ = 400, last_y_ = 300;
     float yaw_ = -90.0f; // Yaw
     float pitch_ = 0.0f; // Pitch
     float roll_ = 0.0f; // Roll

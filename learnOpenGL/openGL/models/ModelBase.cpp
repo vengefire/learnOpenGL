@@ -71,6 +71,7 @@ namespace openGL::models
 
     // projection
     glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+    projection = camera_ ? camera_->get_projection_matrix() : projection;
 
     shader_program_->set_mat4("transform", trans);
     shader_program_->set_mat4("view", view);

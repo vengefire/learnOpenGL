@@ -6,11 +6,13 @@ namespace openGL::events
   class MouseInputEventData : public framework::events::EventDataBase
   {
   public:
-    MouseInputEventData(double xpos, double ypos, int button, int action)
-      : x_pos(xpos), y_pos(ypos), button(button), action(action)
+    MouseInputEventData(double xpos, double ypos, double xoffset, double yoffset, int button, int action)
+      : y_offset(yoffset), x_offset(xoffset), x_pos(xpos), y_pos(ypos), button(button), action(action)
     {
     }
 
+    double y_offset; // Y offset of the mouse movement (for scroll events)
+    double x_offset; // X offset of the mouse movement (for scroll events)
     double x_pos; // X position of the mouse
     double y_pos; // Y position of the mouse
     int button; // Mouse button pressed or released
