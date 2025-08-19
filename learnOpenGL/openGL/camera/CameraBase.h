@@ -65,40 +65,41 @@ namespace openGL::camera
       camera_speed_ = pEventData->delta_time * 2.5f; // Adjust camera speed based on delta time
     }
 
-    void handle_event(std::shared_ptr<events::MouseInputEventData> pEventData) override
+    void handle_camera_zoom(std::shared_ptr<events::MouseInputEventData> pEventData)
     {
-      static auto firstMouse = true; // Flag to check if it's the first mouse movement
-      if (!pEventData) return; // Handle null pointer case
-
-      if (firstMouse)
-      {
-        last_x_ = pEventData->x_pos; // Initialize lastX_ with the current mouse position
-        last_y_ = pEventData->y_pos; // Initialize lastY_ with the current mouse position
-        firstMouse = false; // Set the flag to false after the first mouse movement
-      }
       // Handle zooming in and out
       camera_zoom_ -= pEventData->y_offset; // Adjust zoom based on mouse scroll
       camera_zoom_ = std::max(camera_zoom_, 1.0f); // Prevent zooming in too much
       camera_zoom_ = std::min(camera_zoom_, 45.0f); // Prevent zooming out too much
+    }
 
-      if (pEventData->x_pos == 0 && pEventData->y_pos == 0)
+    void handle_yaw_offset(std::shared_ptr<events::MouseInputEventData> pEventData)
+    {
+      if (enable_pitch)
       {
-        return; // Ignore events with zero position
+        auto xOffSet = pEventData->x_pos - last_x_;
+        last_x_ = pEventData->x_pos;
+        xOffSet *= yaw_sensitivity_;
+        yaw_ += xOffSet;
       }
+    }
 
-      auto xOffSet = pEventData->x_pos - last_x_;
-      auto yOffSet = last_y_ - pEventData->y_pos; // Invert y-axis for mouse movement
-      last_x_ = pEventData->x_pos;
-      last_y_ = pEventData->y_pos;
-      xOffSet *= yaw_sensitivity_;
-      yOffSet *= pitch_sensitivity_;
-      yaw_ += xOffSet;
-      pitch_ += yOffSet;
+    void handle_pitch_offset(std::shared_ptr<events::MouseInputEventData> pEventData)
+    {
+      if (enable_yaw)
+      {
+        auto yOffSet = last_y_ - pEventData->y_pos; // Invert y-axis for mouse movement
+        last_y_ = pEventData->y_pos;
+        yOffSet *= pitch_sensitivity_;
+        pitch_ += yOffSet;
+        // Clamp the pitch value to prevent flipping
+        pitch_ = std::min(pitch_, 89.0f);
+        pitch_ = std::max(pitch_, -89.0f);
+      }
+    }
 
-      // Clamp the pitch value to prevent flipping
-      pitch_ = std::min(pitch_, 89.0f);
-      pitch_ = std::max(pitch_, -89.0f);
-
+    void update_camera_vectors()
+    {
       // Update the front vector based on yaw and pitch
       glm::vec3 front;
       front.x = cos(glm::radians(yaw_)) * cos(glm::radians(pitch_));
@@ -111,6 +112,74 @@ namespace openGL::camera
       up_ = glm::normalize(glm::cross(right_, front_));
     }
 
+    void handle_event(std::shared_ptr<events::MouseInputEventData> pEventData) override
+    {
+      static auto firstMouse = true; // Flag to check if it's the first mouse movement
+      if (!pEventData) return; // Handle null pointer case
+
+      if (firstMouse)
+      {
+        last_x_ = pEventData->x_pos; // Initialize lastX_ with the current mouse position
+        last_y_ = pEventData->y_pos; // Initialize lastY_ with the current mouse position
+        firstMouse = false; // Set the flag to false after the first mouse movement
+      }
+
+      handle_camera_zoom(pEventData);
+
+      if (pEventData->x_pos == 0 && pEventData->y_pos == 0)
+      {
+        return; // Ignore events with zero position
+      }
+
+      if (!enable_pitch && !enable_yaw)
+      {
+        return; // Ignore events if both axes are disabled
+      }
+
+      handle_yaw_offset(pEventData);
+      handle_pitch_offset(pEventData);
+      update_camera_vectors();
+    }
+
+    void handle_camera_movement(std::shared_ptr<events::ProcessInputEventData> pEventData)
+    {
+      if (enable_camera_movement_z)
+      {
+        if (glfwGetKey(pEventData->window, GLFW_KEY_SPACE) == GLFW_PRESS)
+        {
+          position_ += front_ * camera_speed_;
+        }
+        else if (glfwGetKey(pEventData->window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+        {
+          position_ -= front_ * camera_speed_;
+        }
+      }
+
+      if (enable_camera_movement_x)
+      {
+        if (glfwGetKey(pEventData->window, GLFW_KEY_A) == GLFW_PRESS)
+        {
+          position_ -= right_ * camera_speed_;
+        }
+        else if (glfwGetKey(pEventData->window, GLFW_KEY_D) == GLFW_PRESS)
+        {
+          position_ += right_ * camera_speed_;
+        }
+      }
+
+      if (enable_camera_movement_y)
+      {
+        if (glfwGetKey(pEventData->window, GLFW_KEY_W) == GLFW_PRESS)
+        {
+          position_ -= glm::normalize(glm::cross(front_, right_)) * camera_speed_;
+        }
+        else if (glfwGetKey(pEventData->window, GLFW_KEY_S) == GLFW_PRESS)
+        {
+          position_ += glm::normalize(glm::cross(front_, right_)) * camera_speed_;
+        }
+      }
+    }
+
     void handle_event(std::shared_ptr<events::ProcessInputEventData> pEventData) override
     {
       // Handle input events here, e.g., update camera position or orientation based on input
@@ -119,65 +188,21 @@ namespace openGL::camera
       {
         return; // Handle null pointer case
       }
-      // Example: Update camera position based on input data
-      // Rotation
-      if (glfwGetKey(pEventData->window, GLFW_KEY_A) == GLFW_PRESS)
-      {
-        yaw_ += 0.1f;
-      }
-      else if (glfwGetKey(pEventData->window, GLFW_KEY_D) == GLFW_PRESS)
-      {
-        yaw_ -= 0.1f;
-      }
-
-      if (glfwGetKey(pEventData->window, GLFW_KEY_W) == GLFW_PRESS)
-      {
-        pitch_ += 0.1f;
-      }
-      else if (glfwGetKey(pEventData->window, GLFW_KEY_S) == GLFW_PRESS)
-      {
-        pitch_ -= 0.1f;
-      }
-
-      if (glfwGetKey(pEventData->window, GLFW_KEY_Q) == GLFW_PRESS)
-      {
-        roll_ += 0.1f;
-      }
-      else if (glfwGetKey(pEventData->window, GLFW_KEY_E) == GLFW_PRESS)
-      {
-        roll_ -= 0.1f;
-      }
 
       // Translation / Movement
-      if (glfwGetKey(pEventData->window, GLFW_KEY_UP) == GLFW_PRESS)
-      {
-        position_ += front_ * camera_speed_;
-      }
-      else if (glfwGetKey(pEventData->window, GLFW_KEY_DOWN) == GLFW_PRESS)
-      {
-        position_ -= front_ * camera_speed_;
-      }
-
-      if (glfwGetKey(pEventData->window, GLFW_KEY_LEFT) == GLFW_PRESS)
-      {
-        position_ -= glm::normalize(glm::cross(front_, up_)) * camera_speed_;
-      }
-      else if (glfwGetKey(pEventData->window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-      {
-        position_ += glm::normalize(glm::cross(front_, up_)) * camera_speed_;
-      }
-
-      if (glfwGetKey(pEventData->window, GLFW_KEY_R) == GLFW_PRESS)
-      {
-        position_ -= glm::normalize(glm::cross(front_, right_)) * camera_speed_;
-      }
-      else if (glfwGetKey(pEventData->window, GLFW_KEY_F) == GLFW_PRESS)
-      {
-        position_ += glm::normalize(glm::cross(front_, right_)) * camera_speed_;
-      }
+      handle_camera_movement(pEventData);
     }
 
   protected:
+    bool enable_yaw = true;
+    bool enable_pitch = true;
+    bool enable_roll = true;
+    bool enable_camera_zoom = true; // Enable or disable camera zoom
+    bool enable_camera_movement_x = true; // Enable or disable camera movement along the x-axis
+    bool enable_camera_movement_y = true; // Enable or disable camera movement along the y-axis
+    bool enable_camera_movement_z = true; // Enable or disable camera movement along the z-axis
+
+
     glm::vec3 position_;
     glm::vec3 front_;
     glm::vec3 right_;
