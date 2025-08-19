@@ -104,6 +104,15 @@
     <ClInclude Include="openGL\Events\MouseInputEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="openGL\primitives\PlanePrimitive.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="openGL\primitives\PrimitiveBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="openGL\primitives\GridPrimitive.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\shader.fs" />

@@ -58,6 +58,7 @@ namespace openGL::models
 
     void set_vertices(std::vector<core::VertexBase> vertices);
     void set_indices(std::vector<unsigned int> indices);
+    void draw_elements_or_arrays(std::vector<core::VertexBase>::size_type count) const;
 
     void render();
 
@@ -80,13 +81,26 @@ namespace openGL::models
     unsigned int vbo_Id_ = -1;
     unsigned int ebo_Id_ = -1;
 
-    float textureMix_ = 0.02f;
+    float textureMix_ = 0.2f;
     // Scale value
     float scale_ = 1.0f;
     // Rotation values
     float rotationX_ = 0.0f;
+    bool draw_lines = false;
 
   public:
+    [[nodiscard]] bool is_draw_lines() const
+    {
+      return draw_lines;
+    }
+
+    void set_draw_lines(const bool draw_lines)
+    {
+      this->draw_lines = draw_lines;
+    }
+
+    __declspec(property(get = is_draw_lines, put = set_draw_lines)) bool DrawLines;
+
     [[nodiscard]] float get_rotation_x() const
     {
       return rotationX_;
@@ -102,6 +116,85 @@ namespace openGL::models
   private:
     std::shared_ptr<camera::CameraBase> camera_;
     float rotationY_ = 0.0f;
+
+  public:
+    [[nodiscard]] float get_rotation_y() const
+    {
+      return rotationY_;
+    }
+
+    void set_rotation_y(const float rotation_y)
+    {
+      rotationY_ = rotation_y;
+    }
+
+    __declspec(property(get = get_rotation_y, put = set_rotation_y)) float RotationY;
+
+    [[nodiscard]] float get_rotation_z() const
+    {
+      return rotationZ_;
+    }
+
+    void set_rotation_z(const float rotation_z)
+    {
+      rotationZ_ = rotation_z;
+    }
+
+    __declspec(property(get = get_rotation_z, put = set_rotation_z)) float RotationZ;
+
+    [[nodiscard]] float get_translation_x() const
+    {
+      return translationX_;
+    }
+
+    void set_translation_x(const float translation_x)
+    {
+      translationX_ = translation_x;
+    }
+
+    __declspec(property(get = get_translation_x, put = set_translation_x)) float TranslationX;
+
+    [[nodiscard]] float get_translation_y() const
+    {
+      return translationY_;
+    }
+
+    void set_translation_y(const float translation_y)
+    {
+      translationY_ = translation_y;
+    }
+
+    __declspec(property(get = get_translation_y, put = set_translation_y)) float TranslationY;
+
+    [[nodiscard]] float get_translation_z() const
+    {
+      return translationZ_;
+    }
+
+    void set_translation_z(const float translation_z)
+    {
+      translationZ_ = translation_z;
+    }
+
+    __declspec(property(get = get_translation_z, put = set_translation_z)) float TranslationZ;
+
+  private:
+    bool wireMode = false;
+
+  public:
+    [[nodiscard]] bool is_wire_mode() const
+    {
+      return wireMode;
+    }
+
+    void set_wire_mode(const bool wire_mode)
+    {
+      wireMode = wire_mode;
+    }
+
+    __declspec(property(get = is_wire_mode, put = set_wire_mode)) bool WireMode;
+
+  private:
     float rotationZ_ = 0.0f;
     // Translation values
     float translationX_ = 0.0f;

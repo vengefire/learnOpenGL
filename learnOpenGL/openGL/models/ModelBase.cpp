@@ -49,6 +49,23 @@ namespace openGL::models
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices_.size() * sizeof(unsigned int), indices_.data(), GL_STATIC_DRAW);
   }
 
+  void ModelBase::draw_elements_or_arrays(std::vector<core::VertexBase>::size_type count) const
+  {
+    if (!indices_.empty())
+    {
+      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo_Id_);
+      glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(count), GL_UNSIGNED_INT, nullptr);
+    }
+    else if (!draw_lines)
+    {
+      glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(count));
+    }
+    else
+    {
+      glDrawArrays(GL_LINES, 0, static_cast<GLsizei>(count));
+    }
+  }
+
   void ModelBase::render()
   {
     shader_program_->use();
@@ -88,15 +105,7 @@ namespace openGL::models
 
     glBindVertexArray(vao_Id_);
     auto count = indices_.empty() ? vertices_data_.size() : indices_.size();
-    if (!indices_.empty())
-    {
-      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo_Id_);
-      glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(count), GL_UNSIGNED_INT, nullptr);
-    }
-    else
-    {
-      glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(count));
-    }
+    draw_elements_or_arrays(count);
     glBindVertexArray(0);
   }
 

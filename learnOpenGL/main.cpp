@@ -4,6 +4,8 @@
 #include "openGL/core/OpenGLCore.h"
 #include "openGL/camera/CameraBase.h"
 #include "stb_image_impl.h"
+#include "openGL/primitives/GridPrimitive.h"
+#include "openGL/primitives/PlanePrimitive.h"
 
 int main()
 {
@@ -118,9 +120,31 @@ int main()
     cubeModel->set_texture_from_file("./res/textures/container.jpg");
     cubeModel->set_texture_from_file("./res/textures/awesomeface.jpg");
     inputEvent->subscribe(cubeModel.get());
-    cubeModel->RotationX = -55.0f; // Rotate the rectangle by 45 degrees around the X-axis
+    // cubeModel->RotationX = -55.0f; // Rotate the rectangle by 45 degrees around the X-axis
+    // cubeModel->TranslationY = 1.0f; // Move the cube up by 1 unit
     cubeModel->set_camera(camera);
+
+    auto planePrimitive = openGL::primitives::PlanePrimitive::generate_plane(5.0f, 5.0f, 10, 10);
+    auto planeModel = std::make_shared<openGL::models::ModelBase>(texturedVertexShader);
+    planeModel->set_vertices(planePrimitive.get_vertices());
+    planeModel->set_indices(planePrimitive.get_indices());
+    planeModel->set_camera(camera);
+    planeModel->RotationX = -90.0f;
+    planeModel->RotationZ = 45.0f; // Rotate the plane by 45 degrees around the Z-axis
+    planeModel->TranslationY = -2.0f; // Move the plane down by 2 units
+
+    auto gridPrimitive = openGL::primitives::GridPrimitive::generate_grid_(5.0f, 5.0f, 5.0f, 2, 1);
+    auto gridModel = std::make_shared<openGL::models::ModelBase>(texturedVertexShader);
+    gridModel->set_vertices(gridPrimitive.get_vertices());
+    gridModel->DrawLines = true; // Set the grid model to draw lines
+    gridModel->RotationX = -90.0f;
+    // gridModel->RotationZ = 45.0f;
+    // gridModel->TranslationY = -1.0f; // Move the grid down by 1 unit
+    gridModel->set_camera(camera);
+
+    core.addModel(planeModel);
     core.addModel(cubeModel);
+    core.addModel(gridModel);
 
     core.enable_depth_testing();
 

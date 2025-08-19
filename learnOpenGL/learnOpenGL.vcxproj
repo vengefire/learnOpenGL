@@ -140,6 +140,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\dep\stb\stb_image.h" />
+    <ClInclude Include="openGL\primitives\GridPrimitive.h" />
     <ClInclude Include="openGL\Events\MouseInputEvent.h" />
     <ClInclude Include="openGL\Events\FrameRenderEvent.h" />
     <ClInclude Include="openGL\camera\CameraBase.h" />
@@ -153,6 +154,8 @@
     <ClInclude Include="openGL\shaders\ShaderProgram.h" />
     <ClInclude Include="openGL\shaders\Shader.h" />
     <ClInclude Include="openGL\Events\ProcessInputEvent.h" />
+    <ClInclude Include="openGL\primitives\PlanePrimitive.h" />
+    <ClInclude Include="openGL\primitives\PrimitiveBase.h" />
     <ClInclude Include="stb_image_impl.h" />
     <ClInclude Include="openGL\textures\TextureBase.h" />
     <ClInclude Include="openGL\core\Vector3f.h" />

@@ -194,12 +194,12 @@ namespace openGL::camera
     }
 
   protected:
-    bool enable_yaw = true;
-    bool enable_pitch = true;
-    bool enable_roll = true;
+    bool enable_yaw = true;         // Rotation about the y-axis (yaw)
+    bool enable_pitch = true;       // Rotation about the x-axis (pitch)
+    bool enable_roll = true;        // Rotation about the z-axis (roll)
     bool enable_camera_zoom = true; // Enable or disable camera zoom
     bool enable_camera_movement_x = true; // Enable or disable camera movement along the x-axis
-    bool enable_camera_movement_y = false; // Enable or disable camera movement along the y-axis
+    bool enable_camera_movement_y = true; // Enable or disable camera movement along the y-axis
     bool enable_camera_movement_z = true; // Enable or disable camera movement along the z-axis
 
 
@@ -208,7 +208,7 @@ namespace openGL::camera
     glm::vec3 right_;
     glm::vec3 up_;
 
-    float camera_zoom_ = 45.0f;
+    float camera_zoom_ = 45.0f;  // Default "zoom" level for the camera, aka field of view (FOV)
     float camera_speed_ = 0.05f; // Adjust the speed of the camera movement
 
     float yaw_sensitivity_ = 0.1f;
