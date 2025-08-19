@@ -145,11 +145,11 @@ namespace openGL::camera
     {
       if (enable_camera_movement_z)
       {
-        if (glfwGetKey(pEventData->window, GLFW_KEY_SPACE) == GLFW_PRESS)
+        if (glfwGetKey(pEventData->window, GLFW_KEY_W) == GLFW_PRESS)
         {
           position_ += front_ * camera_speed_;
         }
-        else if (glfwGetKey(pEventData->window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+        else if (glfwGetKey(pEventData->window, GLFW_KEY_S) == GLFW_PRESS)
         {
           position_ -= front_ * camera_speed_;
         }
@@ -169,11 +169,11 @@ namespace openGL::camera
 
       if (enable_camera_movement_y)
       {
-        if (glfwGetKey(pEventData->window, GLFW_KEY_W) == GLFW_PRESS)
+        if (glfwGetKey(pEventData->window, GLFW_KEY_R) == GLFW_PRESS)
         {
           position_ -= glm::normalize(glm::cross(front_, right_)) * camera_speed_;
         }
-        else if (glfwGetKey(pEventData->window, GLFW_KEY_S) == GLFW_PRESS)
+        else if (glfwGetKey(pEventData->window, GLFW_KEY_F) == GLFW_PRESS)
         {
           position_ += glm::normalize(glm::cross(front_, right_)) * camera_speed_;
         }
@@ -199,7 +199,7 @@ namespace openGL::camera
     bool enable_roll = true;
     bool enable_camera_zoom = true; // Enable or disable camera zoom
     bool enable_camera_movement_x = true; // Enable or disable camera movement along the x-axis
-    bool enable_camera_movement_y = true; // Enable or disable camera movement along the y-axis
+    bool enable_camera_movement_y = false; // Enable or disable camera movement along the y-axis
     bool enable_camera_movement_z = true; // Enable or disable camera movement along the z-axis
 
 
