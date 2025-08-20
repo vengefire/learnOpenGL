@@ -21,9 +21,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="openGL\model\ModelBase.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="openGL\shaders\ShaderProgram.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -42,12 +39,15 @@
     <ClCompile Include="openGL\core\Vector3f.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="openGL\model\ModelBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="openGL\model\ModelBase.h">
+    <ClInclude Include="openGL\model\ModelBaseDep.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="openGL\shaders\ShaderProgram.h">
@@ -138,6 +138,27 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="openGL\entity\property\EntityPropertyDimensions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="openGL\mesh\base\MeshBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="openGL\mesh\base\VertexBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="openGL\entity\property\EntityPropertyColor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="openGL\entity\property\EntityPropertyNormal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="openGL\mesh\base\property\VertexBasePropertyTexelCoordinates.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="framework\property\PropertyBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="openGL\model\ModelBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

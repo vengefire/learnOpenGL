@@ -1,12 +1,17 @@
 #pragma once
 
 #include "../../config.h"
-#include "../model/ModelBase.h"
+#include "../model/ModelBaseDep.h"
 #include "../../framework/events/EventPublisher.h"
 #include "../../framework/events/TEventSubscriberBase.h"
 #include "../event/ProcessInputEvent.h"
 #include "../event/FrameRenderEvent.h"
 #include "../event/MouseInputEvent.h"
+
+namespace openGL::model
+{
+  class ModelBase;
+}
 
 namespace openGL::core
 {

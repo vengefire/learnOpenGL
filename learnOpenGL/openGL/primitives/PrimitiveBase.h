@@ -3,6 +3,11 @@
 
 #include "../core/VertexBase.h"
 
+namespace openGL::mesh::base
+{
+  class VertexBase;
+}
+
 namespace openGL::primitives
 {
   class PrimitiveBase
@@ -17,7 +22,7 @@ namespace openGL::primitives
 
     virtual ~PrimitiveBase() = default;
 
-    virtual std::vector<core::VertexBase> get_vertices() const
+    virtual std::vector<mesh::base::VertexBase> get_vertices() const
     {
       return _vertices;
     }
@@ -33,7 +38,7 @@ namespace openGL::primitives
     float _width = 0.0f;
     float _height = 0.0f;
     float _depth = 0.0f;
-    std::vector<core::VertexBase> _vertices;
+    std::vector<mesh::base::VertexBase> _vertices;
 
   public:
     [[nodiscard]] float get_width() const

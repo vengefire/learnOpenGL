@@ -9,8 +9,13 @@ namespace openGL::entity::property
   class EntityPropertyPosition : public openGl::entity::property::EntityPropertyBase<glm::vec3>
   {
   public:
+    EntityPropertyPosition() = default;
     EntityPropertyPosition(const glm::vec3& position)
       : EntityPropertyBase(position)
+    {
+    }
+    EntityPropertyPosition(float x, float y, float z)
+      : EntityPropertyBase(glm::vec3(x, y, z))
     {
     }
   };

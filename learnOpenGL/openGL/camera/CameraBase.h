@@ -194,9 +194,9 @@ namespace openGL::camera
     }
 
   protected:
-    bool enable_yaw = true;         // Rotation about the y-axis (yaw)
-    bool enable_pitch = true;       // Rotation about the x-axis (pitch)
-    bool enable_roll = true;        // Rotation about the z-axis (roll)
+    bool enable_yaw = true;         // Orientation about the y-axis (yaw)
+    bool enable_pitch = true;       // Orientation about the x-axis (pitch)
+    bool enable_roll = true;        // Orientation about the z-axis (roll)
     bool enable_camera_zoom = true; // Enable or disable camera zoom
     bool enable_camera_movement_x = true; // Enable or disable camera movement along the x-axis
     bool enable_camera_movement_y = true; // Enable or disable camera movement along the y-axis

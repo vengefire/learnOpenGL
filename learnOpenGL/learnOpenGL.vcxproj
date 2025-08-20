@@ -131,15 +131,21 @@
   <ItemGroup>
     <ClCompile Include="..\dep\glad\glad.c" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="openGL\model\ModelBase.cpp" />
     <ClCompile Include="openGL\core\OpenGLCore.cpp" />
     <ClCompile Include="openGL\core\Vector3f.cpp" />
-    <ClCompile Include="openGL\model\ModelBase.cpp" />
     <ClCompile Include="openGL\shaders\Shader.cpp" />
     <ClCompile Include="openGL\shaders\ShaderProgram.cpp" />
     <ClCompile Include="openGL\textures\TextureBase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\dep\stb\stb_image.h" />
+    <ClInclude Include="framework\property\PropertyBase.h" />
+    <ClInclude Include="openGL\model\ModelBase.h" />
+    <ClInclude Include="openGL\mesh\base\property\VertexBasePropertyTexelCoordinates.h" />
+    <ClInclude Include="openGL\entity\property\EntityPropertyNormal.h" />
+    <ClInclude Include="openGL\entity\property\EntityPropertyColor.h" />
+    <ClInclude Include="openGL\mesh\base\MeshBase.h" />
     <ClInclude Include="openGL\entity\property\EntityPropertyDimensions.h" />
     <ClInclude Include="openGL\entity\property\EntityPropertyBase.h" />
     <ClInclude Include="openGL\entity\property\EntityPropertyScale.h" />
@@ -157,7 +163,7 @@
     <ClInclude Include="framework\events\EventPublisher.h" />
     <ClInclude Include="framework\events\EventBase.hpp" />
     <ClInclude Include="openGL\core\OpenGLCore.h" />
-    <ClInclude Include="openGL\model\ModelBase.h" />
+    <ClInclude Include="openGL\model\ModelBaseDep.h" />
     <ClInclude Include="openGL\shaders\ShaderProgram.h" />
     <ClInclude Include="openGL\shaders\Shader.h" />
     <ClInclude Include="openGL\event\ProcessInputEvent.h" />
@@ -171,6 +177,7 @@
     <ClInclude Include="framework\events\TEventSubscriberBase.h" />
     <ClInclude Include="openGL\primitives\TrianglePrimitive.h" />
     <ClInclude Include="openGL\primitives\UVSpherePrimitive.h" />
+    <ClInclude Include="openGL\mesh\base\VertexBase.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\shader.fs">

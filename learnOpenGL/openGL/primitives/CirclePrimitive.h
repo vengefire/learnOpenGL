@@ -29,7 +29,7 @@ namespace openGL::primitives
     _vertices.clear();
     _indices.clear();
     // Generate vertices for the circle
-    _vertices.emplace_back(0, 0, 0.0f, (0 / radius_ + 1.0f) / 2.0f, (0 / radius_ + 1.0f) / 2.0f);
+    _vertices.emplace_back(0.0f, 0.0f, 0.0f, (0 / radius_ + 1.0f) / 2.0f, (0 / radius_ + 1.0f) / 2.0f);
     for (unsigned int i = 0; i <= segments_; ++i)
     {
       float angle = 2.0f * glm::pi<float>() * static_cast<float>(i) / static_cast<float>(segments_);

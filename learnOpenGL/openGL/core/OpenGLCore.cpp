@@ -1,5 +1,7 @@
 #include "OpenGLCore.h"
 
+#include "../model/ModelBase.h"
+
 namespace openGL::core
 {
   void OpenGLCore::handle_event(std::shared_ptr<event::ProcessInputEventData>  pEventData)
@@ -134,7 +136,7 @@ namespace openGL::core
       // Render your models here
       for (const auto model : models_)
       {
-        model->render();
+        model->renderModel();
       }
       glfwSwapBuffers(pWindow_.get());
       glfwPollEvents();

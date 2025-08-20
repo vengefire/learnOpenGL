@@ -1,85 +1,44 @@
 #include "ModelBase.h"
 
-#include <utility>
-#include <../../dep/glm/glm.hpp>
-#include <../../dep/glm/gtc/matrix_transform.hpp>
-#include <../../dep/glm/gtc/type_ptr.hpp>
-
 namespace openGL::model
 {
-  ModelBase::ModelBase()
+  ModelBase::ModelBase(mesh::MeshBase mesh, const std::shared_ptr<shaders::ShaderProgram>& shader_program, const std::shared_ptr<camera::CameraBase>& camera) :
+    shader_program_(shader_program),
+    camera_(camera)
   {
-    Init();
-  }
-
-  ModelBase::ModelBase(std::shared_ptr<shaders::ShaderProgram>shaderProgram) : shader_program_(std::move(shaderProgram))
-  {
-    Init();
+    Mesh = mesh;
   }
 
   ModelBase::~ModelBase()
   {
-    std::cout << "ModelBase Destructor called, deleting VAO: " << vao_Id_ << std::endl;
-    glDeleteVertexArrays(1, &vao_Id_);
-    std::cout << "ModelBase Destructor called, deleting VBO: " << vbo_Id_ << std::endl;
-    glDeleteBuffers(1, &vbo_Id_);
-    if (ebo_Id_ != -1)
+    std::cout << "ModelBaseDep Destructor called, deleting VAO: " << vao_id_ << std::endl;
+    glDeleteVertexArrays(1, &vao_id_);
+    std::cout << "ModelBaseDep Destructor called, deleting VBO: " << vbo_id_ << std::endl;
+    glDeleteBuffers(1, &vbo_id_);
+    if (ebo_id_ != 0)
     {
-      std::cout << "ModelBase Destructor called, deleting EBO: " << ebo_Id_ << std::endl;
-      glDeleteBuffers(1, &ebo_Id_);
+      std::cout << "ModelBaseDep Destructor called, deleting EBO: " << ebo_id_ << std::endl;
+      glDeleteBuffers(1, &ebo_id_);
     }
   }
 
-  std::vector<float> ModelBase::get_vertices() const
-  {
-    return vertices_;
-  }
-
-  void ModelBase::set_vertices(std::vector<core::VertexBase> vertices)
-  {
-    vertices_data_ = std::move(vertices);
-    buffer_vertex_data();
-  }
-
-  void ModelBase::set_indices(std::vector<unsigned int> indices)
-  {
-    indices_ = std::move(indices);
-    glGenBuffers(1, &ebo_Id_);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo_Id_);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices_.size() * sizeof(unsigned int), indices_.data(), GL_STATIC_DRAW);
-  }
-
-  void ModelBase::draw_elements_or_arrays(std::vector<core::VertexBase>::size_type count) const
-  {
-    if (!indices_.empty())
-    {
-      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo_Id_);
-      glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(count), GL_UNSIGNED_INT, nullptr);
-    }
-    else if (!draw_lines)
-    {
-      glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(count));
-    }
-    else
-    {
-      glDrawArrays(GL_LINES, 0, static_cast<GLsizei>(count));
-    }
-  }
-
-  void ModelBase::render()
+  void ModelBase::renderModel()
   {
     shader_program_->use();
 
     // Generate an identity matrix
     glm::mat4 trans = glm::mat4(1.0f);
+
     // Apply Scaling
-    trans = glm::scale(trans, glm::vec3(scale_, scale_, scale_));
+    trans = glm::scale(trans, Scale.PropertyValue);
     // Apply translation
-    trans = glm::translate(trans, glm::vec3(translationX_, translationY_, translationZ_));
-    // Apply rotation
-    trans = glm::rotate(trans, glm::radians(rotationX_), glm::vec3(1.0, 0.0, 0.0));
-    trans = glm::rotate(trans, glm::radians(rotationY_), glm::vec3(0.0, 1.0, 0.0));
-    trans = glm::rotate(trans, glm::radians(rotationZ_), glm::vec3(0.0, 0.0, 1.0));
+    trans = glm::translate(trans, Position.PropertyValue);
+    // Apply orientation
+    trans = glm::rotate(trans, glm::radians(Orientation.X), glm::vec3(1.0, 0.0, 0.0));
+    trans = glm::rotate(trans, glm::radians(Orientation.Y), glm::vec3(0.0, 1.0, 0.0));
+    trans = glm::rotate(trans, glm::radians(Orientation.Z), glm::vec3(0.0, 0.0, 1.0));
+
+    trans = glm::mat4(1.0f);
 
     // view
     glm::mat4 view = glm::mat4(1.0f);
@@ -101,71 +60,86 @@ namespace openGL::model
       texture->bind(textureCnt++);
     }
 
-    shader_program_->set_float("textureMix", textureMix_);
+    glBindVertexArray(vao_id_);
+    auto count = Mesh.Indices.empty() ? Mesh.Vertices.size() : Mesh.Indices.size();
 
-    glBindVertexArray(vao_Id_);
-    auto count = indices_.empty() ? vertices_data_.size() : indices_.size();
-    draw_elements_or_arrays(count);
+    if (!Mesh.Indices.empty())
+    {
+      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo_id_);
+      glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(count), GL_UNSIGNED_INT, nullptr);
+    }
+    else
+    {
+      GLenum mode = GL_TRIANGLES;
+
+      if (DrawLines)
+      {
+        GLenum mode = GL_LINES;
+      }
+
+      glDrawArrays(mode, 0, static_cast<GLsizei>(count));
+    }
     glBindVertexArray(0);
   }
 
-  void ModelBase::buffer_vertex_data()
+  void ModelBase::set_texture_from_file(const std::string& textureFilePath, bool flip_vertically)
   {
-    glBindVertexArray(vao_Id_);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo_Id_);
+    auto texture_ = std::make_shared<textures::TextureBase>();
+    texture_->loadFromFile(textureFilePath, flip_vertically);
+    set_texture(texture_);
+  }
 
-    std::vector<float> vertexData;
-    for (auto vertices_data : vertices_data_)
+  void ModelBase::set_texture(const std::shared_ptr<textures::TextureBase>& texture)
+  {
+    textures_.push_back(texture);
+  }
+
+  void ModelBase::initialize_buffers()
+  {
+    if (vao_id_ == 0)
     {
-      float position[3] = {
-        vertices_data.get_position_x(), vertices_data.get_position_y(), vertices_data.get_position_z()
-      };
-      vertexData.insert(vertexData.end(), position, position + 3);
-      if (vertices_data.hasColor() || UseDefaultColor)
-      {
-        float colorData[3];
-        if (vertices_data.hasColor())
-        {
-          colorData[0] = vertices_data.get_color_r();
-          colorData[1] = vertices_data.get_color_g();
-          colorData[2] = vertices_data.get_color_b();
-        }
-        else if (UseDefaultColor)
-        {
-          colorData[0] = default_color_.r;
-          colorData[1] = default_color_.g;
-          colorData[2] = default_color_.b;
-        }
-        vertexData.insert(vertexData.end(), colorData, colorData + 3);
-      }
-      if (vertices_data.hasTextureCoordinates())
-      {
-        float textureCoords[2] = {vertices_data.get_texture_coordinate_u(), vertices_data.get_texture_coordinate_v()};
-        vertexData.insert(vertexData.end(), textureCoords, textureCoords + 2);
-      }
+      glGenVertexArrays(1, &vao_id_);
+      glBindVertexArray(vao_id_);
     }
-    glBufferData(GL_ARRAY_BUFFER, vertexData.size() * sizeof(float), vertexData.data(), GL_STATIC_DRAW);
+    if (vbo_id_ == 0)
+    {
+      glGenBuffers(1, &vbo_id_);
+      glBindBuffer(GL_ARRAY_BUFFER, vbo_id_);
+    }
+    if (!Mesh.Indices.empty() && ebo_id_ == 0)
+    {
+      glGenBuffers(1, &ebo_id_);
+    }
+  }
 
+  void ModelBase::upload_vertex_data() const
+  {
+    auto vertices = mesh_.get_formatted_vertices();
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
+  }
+
+  void ModelBase::configure_vertex_attributes()
+  {
     int floatCount = 3; // Position
     int offset = 0;
     unsigned int position = 0;
-    floatCount += vertices_data_[0].hasColor() || UseDefaultColor ? 3 : 0; // Color
-    floatCount += vertices_data_[0].hasTextureCoordinates() ? 2 : 0; // Texture Coordinates
-    int stride = floatCount * sizeof(float);
+    floatCount += Mesh.vertices_have_color() ? 4 : 0; // Color
+    floatCount += Mesh.vertices_have_texture_coordinates() ? 2 : 0; // Texture Coordinates
+    int stride = floatCount * static_cast<int>(sizeof(float));
 
     // Position Mandatory
-    glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, stride, (void*)(0));
+    glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, stride, static_cast<void*>(nullptr));
     offset += 3 * sizeof(float);
     glEnableVertexAttribArray(position++);
     // Color Optional
-    if (vertices_data_[0].hasColor() || UseDefaultColor)
+    if (Mesh.vertices_have_color())
     {
-      glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, stride, (void*)(offset));
+      glVertexAttribPointer(position, 4, GL_FLOAT, GL_FALSE, stride, (void*)(offset));
       glEnableVertexAttribArray(position++);
-      offset += 3 * sizeof(float);
+      offset += 4 * sizeof(float);
     }
     // Texture Coordinates Optional
-    if (vertices_data_[0].hasTextureCoordinates())
+    if (Mesh.vertices_have_texture_coordinates())
     {
       glVertexAttribPointer(position, 2, GL_FLOAT, GL_FALSE, stride, (void*)(offset));
       glEnableVertexAttribArray(position++);
@@ -175,97 +149,22 @@ namespace openGL::model
     glBindBuffer(GL_ARRAY_BUFFER, 0);
   }
 
-  void ModelBase::Init()
+  void ModelBase::upload_indices_data()
   {
-    glGenVertexArrays(1, &vao_Id_);
-    glGenBuffers(1, &vbo_Id_);
+    if (!Mesh.Indices.empty())
+    {
+      auto indices = Mesh.Indices;
+      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo_id_);
+      glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
+    }
   }
 
-  void ModelBase::handle_event(std::shared_ptr<event::ProcessInputEventData> pEventData)
+  void ModelBase::set_mesh(const mesh::MeshBase& mesh)
   {
-
-    // Blending
-    if (glfwGetKey(pEventData->window, GLFW_KEY_1) == GLFW_PRESS)
-    {
-      textureMix_ += 0.01f;
-    }
-    else if (glfwGetKey(pEventData->window, GLFW_KEY_2) == GLFW_PRESS)
-    {
-      textureMix_ -= 0.01f;
-    }
-
-    // Scaling
-    if (glfwGetKey(pEventData->window, GLFW_KEY_T) == GLFW_PRESS)
-    {
-      scale_ += 0.001f;
-    }
-    else if (glfwGetKey(pEventData->window, GLFW_KEY_G) == GLFW_PRESS)
-    {
-      scale_ -= 0.001f;
-    }
-
-    /*
-    // Rotation
-    if (glfwGetKey(pEventData->window, GLFW_KEY_A) == GLFW_PRESS)
-    {
-      yaw_ += 0.1f;
-    }
-    else if (glfwGetKey(pEventData->window, GLFW_KEY_D) == GLFW_PRESS)
-    {
-      yaw_ -= 0.1f;
-    }
-
-    if (glfwGetKey(pEventData->window, GLFW_KEY_W) == GLFW_PRESS)
-    {
-      pitch_ += 0.1f;
-    }
-    else if (glfwGetKey(pEventData->window, GLFW_KEY_S) == GLFW_PRESS)
-    {
-      pitch_ -= 0.1f;
-    }
-
-    if (glfwGetKey(pEventData->window, GLFW_KEY_Q) == GLFW_PRESS)
-    {
-      roll_ += 0.1f;
-    }
-    else if (glfwGetKey(pEventData->window, GLFW_KEY_E) == GLFW_PRESS)
-    {
-      roll_ -= 0.1f;
-    }
-    // Translation
-    if (glfwGetKey(pEventData->window, GLFW_KEY_UP) == GLFW_PRESS)
-    {
-      translationZ_ += 0.1f;
-    }
-    else if (glfwGetKey(pEventData->window, GLFW_KEY_DOWN) == GLFW_PRESS)
-    {
-      translationZ_ -= 0.1f;
-    }
-
-    if (glfwGetKey(pEventData->window, GLFW_KEY_LEFT) == GLFW_PRESS)
-    {
-      translationX_ -= 0.1f;
-    }
-    else if (glfwGetKey(pEventData->window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-    {
-      translationX_ += 0.1f;
-    }
-
-    if (glfwGetKey(pEventData->window, GLFW_KEY_R) == GLFW_PRESS)
-    {
-      translationY_ += 0.1f;
-    }
-    else if (glfwGetKey(pEventData->window, GLFW_KEY_F) == GLFW_PRESS)
-    {
-      translationY_ -= 0.1f;
-    }
-    */
-  }
-
-  void ModelBase::set_texture_from_file(const std::string& textureFilePath, bool flip_vertically)
-  {
-    auto texture_ = std::make_shared<textures::TextureBase>();
-    texture_->loadFromFile(textureFilePath, flip_vertically);
-    set_texture(texture_);
+    mesh_ = mesh;
+    initialize_buffers();
+    upload_vertex_data();
+    configure_vertex_attributes();
+    upload_indices_data();
   }
 }

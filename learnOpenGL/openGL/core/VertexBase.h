@@ -6,6 +6,9 @@ namespace openGL::core
   class VertexBase
   {
   public:
+    // Constructors
+
+
     VertexBase(float x, float y, float z) : position_(x, y, z), hasColor_(false), hasTextureCoordinates_(false)
     {
     }
