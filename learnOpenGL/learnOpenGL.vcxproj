@@ -140,6 +140,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\dep\stb\stb_image.h" />
+    <ClInclude Include="openGL\primitives\CirclePrimitive.h" />
     <ClInclude Include="openGL\primitives\CubePrimitive.h" />
     <ClInclude Include="openGL\primitives\GridPrimitive.h" />
     <ClInclude Include="openGL\Events\MouseInputEvent.h" />
@@ -164,6 +165,7 @@
     <ClInclude Include="framework\events\TEventBase.h" />
     <ClInclude Include="framework\events\TEventSubscriberBase.h" />
     <ClInclude Include="openGL\primitives\TrianglePrimitive.h" />
+    <ClInclude Include="openGL\primitives\UVSpherePrimitive.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\shader.fs">

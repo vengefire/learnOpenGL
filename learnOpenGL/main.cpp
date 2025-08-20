@@ -7,8 +7,10 @@
 #include "openGL/primitives/PlanePrimitive.h"
 
 #include "stb_image_impl.h"
+#include "openGL/primitives/CirclePrimitive.h"
 #include "openGL/primitives/CubePrimitive.h"
 #include "openGL/primitives/TrianglePrimitive.h"
+#include "openGL/primitives/UVSpherePrimitive.h"
 
 int main()
 {
@@ -97,11 +99,33 @@ int main()
     cubePrimitiveModel->set_texture_from_file("./res/textures/container.jpg");
     cubePrimitiveModel->set_texture_from_file("./res/textures/awesomeface.jpg");
 
-    core.addModel(triangleModel);
-    core.addModel(planeModel);
-    core.addModel(gridModel);
-    core.addModel(cubePrimitiveModel);
+    auto circlePrimitive = openGL::primitives::CirclePrimitive::generate_circle(1.0f, 64);
+    auto circleModel = std::make_shared<openGL::models::ModelBase>(defaultColouredVertexShader);
+    circleModel->DefaultColor = { 0.8f, 0.2f, 0.2f, 1.0f };
+    circleModel->UseDefaultColor = true;
+    circleModel->set_vertices(circlePrimitive.get_vertices());
+    circleModel->set_indices(circlePrimitive.get_indices());
+    circleModel->set_camera(camera);
 
+    auto uvSpherePrimitive = openGL::primitives::UVSpherePrimitive::generate_uv_sphere(32.0f, 32.0f, 2.0f);
+    auto uvSphereModel = std::make_shared<openGL::models::ModelBase>(texturedVertexShader);
+    uvSphereModel->DefaultColor = { 0.2f, 0.5f, 0.8f, 1.0f };
+     uvSphereModel->UseDefaultColor = false;
+    uvSphereModel->set_vertices(uvSpherePrimitive.get_vertices());
+    uvSphereModel->set_indices(uvSpherePrimitive.get_indices());
+    uvSphereModel->set_camera(camera);
+    uvSphereModel->set_texture_from_file("./res/textures/container.jpg");
+    uvSphereModel->set_texture_from_file("./res/textures/awesomeface.jpg");
+    core.get_process_input_event()->subscribe(uvSphereModel.get());
+    
+    //core.addModel(triangleModel);
+    //core.addModel(planeModel);
+    //core.addModel(cubePrimitiveModel);
+    core.addModel(gridModel);
+    core.addModel(uvSphereModel);
+    //core.addModel(circleModel);
+
+    //core.toggleWireFrameMode();
     core.enable_depth_testing();
 
     core.run();
