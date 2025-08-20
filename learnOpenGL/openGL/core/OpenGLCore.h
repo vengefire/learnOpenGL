@@ -1,34 +1,34 @@
 #pragma once
 
 #include "../../config.h"
-#include "../models/ModelBase.h"
+#include "../model/ModelBase.h"
 #include "../../framework/events/EventPublisher.h"
 #include "../../framework/events/TEventSubscriberBase.h"
-#include "../Events/ProcessInputEvent.h"
-#include "../Events/FrameRenderEvent.h"
-#include "../Events/MouseInputEvent.h"
+#include "../event/ProcessInputEvent.h"
+#include "../event/FrameRenderEvent.h"
+#include "../event/MouseInputEvent.h"
 
 namespace openGL::core
 {
   class OpenGLCore
     : public framework::events::EventPublisher,
-      public framework::events::TEventSubscriberBase<events::ProcessInputEventData>
+      public framework::events::TEventSubscriberBase<event::ProcessInputEventData>
   {
   public:
-    events::ProcessInputEvent* get_process_input_event() const
+    event::ProcessInputEvent* get_process_input_event() const
     {
-      return static_cast<events::ProcessInputEvent*>(get_event_by_type(typeid(events::ProcessInputEvent)));
+      return static_cast<event::ProcessInputEvent*>(get_event_by_type(typeid(event::ProcessInputEvent)));
     }
-    void handle_event(std::shared_ptr<events::ProcessInputEventData> pEventData) override;
+    void handle_event(std::shared_ptr<event::ProcessInputEventData> pEventData) override;
 
-    events::FrameRenderEvent* get_render_event()
+    event::FrameRenderEvent* get_render_event()
     {
-      return static_cast<events::FrameRenderEvent*>(get_event_by_type(typeid(events::FrameRenderEvent)));
+      return static_cast<event::FrameRenderEvent*>(get_event_by_type(typeid(event::FrameRenderEvent)));
     }
 
-    events::MouseInputEvent* get_mouse_input_event()
+    event::MouseInputEvent* get_mouse_input_event()
     {
-      return static_cast<events::MouseInputEvent*>(get_event_by_type(typeid(events::MouseInputEvent)));
+      return static_cast<event::MouseInputEvent*>(get_event_by_type(typeid(event::MouseInputEvent)));
     }
 
     OpenGLCore(int majorVersion, int minorVersion);
@@ -44,7 +44,7 @@ namespace openGL::core
     void set_viewport_and_framebuffer_callback(int width, int height) const;
     std::shared_ptr<GLFWwindow> getWindow();
 
-    void addModel(std::shared_ptr<models::ModelBase> model);
+    void addModel(std::shared_ptr<model::ModelBase> model);
 
   protected:
     void init(int majorVersion, int minorVersion);
@@ -54,6 +54,6 @@ namespace openGL::core
     bool cursorCaptureMode = false;
     bool wireFrameMode = false;
     std::shared_ptr<GLFWwindow> pWindow_;
-    std::vector<std::shared_ptr<models::ModelBase>> models_;
+    std::vector<std::shared_ptr<model::ModelBase>> models_;
   };
 }

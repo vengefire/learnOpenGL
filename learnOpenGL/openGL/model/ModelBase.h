@@ -4,14 +4,14 @@
 #include "../shaders/ShaderProgram.h"
 #include "../textures/TextureBase.h"
 #include "../core/VertexBase.h"
-#include "../Events/ProcessInputEvent.h"
+#include "../event/ProcessInputEvent.h"
 #include "../../framework/events/TEventSubscriberBase.h"
 #include "../camera/CameraBase.h"
 
-namespace openGL::models
+namespace openGL::model
 {
   class ModelBase
-    : public framework::events::TEventSubscriberBase<events::ProcessInputEventData>
+    : public framework::events::TEventSubscriberBase<event::ProcessInputEventData>
   {
   public:
     ModelBase();
@@ -69,7 +69,7 @@ namespace openGL::models
     void Init();
 
   public:
-    void handle_event(std::shared_ptr<events::ProcessInputEventData> pEventData) override;
+    void handle_event(std::shared_ptr<event::ProcessInputEventData> pEventData) override;
 
   private:
     std::shared_ptr<shaders::ShaderProgram> shader_program_;
@@ -208,22 +208,6 @@ namespace openGL::models
     }
 
     __declspec(property(get = get_translation_z, put = set_translation_z)) float TranslationZ;
-
-  private:
-    bool wireMode = false;
-
-  public:
-    [[nodiscard]] bool is_wire_mode() const
-    {
-      return wireMode;
-    }
-
-    void set_wire_mode(const bool wire_mode)
-    {
-      wireMode = wire_mode;
-    }
-
-    __declspec(property(get = is_wire_mode, put = set_wire_mode)) bool WireMode;
 
   private:
     float rotationZ_ = 0.0f;

@@ -1,7 +1,7 @@
 #pragma once
 #include "../../framework/events/TEventBase.h"
 
-namespace openGL::events
+namespace openGL::event
 {
   class MouseInputEventData : public framework::events::EventDataBase
   {
@@ -11,8 +11,8 @@ namespace openGL::events
     {
     }
 
-    double y_offset; // Y offset of the mouse movement (for scroll events)
-    double x_offset; // X offset of the mouse movement (for scroll events)
+    double y_offset; // Y offset of the mouse movement (for scroll event)
+    double x_offset; // X offset of the mouse movement (for scroll event)
     double x_pos; // X position of the mouse
     double y_pos; // Y position of the mouse
     int button; // Mouse button pressed or released

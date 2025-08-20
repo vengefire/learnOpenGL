@@ -2,7 +2,7 @@
 
 namespace openGL::core
 {
-  void OpenGLCore::handle_event(std::shared_ptr<events::ProcessInputEventData>  pEventData)
+  void OpenGLCore::handle_event(std::shared_ptr<event::ProcessInputEventData>  pEventData)
   {
     if (glfwGetKey(pEventData->window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
     {
@@ -65,18 +65,18 @@ namespace openGL::core
       throw std::runtime_error("Failed to create GLFW window");
     }
 
-    add_event(std::make_unique<events::ProcessInputEvent>(pWindow_.get(), 0.0f));
-    add_event(std::make_unique<events::FrameRenderEvent>());
+    add_event(std::make_unique<event::ProcessInputEvent>(pWindow_.get(), 0.0f));
+    add_event(std::make_unique<event::FrameRenderEvent>());
 
     toggleCursorCaptureMode();
-    static auto mouseInputEvent = add_event(std::make_unique<events::MouseInputEvent>());
+    static auto mouseInputEvent = add_event(std::make_unique<event::MouseInputEvent>());
     glfwSetCursorPosCallback(pWindow_.get(), [](GLFWwindow* window, double xpos, double ypos)
       {
         if (!mouseInputEvent)
         {
           return;
         }
-        mouseInputEvent->emit_event(std::make_shared<events::MouseInputEventData>(xpos, ypos, 0, 0, 0, 0));
+        mouseInputEvent->emit_event(std::make_shared<event::MouseInputEventData>(xpos, ypos, 0, 0, 0, 0));
       });
 
     glfwSetMouseButtonCallback(pWindow_.get(), [](GLFWwindow* window, int button, int action, int mods)
@@ -85,7 +85,7 @@ namespace openGL::core
         {
           return;
         }
-        mouseInputEvent->emit_event(std::make_shared<events::MouseInputEventData>(0, 0, 0, 0, button, action));
+        mouseInputEvent->emit_event(std::make_shared<event::MouseInputEventData>(0, 0, 0, 0, button, action));
       });
 
     glfwSetScrollCallback(pWindow_.get(), [](GLFWwindow* window, double xoffset, double yoffset)
@@ -94,11 +94,11 @@ namespace openGL::core
         {
           return;
         }
-        mouseInputEvent->emit_event(std::make_shared<events::MouseInputEventData>(0, 0, xoffset, yoffset, 0, 0));
+        mouseInputEvent->emit_event(std::make_shared<event::MouseInputEventData>(0, 0, xoffset, yoffset, 0, 0));
       });
 
-    TEventSubscriberBase<events::ProcessInputEventData>* me = this;
-    register_subscriber(me, typeid(events::ProcessInputEvent));
+    TEventSubscriberBase<event::ProcessInputEventData>* me = this;
+    register_subscriber(me, typeid(event::ProcessInputEvent));
   }
 
   void OpenGLCore::createWindow(int width, int height, const char* title)
@@ -126,8 +126,8 @@ namespace openGL::core
       double deltaTime = currentFrame - lastFrame;
       lastFrame = currentFrame;
       //processInput(pWindow_.get());
-      emit_event(typeid(events::ProcessInputEvent));
-      emit_event(typeid(events::FrameRenderEvent), std::make_shared<events::FrameRenderEventData>(deltaTime, lastFrame));
+      emit_event(typeid(event::ProcessInputEvent));
+      emit_event(typeid(event::FrameRenderEvent), std::make_shared<event::FrameRenderEventData>(deltaTime, lastFrame));
 
       glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -181,7 +181,7 @@ namespace openGL::core
     return pWindow_;
   }
 
-  void OpenGLCore::addModel(std::shared_ptr<models::ModelBase> model)
+  void OpenGLCore::addModel(std::shared_ptr<model::ModelBase> model)
   {
     models_.push_back(model);
   }

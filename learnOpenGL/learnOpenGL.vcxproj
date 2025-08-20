@@ -133,18 +133,23 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="openGL\core\OpenGLCore.cpp" />
     <ClCompile Include="openGL\core\Vector3f.cpp" />
-    <ClCompile Include="openGL\models\ModelBase.cpp" />
+    <ClCompile Include="openGL\model\ModelBase.cpp" />
     <ClCompile Include="openGL\shaders\Shader.cpp" />
     <ClCompile Include="openGL\shaders\ShaderProgram.cpp" />
     <ClCompile Include="openGL\textures\TextureBase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\dep\stb\stb_image.h" />
+    <ClInclude Include="openGL\entity\property\EntityPropertyDimensions.h" />
+    <ClInclude Include="openGL\entity\property\EntityPropertyBase.h" />
+    <ClInclude Include="openGL\entity\property\EntityPropertyScale.h" />
+    <ClInclude Include="openGL\entity\property\EntityPropertyOrientation.h" />
+    <ClInclude Include="openGL\entity\property\EntityPropertyPosition.h" />
     <ClInclude Include="openGL\primitives\CirclePrimitive.h" />
     <ClInclude Include="openGL\primitives\CubePrimitive.h" />
     <ClInclude Include="openGL\primitives\GridPrimitive.h" />
-    <ClInclude Include="openGL\Events\MouseInputEvent.h" />
-    <ClInclude Include="openGL\Events\FrameRenderEvent.h" />
+    <ClInclude Include="openGL\event\MouseInputEvent.h" />
+    <ClInclude Include="openGL\event\FrameRenderEvent.h" />
     <ClInclude Include="openGL\camera\CameraBase.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="framework\events\EventSubscriberBase.h" />
@@ -152,10 +157,10 @@
     <ClInclude Include="framework\events\EventPublisher.h" />
     <ClInclude Include="framework\events\EventBase.hpp" />
     <ClInclude Include="openGL\core\OpenGLCore.h" />
-    <ClInclude Include="openGL\models\ModelBase.h" />
+    <ClInclude Include="openGL\model\ModelBase.h" />
     <ClInclude Include="openGL\shaders\ShaderProgram.h" />
     <ClInclude Include="openGL\shaders\Shader.h" />
-    <ClInclude Include="openGL\Events\ProcessInputEvent.h" />
+    <ClInclude Include="openGL\event\ProcessInputEvent.h" />
     <ClInclude Include="openGL\primitives\PlanePrimitive.h" />
     <ClInclude Include="openGL\primitives\PrimitiveBase.h" />
     <ClInclude Include="stb_image_impl.h" />

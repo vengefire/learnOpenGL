@@ -5,7 +5,7 @@
 #include <../../dep/glm/gtc/matrix_transform.hpp>
 #include <../../dep/glm/gtc/type_ptr.hpp>
 
-namespace openGL::models
+namespace openGL::model
 {
   ModelBase::ModelBase()
   {
@@ -70,7 +70,7 @@ namespace openGL::models
   {
     shader_program_->use();
 
-    // Gen an identity matrix
+    // Generate an identity matrix
     glm::mat4 trans = glm::mat4(1.0f);
     // Apply Scaling
     trans = glm::scale(trans, glm::vec3(scale_, scale_, scale_));
@@ -181,7 +181,7 @@ namespace openGL::models
     glGenBuffers(1, &vbo_Id_);
   }
 
-  void ModelBase::handle_event(std::shared_ptr<events::ProcessInputEventData> pEventData)
+  void ModelBase::handle_event(std::shared_ptr<event::ProcessInputEventData> pEventData)
   {
 
     // Blending

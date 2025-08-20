@@ -1,5 +1,5 @@
 #include "config.h"
-#include "openGL/models/ModelBase.h"
+#include "openGL/model/ModelBase.h"
 #include "openGL/shaders/ShaderProgram.h"
 #include "openGL/core/OpenGLCore.h"
 #include "openGL/camera/CameraBase.h"
@@ -23,9 +23,9 @@ int main()
     auto inputEvent = core.get_process_input_event();
     auto renderEvent = core.get_render_event();
     auto mouseInputEvent = core.get_mouse_input_event();
-    renderEvent->subscribe(static_cast<framework::events::TEventSubscriberBase<openGL::events::FrameRenderEventData>*>(camera.get()));
-    inputEvent->subscribe(static_cast<framework::events::TEventSubscriberBase<openGL::events::ProcessInputEventData>*>(camera.get()));
-    mouseInputEvent->subscribe(static_cast<framework::events::TEventSubscriberBase<openGL::events::MouseInputEventData>*>(camera.get()));
+    renderEvent->subscribe(static_cast<framework::events::TEventSubscriberBase<openGL::event::FrameRenderEventData>*>(camera.get()));
+    inputEvent->subscribe(static_cast<framework::events::TEventSubscriberBase<openGL::event::ProcessInputEventData>*>(camera.get()));
+    mouseInputEvent->subscribe(static_cast<framework::events::TEventSubscriberBase<openGL::event::MouseInputEventData>*>(camera.get()));
 
     // Default shader program for coloured vertices
     auto defaultColouredVertexShader = std::make_shared<openGL::shaders::ShaderProgram>("Default Coloured Shader");
@@ -40,7 +40,7 @@ int main()
     texturedVertexShader->linkProgram();
 
     auto trianglePrimitive = openGL::primitives::TrianglePrimitive::generate_triangle(1.0f, 1.0f, 0.0f);
-    auto triangleModel = std::make_shared<openGL::models::ModelBase>(texturedVertexShader);
+    auto triangleModel = std::make_shared<openGL::model::ModelBase>(texturedVertexShader);
     triangleModel->set_vertices(trianglePrimitive.get_vertices());
     triangleModel->set_camera(camera);
     triangleModel->set_texture_from_file("./res/textures/awesomeface.jpg");
@@ -70,7 +70,7 @@ int main()
     core.addModel(rectModel1);*/
 
     auto planePrimitive = openGL::primitives::PlanePrimitive::generate_plane(5.0f, 5.0f, 1, 1);
-    auto planeModel = std::make_shared<openGL::models::ModelBase>(defaultColouredVertexShader);
+    auto planeModel = std::make_shared<openGL::model::ModelBase>(defaultColouredVertexShader);
     planeModel->set_vertices(planePrimitive.get_vertices());
     planeModel->set_indices(planePrimitive.get_indices());
     planeModel->set_camera(camera);
@@ -80,7 +80,7 @@ int main()
     planeModel->UseDefaultColor = true;
 
     auto gridPrimitive = openGL::primitives::GridPrimitive::generate_grid_(10.0f, 10.0f, 10.0f, 11.0f, 1);
-    auto gridModel = std::make_shared<openGL::models::ModelBase>(defaultColouredVertexShader);
+    auto gridModel = std::make_shared<openGL::model::ModelBase>(defaultColouredVertexShader);
     gridModel->DefaultColor = { 0.2f, 0.2f, 0.2f, 1.0f };
     gridModel->set_vertices(gridPrimitive.get_vertices());
     gridModel->DrawLines = true; // Set the grid model to draw lines
@@ -90,7 +90,7 @@ int main()
     gridModel->set_camera(camera);
 
     auto cubePrimitive = openGL::primitives::CubePrimitive::generate_cube_primitive(1.0f, 1.0f, 1.0f);
-    auto cubePrimitiveModel = std::make_shared<openGL::models::ModelBase>(texturedVertexShader);
+    auto cubePrimitiveModel = std::make_shared<openGL::model::ModelBase>(texturedVertexShader);
     cubePrimitiveModel->DefaultColor = { 0.6, 0.5, 0.4, 1.0 };
     cubePrimitiveModel->UseDefaultColor = false;
     cubePrimitiveModel->set_vertices(cubePrimitive.get_vertices());
@@ -100,7 +100,7 @@ int main()
     cubePrimitiveModel->set_texture_from_file("./res/textures/awesomeface.jpg");
 
     auto circlePrimitive = openGL::primitives::CirclePrimitive::generate_circle(1.0f, 64);
-    auto circleModel = std::make_shared<openGL::models::ModelBase>(defaultColouredVertexShader);
+    auto circleModel = std::make_shared<openGL::model::ModelBase>(defaultColouredVertexShader);
     circleModel->DefaultColor = { 0.8f, 0.2f, 0.2f, 1.0f };
     circleModel->UseDefaultColor = true;
     circleModel->set_vertices(circlePrimitive.get_vertices());
@@ -108,7 +108,7 @@ int main()
     circleModel->set_camera(camera);
 
     auto uvSpherePrimitive = openGL::primitives::UVSpherePrimitive::generate_uv_sphere(32.0f, 32.0f, 2.0f);
-    auto uvSphereModel = std::make_shared<openGL::models::ModelBase>(texturedVertexShader);
+    auto uvSphereModel = std::make_shared<openGL::model::ModelBase>(texturedVertexShader);
     uvSphereModel->DefaultColor = { 0.2f, 0.5f, 0.8f, 1.0f };
      uvSphereModel->UseDefaultColor = false;
     uvSphereModel->set_vertices(uvSpherePrimitive.get_vertices());

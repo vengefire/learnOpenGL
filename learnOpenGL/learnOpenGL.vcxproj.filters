@@ -21,7 +21,7 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="openGL\models\ModelBase.cpp">
+    <ClCompile Include="openGL\model\ModelBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="openGL\shaders\ShaderProgram.cpp">
@@ -47,7 +47,7 @@
     <ClInclude Include="config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="openGL\models\ModelBase.h">
+    <ClInclude Include="openGL\model\ModelBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="openGL\shaders\ShaderProgram.h">
@@ -80,7 +80,7 @@
     <ClInclude Include="framework\events\EventPublisher.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="openGL\Events\ProcessInputEvent.h">
+    <ClInclude Include="openGL\event\ProcessInputEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="framework\events\TEventBase.h">
@@ -98,10 +98,10 @@
     <ClInclude Include="openGL\camera\CameraBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="openGL\Events\FrameRenderEvent.h">
+    <ClInclude Include="openGL\event\FrameRenderEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="openGL\Events\MouseInputEvent.h">
+    <ClInclude Include="openGL\event\MouseInputEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="openGL\primitives\PlanePrimitive.h">
@@ -123,6 +123,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="openGL\primitives\UVSpherePrimitive.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="openGL\entity\property\EntityPropertyPosition.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="openGL\entity\property\EntityPropertyOrientation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="openGL\entity\property\EntityPropertyScale.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="openGL\entity\property\EntityPropertyBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="openGL\entity\property\EntityPropertyDimensions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -7,16 +7,16 @@
 #include <glm/gtc/quaternion.hpp>
 
 #include "../../framework/events/TEventSubscriberBase.h"
-#include "../Events/ProcessInputEvent.h"
-#include "../Events/FrameRenderEvent.h"
-#include "../Events/MouseInputEvent.h"
+#include "../event/ProcessInputEvent.h"
+#include "../event/FrameRenderEvent.h"
+#include "../event/MouseInputEvent.h"
 
 namespace openGL::camera
 {
   class CameraBase :
-    public framework::events::TEventSubscriberBase<events::ProcessInputEventData>,
-    public framework::events::TEventSubscriberBase<events::FrameRenderEventData>,
-    public framework::events::TEventSubscriberBase<events::MouseInputEventData>
+    public framework::events::TEventSubscriberBase<event::ProcessInputEventData>,
+    public framework::events::TEventSubscriberBase<event::FrameRenderEventData>,
+    public framework::events::TEventSubscriberBase<event::MouseInputEventData>
   {
   public:
     CameraBase() : CameraBase(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0, 0.0, 4.0))
@@ -59,13 +59,13 @@ namespace openGL::camera
       return glm::perspective(glm::radians(camera_zoom_), aspect_ratio, near_plane, far_plane);
     }
 
-    void handle_event(std::shared_ptr<events::FrameRenderEventData> pEventData) override
+    void handle_event(std::shared_ptr<event::FrameRenderEventData> pEventData) override
     {
       if (!pEventData) return; // Handle null pointer case
       camera_speed_ = pEventData->delta_time * 2.5f; // Adjust camera speed based on delta time
     }
 
-    void handle_camera_zoom(std::shared_ptr<events::MouseInputEventData> pEventData)
+    void handle_camera_zoom(std::shared_ptr<event::MouseInputEventData> pEventData)
     {
       // Handle zooming in and out
       camera_zoom_ -= pEventData->y_offset; // Adjust zoom based on mouse scroll
@@ -73,7 +73,7 @@ namespace openGL::camera
       camera_zoom_ = std::min(camera_zoom_, 45.0f); // Prevent zooming out too much
     }
 
-    void handle_yaw_offset(std::shared_ptr<events::MouseInputEventData> pEventData)
+    void handle_yaw_offset(std::shared_ptr<event::MouseInputEventData> pEventData)
     {
       if (enable_pitch)
       {
@@ -84,7 +84,7 @@ namespace openGL::camera
       }
     }
 
-    void handle_pitch_offset(std::shared_ptr<events::MouseInputEventData> pEventData)
+    void handle_pitch_offset(std::shared_ptr<event::MouseInputEventData> pEventData)
     {
       if (enable_yaw)
       {
@@ -112,7 +112,7 @@ namespace openGL::camera
       up_ = glm::normalize(glm::cross(right_, front_));
     }
 
-    void handle_event(std::shared_ptr<events::MouseInputEventData> pEventData) override
+    void handle_event(std::shared_ptr<event::MouseInputEventData> pEventData) override
     {
       static auto firstMouse = true; // Flag to check if it's the first mouse movement
       if (!pEventData) return; // Handle null pointer case
@@ -128,12 +128,12 @@ namespace openGL::camera
 
       if (pEventData->x_pos == 0 && pEventData->y_pos == 0)
       {
-        return; // Ignore events with zero position
+        return; // Ignore event with zero position
       }
 
       if (!enable_pitch && !enable_yaw)
       {
-        return; // Ignore events if both axes are disabled
+        return; // Ignore event if both axes are disabled
       }
 
       handle_yaw_offset(pEventData);
@@ -141,7 +141,7 @@ namespace openGL::camera
       update_camera_vectors();
     }
 
-    void handle_camera_movement(std::shared_ptr<events::ProcessInputEventData> pEventData)
+    void handle_camera_movement(std::shared_ptr<event::ProcessInputEventData> pEventData)
     {
       if (enable_camera_movement_z)
       {
@@ -180,9 +180,9 @@ namespace openGL::camera
       }
     }
 
-    void handle_event(std::shared_ptr<events::ProcessInputEventData> pEventData) override
+    void handle_event(std::shared_ptr<event::ProcessInputEventData> pEventData) override
     {
-      // Handle input events here, e.g., update camera position or orientation based on input
+      // Handle input event here, e.g., update camera position or orientation based on input
       // This is a placeholder implementation; actual input handling logic should be added.
       if (!pEventData)
       {

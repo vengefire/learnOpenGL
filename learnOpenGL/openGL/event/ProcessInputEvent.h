@@ -4,7 +4,7 @@
 #include "../../framework/events/TEventBase.h"
 #include "../../framework/events/EventDataBase.h"
 
-namespace openGL::events
+namespace openGL::event
 {
   class ProcessInputEventData : public framework::events::EventDataBase
   {
