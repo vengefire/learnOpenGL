@@ -77,6 +77,7 @@ namespace openGL::models
     std::vector<core::VertexBase> vertices_data_;
     std::vector<float> vertices_;
     std::vector<unsigned int> indices_;
+
     unsigned int vao_Id_ = -1;
     unsigned int vbo_Id_ = -1;
     unsigned int ebo_Id_ = -1;
@@ -88,7 +89,37 @@ namespace openGL::models
     float rotationX_ = 0.0f;
     bool draw_lines = false;
 
+    bool use_default_color_ = false;
+
   public:
+    [[nodiscard]] bool use_default_color() const
+    {
+      return use_default_color_;
+    }
+
+    void set_use_default_color(const bool use_default_color)
+    {
+      this->use_default_color_ = use_default_color;
+    }
+
+    __declspec(property(get = use_default_color, put = set_use_default_color)) bool UseDefaultColor;
+
+  private:
+    glm::vec4 default_color_ = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f); // Default color for the model
+  public:
+    [[nodiscard]] glm::vec4 get_default_color() const
+    {
+      return default_color_;
+    }
+
+    void set_default_color(const glm::vec4& default_color)
+    {
+      this->default_color_ = default_color;
+      this->set_use_default_color(true);
+    }
+
+    __declspec(property(get = get_default_color, put = set_default_color)) glm::vec4 DefaultColor;
+
     [[nodiscard]] bool is_draw_lines() const
     {
       return draw_lines;

@@ -140,6 +140,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\dep\stb\stb_image.h" />
+    <ClInclude Include="openGL\primitives\CubePrimitive.h" />
     <ClInclude Include="openGL\primitives\GridPrimitive.h" />
     <ClInclude Include="openGL\Events\MouseInputEvent.h" />
     <ClInclude Include="openGL\Events\FrameRenderEvent.h" />

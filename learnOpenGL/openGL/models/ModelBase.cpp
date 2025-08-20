@@ -121,9 +121,21 @@ namespace openGL::models
         vertices_data.get_position_x(), vertices_data.get_position_y(), vertices_data.get_position_z()
       };
       vertexData.insert(vertexData.end(), position, position + 3);
-      if (vertices_data.hasColor())
+      if (vertices_data.hasColor() || UseDefaultColor)
       {
-        float colorData[3] = {vertices_data.get_color_r(), vertices_data.get_color_g(), vertices_data.get_color_b()};
+        float colorData[3];
+        if (vertices_data.hasColor())
+        {
+          colorData[0] = vertices_data.get_color_r();
+          colorData[1] = vertices_data.get_color_g();
+          colorData[2] = vertices_data.get_color_b();
+        }
+        else if (UseDefaultColor)
+        {
+          colorData[0] = default_color_.r;
+          colorData[1] = default_color_.g;
+          colorData[2] = default_color_.b;
+        }
         vertexData.insert(vertexData.end(), colorData, colorData + 3);
       }
       if (vertices_data.hasTextureCoordinates())
@@ -137,7 +149,7 @@ namespace openGL::models
     int floatCount = 3; // Position
     int offset = 0;
     unsigned int position = 0;
-    floatCount += vertices_data_[0].hasColor() ? 3 : 0; // Color
+    floatCount += vertices_data_[0].hasColor() || UseDefaultColor ? 3 : 0; // Color
     floatCount += vertices_data_[0].hasTextureCoordinates() ? 2 : 0; // Texture Coordinates
     int stride = floatCount * sizeof(float);
 
@@ -146,7 +158,7 @@ namespace openGL::models
     offset += 3 * sizeof(float);
     glEnableVertexAttribArray(position++);
     // Color Optional
-    if (vertices_data_[0].hasColor())
+    if (vertices_data_[0].hasColor() || UseDefaultColor)
     {
       glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, stride, (void*)(offset));
       glEnableVertexAttribArray(position++);
