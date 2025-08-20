@@ -8,6 +8,7 @@
 
 #include "stb_image_impl.h"
 #include "openGL/primitives/CubePrimitive.h"
+#include "openGL/primitives/TrianglePrimitive.h"
 
 int main()
 {
@@ -30,31 +31,20 @@ int main()
     defaultColouredVertexShader->load_shader_from_file("./res/shaders/shader.fs", GL_FRAGMENT_SHADER);
     defaultColouredVertexShader->linkProgram();
 
-    /*
-    auto triModel1 = std::make_shared<openGL::models::ModelBase>();
-    triModel1->set_vertices({
-      { -1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f }, // Bottom Left  - Red
-      { 0.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f },  // Bottom Right - Green
-      { -0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f }   // Top Center   - Blue
-      });
-    triModel1->set_shader_program(defaultColouredVertexShader);
-    // core.addModel(triModel1);
-
-    auto triModel2 = std::make_shared<openGL::models::ModelBase>();
-    triModel2->set_vertices({
-      { 0.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f }, // Bottom Left  - Red
-      { 1.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f }, // Bottom Right - Green
-      { 0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f }   // Top Center   - Blue
-      });
-    triModel2->set_shader_program(defaultColouredVertexShader);
-    // core.addModel(triModel2);
-    */
-
     // Texture shader program for textured vertices
     auto texturedVertexShader = std::make_shared<openGL::shaders::ShaderProgram>("Textured Shader Program");
     texturedVertexShader->load_shader_from_file("./res/shaders/texturedshader.vs", GL_VERTEX_SHADER);
     texturedVertexShader->load_shader_from_file("./res/shaders/texturedshader.fs", GL_FRAGMENT_SHADER);
     texturedVertexShader->linkProgram();
+
+    auto trianglePrimitive = openGL::primitives::TrianglePrimitive::generate_triangle(1.0f, 1.0f, 0.0f);
+    auto triangleModel = std::make_shared<openGL::models::ModelBase>(texturedVertexShader);
+    triangleModel->set_vertices(trianglePrimitive.get_vertices());
+    triangleModel->set_camera(camera);
+    triangleModel->set_texture_from_file("./res/textures/awesomeface.jpg");
+    triangleModel->TranslationX -= 2.0f;
+    triangleModel->TranslationZ -= 1.0f;
+    triangleModel->TranslationY += 1.0f; // Rotate the triangle by 45 degrees around the X-axis
 
     /*auto rectModel1 = std::make_shared<openGL::models::ModelBase>();
     rectModel1->set_vertices({
@@ -76,58 +66,8 @@ int main()
     core.get_process_input_event()->subscribe(rectModel1.get());
     rectModel1->RotationX = -55.0f; // Rotate the rectangle by 45 degrees around the X-axis
     core.addModel(rectModel1);*/
-    auto cubeModel = std::make_shared<openGL::models::ModelBase>(texturedVertexShader);
-    cubeModel->set_vertices({
-    {-0.5f, -0.5f, -0.5f,  0.0f, 0.0f},
-     {0.5f, -0.5f, -0.5f,  1.0f, 0.0f},
-     {0.5f,  0.5f, -0.5f,  1.0f, 1.0f},
-     {0.5f,  0.5f, -0.5f,  1.0f, 1.0f},
-    {-0.5f,  0.5f, -0.5f,  0.0f, 1.0f},
-    {-0.5f, -0.5f, -0.5f,  0.0f, 0.0f},
 
-    {-0.5f, -0.5f,  0.5f,  0.0f, 0.0f},
-     {0.5f, -0.5f,  0.5f,  1.0f, 0.0f},
-     {0.5f,  0.5f,  0.5f,  1.0f, 1.0f},
-     {0.5f,  0.5f,  0.5f,  1.0f, 1.0f},
-    {-0.5f,  0.5f,  0.5f,  0.0f, 1.0f},
-    {-0.5f, -0.5f,  0.5f,  0.0f, 0.0f},
-
-    {-0.5f,  0.5f,  0.5f,  1.0f, 0.0f},
-    {-0.5f,  0.5f, -0.5f,  1.0f, 1.0f},
-    {-0.5f, -0.5f, -0.5f,  0.0f, 1.0f},
-    {-0.5f, -0.5f, -0.5f,  0.0f, 1.0f},
-    {-0.5f, -0.5f,  0.5f,  0.0f, 0.0f},
-    {-0.5f,  0.5f,  0.5f,  1.0f, 0.0f},
-
-     {0.5f,  0.5f,  0.5f,  1.0f, 0.0f},
-     {0.5f,  0.5f, -0.5f,  1.0f, 1.0f},
-     {0.5f, -0.5f, -0.5f,  0.0f, 1.0f},
-     {0.5f, -0.5f, -0.5f,  0.0f, 1.0f},
-     {0.5f, -0.5f,  0.5f,  0.0f, 0.0f},
-     {0.5f,  0.5f,  0.5f,  1.0f, 0.0f},
-
-    {-0.5f, -0.5f, -0.5f,  0.0f, 1.0f},
-     {0.5f, -0.5f, -0.5f,  1.0f, 1.0f},
-     {0.5f, -0.5f,  0.5f,  1.0f, 0.0f},
-     {0.5f, -0.5f,  0.5f,  1.0f, 0.0f},
-    {-0.5f, -0.5f,  0.5f,  0.0f, 0.0f},
-    {-0.5f, -0.5f, -0.5f,  0.0f, 1.0f},
-
-    {-0.5f,  0.5f, -0.5f,  0.0f, 1.0f},
-     {0.5f,  0.5f, -0.5f,  1.0f, 1.0f},
-     {0.5f,  0.5f,  0.5f,  1.0f, 0.0f},
-     {0.5f,  0.5f,  0.5f,  1.0f, 0.0f},
-    {-0.5f,  0.5f,  0.5f,  0.0f, 0.0f},
-    {-0.5f,  0.5f, -0.5f,  0.0f, 1.0f} });
-
-    cubeModel->set_texture_from_file("./res/textures/container.jpg");
-    cubeModel->set_texture_from_file("./res/textures/awesomeface.jpg");
-    inputEvent->subscribe(cubeModel.get());
-    // cubeModel->RotationX = -55.0f; // Rotate the rectangle by 45 degrees around the X-axis
-    // cubeModel->TranslationY = 1.0f; // Move the cube up by 1 unit
-    cubeModel->set_camera(camera);
-
-    auto planePrimitive = openGL::primitives::PlanePrimitive::generate_plane(5.0f, 5.0f, 10, 10);
+    auto planePrimitive = openGL::primitives::PlanePrimitive::generate_plane(5.0f, 5.0f, 1, 1);
     auto planeModel = std::make_shared<openGL::models::ModelBase>(defaultColouredVertexShader);
     planeModel->set_vertices(planePrimitive.get_vertices());
     planeModel->set_indices(planePrimitive.get_indices());
@@ -157,8 +97,8 @@ int main()
     cubePrimitiveModel->set_texture_from_file("./res/textures/container.jpg");
     cubePrimitiveModel->set_texture_from_file("./res/textures/awesomeface.jpg");
 
-    //core.addModel(planeModel);
-    //core.addModel(cubeModel);
+    core.addModel(triangleModel);
+    core.addModel(planeModel);
     core.addModel(gridModel);
     core.addModel(cubePrimitiveModel);
 

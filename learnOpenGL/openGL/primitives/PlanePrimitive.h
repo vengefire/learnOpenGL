@@ -6,15 +6,16 @@ namespace openGL::primitives
   class PlanePrimitive : public PrimitiveBase
   {
   public:
-    void generate_primitive() override
-    {
-      generate_plane_impl(width_, height_, width_segments_, height_segments_);
-    }
-
-    PlanePrimitive(float width, float height, unsigned int widthSegments = 1, unsigned int heightSegments = 1) : width_(
-      width), height_(height), width_segments_(widthSegments), height_segments_(heightSegments)
+    PlanePrimitive(float width, float height, unsigned int widthSegments = 1, unsigned int heightSegments = 1) :
+      PrimitiveBase(width, height, 0.0f),
+      width_segments_(widthSegments), height_segments_(heightSegments)
     {
       PlanePrimitive::generate_primitive();
+    }
+
+    void generate_primitive() override
+    {
+      generate_plane_impl(_width, _height, width_segments_, height_segments_);
     }
 
     static PlanePrimitive generate_plane(float width, float height, unsigned int widthSegments = 1,
@@ -57,8 +58,6 @@ namespace openGL::primitives
       }
     }
 
-    float width_;
-    float height_;
     unsigned int width_segments_;
     unsigned int height_segments_;
   };

@@ -163,6 +163,7 @@
     <ClInclude Include="openGL\core\VertexBase.h" />
     <ClInclude Include="framework\events\TEventBase.h" />
     <ClInclude Include="framework\events\TEventSubscriberBase.h" />
+    <ClInclude Include="openGL\primitives\TrianglePrimitive.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\shader.fs">

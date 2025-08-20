@@ -7,13 +7,11 @@ namespace openGL::primitives
   {
   public:
     GridPrimitive(float width, float height, float depth, float grid_line_spacing, bool centered)
-      : width_(width),
-        height_(height),
-        depth_(depth),
+      : PrimitiveBase(width, height, depth),
         grid_line_spacing_(grid_line_spacing),
         centered_(centered)
     {
-      generate_grid_impl(width_, height_, depth_, grid_line_spacing_, centered_);
+      generate_grid_impl(_width, _height, _depth, grid_line_spacing_, centered_);
     }
 
     static GridPrimitive generate_grid_(float width, float height, float depth, float grid_line_spacing, bool centered)
@@ -23,7 +21,7 @@ namespace openGL::primitives
 
     void generate_primitive() override
     {
-      openGL::primitives::GridPrimitive::generate_grid_impl(width_, height_, depth_, grid_line_spacing_, centered_);
+      openGL::primitives::GridPrimitive::generate_grid_impl(_width, _height, _depth, grid_line_spacing_, centered_);
     }
 
   private:
@@ -69,9 +67,6 @@ namespace openGL::primitives
       return *this;
     }
   private:
-    float width_;
-    float height_;
-    float depth_;
     float grid_line_spacing_;
     bool centered_;
   };

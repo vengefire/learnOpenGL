@@ -116,6 +116,9 @@
     <ClInclude Include="openGL\primitives\CubePrimitive.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="openGL\primitives\TrianglePrimitive.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\shader.fs" />

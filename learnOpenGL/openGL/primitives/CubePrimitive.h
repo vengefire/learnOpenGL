@@ -11,8 +11,7 @@ namespace openGL::primitives
     public PrimitiveBase
   {
   public:
-    CubePrimitive(float width = 1.0f, float height = 1.0f, float depth = 1.0f)
-      : _width(width), _height(height), _depth(depth)
+    CubePrimitive(float width = 1.0f, float height = 1.0f, float depth = 1.0f) : PrimitiveBase(width, height, depth)
     {
       CubePrimitive::generate_primitive();
     }
@@ -97,8 +96,5 @@ namespace openGL::primitives
       generate_face(front_face, glm::vec3(0, 0.0f, 0.0f), glm::vec3(90.0f, 0.0f, 0.0f)); // Top face
       generate_face(front_face, glm::vec3(0, 0.0f, 0.0f), glm::vec3(-90.0f, 0.0f, 0.0f)); // Bottom face
     }
-
-  protected:
-    float _width, _height, _depth;
   };
 }
