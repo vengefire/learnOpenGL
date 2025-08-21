@@ -5,7 +5,7 @@
 
 namespace openGL::entity::property
 {
-  class EntityPropertyOrientation : public openGl::entity::property::EntityPropertyBase<glm::vec3>
+  class EntityPropertyOrientation : public openGL::entity::property::EntityPropertyBase<glm::vec3>
   {
   public:
     EntityPropertyOrientation() = default;

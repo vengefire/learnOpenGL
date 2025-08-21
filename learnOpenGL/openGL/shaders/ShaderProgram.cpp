@@ -73,6 +73,11 @@ namespace openGL::shaders
     glUniformMatrix4fv(glGetUniformLocation(id_, name.c_str()), 1, GL_FALSE, glm::value_ptr(mat4));
   }
 
+  void ShaderProgram::set_vec4(const std::string& name, const glm::vec4& color)
+  {
+    glUniform4fv(glGetUniformLocation(id_, name.c_str()), 1, &color[0]);
+  }
+
   void ShaderProgram::Init()
   {
     id_ = glCreateProgram();

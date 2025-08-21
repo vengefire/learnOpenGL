@@ -3,11 +3,12 @@
 #include <glm/vec4.hpp>
 
 #include "EntityPropertyBase.h"
+#include "../../../framework/property/PropertyBaseMorphOperands.h"
 
 namespace openGL::entity::property
 {
   class EntityPropertyColor :
-    public openGl::entity::property::EntityPropertyBase<glm::vec4>,
+    public EntityPropertyBase<glm::vec4>,
     public framework::property::PropertyBaseMorphOperands<EntityPropertyColor, glm::vec3>
   {
   public:

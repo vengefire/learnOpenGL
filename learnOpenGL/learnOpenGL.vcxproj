@@ -139,7 +139,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\dep\stb\stb_image.h" />
+    <ClInclude Include="openGL\entity\property\EntityPropertyId.h" />
+    <ClInclude Include="openGL\entity\property\EntityPropertyName.h" />
+    <ClInclude Include="openGL\entity\EntityBase.h" />
     <ClInclude Include="framework\property\PropertyBase.h" />
+    <ClInclude Include="openGL\lighting\base\LightBase.h" />
     <ClInclude Include="openGL\model\ModelBase.h" />
     <ClInclude Include="openGL\mesh\base\property\VertexBasePropertyTexelCoordinates.h" />
     <ClInclude Include="openGL\entity\property\EntityPropertyNormal.h" />
@@ -171,6 +175,7 @@
     <ClInclude Include="openGL\primitives\PrimitiveFactory.h" />
     <ClInclude Include="openGL\primitives\PrimitiveBase.h" />
     <ClInclude Include="openGL\primitives\SegmentedTypedPrimitiveBase.h" />
+    <ClInclude Include="openGL\lighting\SolidColoredLight.h" />
     <ClInclude Include="stb_image_impl.h" />
     <ClInclude Include="openGL\textures\TextureBase.h" />
     <ClInclude Include="framework\events\TEventBase.h" />
@@ -180,6 +185,7 @@
     <ClInclude Include="openGL\mesh\base\VertexBase.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="res\shaders\light-shader.fs" />
     <None Include="res\shaders\shader.fs">
       <DeploymentContent>true</DeploymentContent>
     </None>

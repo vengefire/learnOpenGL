@@ -1,9 +1,8 @@
 #pragma once
 
-#include "../../../framework/property/PropertyBaseMorphOperands.h"
 #include "../../learnOpenGL/framework/property/PropertyBase.h"
 
-namespace openGl::entity::property
+namespace openGL::entity::property
 {
   template <class TEntityProperty>
   class EntityPropertyBase :

@@ -4,6 +4,7 @@
 #include "openGL/camera/CameraBase.h"
 
 #include "stb_image_impl.h"
+#include "openGL/lighting/SolidColoredLight.h"
 #include "openGL/model/ModelBase.h"
 #include "openGL/primitives/PrimitiveFactory.h"
 
@@ -14,10 +15,13 @@ int main()
     openGL::core::OpenGLCore core(3, 3);
     core.createWindow(800, 600, "Learn OpenGL");
 
-    auto camera = std::make_shared<openGL::camera::CameraBase>();
     auto inputEvent = core.get_process_input_event();
     auto renderEvent = core.get_render_event();
     auto mouseInputEvent = core.get_mouse_input_event();
+
+    // Setup the camera
+    auto camera = std::make_shared<openGL::camera::CameraBase>();
+
     renderEvent->subscribe(
       static_cast<framework::events::TEventSubscriberBase<openGL::event::FrameRenderEventData>*>(camera.get()));
     inputEvent->subscribe(
@@ -36,6 +40,16 @@ int main()
     texturedVertexShader->load_shader_from_file("./res/shaders/texturedshader.vs", GL_VERTEX_SHADER);
     texturedVertexShader->load_shader_from_file("./res/shaders/texturedshader.fs", GL_FRAGMENT_SHADER);
     texturedVertexShader->linkProgram();
+
+    // Default shader program for coloured vertices
+    // First setup the simple colored light...
+    auto solidColoredLight = std::make_shared<openGL::lighting::SolidColoredLight>(glm::vec4(0.8f));
+    auto lightedColouredVertexShader = std::make_shared<openGL::shaders::ShaderProgram>("Lighted Coloured Shader");
+    lightedColouredVertexShader->load_shader_from_file("./res/shaders/shader.vs", GL_VERTEX_SHADER);
+    lightedColouredVertexShader->load_shader_from_file("./res/shaders/light-shader.fs", GL_FRAGMENT_SHADER);
+    lightedColouredVertexShader->linkProgram();
+    lightedColouredVertexShader->use();
+    lightedColouredVertexShader->set_vec4("lightColor", solidColoredLight->Color.PropertyValue);
 
     // A couple test models using the factories...
     auto generate_model = [camera](const std::shared_ptr<openGL::shaders::ShaderProgram>& shader,
@@ -91,7 +105,7 @@ int main()
     cube_model->set_texture_from_file("./res/textures/awesomeface.jpg");
     core.addModel(cube_model);
 
-    auto sphere_model = generate_segmented_model(defaultColouredVertexShader,
+    auto sphere_model = generate_segmented_model(lightedColouredVertexShader,
                                                  openGL::primitives::PrimitiveFactory::UVSphere, glm::vec3(2.0f),
                                                  glm::vec3(12, 12, 0), glm::vec4(1.0f, 1.0, 1.0, 1.0));
     sphere_model->Position += glm::vec3(2.0f, 2.0f, -3.0f);

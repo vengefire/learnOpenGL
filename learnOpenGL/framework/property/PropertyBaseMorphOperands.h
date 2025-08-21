@@ -2,7 +2,6 @@
 
 namespace framework::property
 {
-
   // PropertyBaseMorphOperands is a base class for properties that can be morphed or transformed.
   template <class TDerived, class TProperty>
   class PropertyBaseMorphOperands

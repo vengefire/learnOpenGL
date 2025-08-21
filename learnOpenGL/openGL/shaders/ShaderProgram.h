@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glm/detail/type_mat.hpp>
+#include <glm/detail/type_vec.hpp>
 
 #include "../../config.h"
 #include "Shader.h"
@@ -24,6 +25,8 @@ namespace openGL::shaders
     {
       return id_;
     }
+
+    void set_vec4(const std::string& name, const glm::vec4& color);
 
   protected:
     virtual void Init();

@@ -5,7 +5,7 @@
 
 namespace openGL::entity::property
 {
-  class EntityPropertyDimensions : public openGl::entity::property::EntityPropertyBase<glm::vec3>
+  class EntityPropertyDimensions : public EntityPropertyBase<glm::vec3>
   {
   public:
     EntityPropertyDimensions() = default;
