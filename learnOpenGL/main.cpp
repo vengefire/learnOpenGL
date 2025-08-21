@@ -126,7 +126,14 @@ int main()
     //core.addModel(uvSphereModel);
     //core.addModel(circleModel);
     //core.toggleWireFrameMode();
-    auto test_primitive = openGL::primitives::UVSpherePrimitive::generate_uv_sphere(64, 64, 2);
+    auto gridPrimitive = openGL::primitives::GridPrimitive::generate_grid_(10.0f, 10.0f, 10.0f, 11.0f, 1);
+    openGL::mesh::MeshBase gridMesh(gridPrimitive.get_vertices(), gridPrimitive.get_indices(), { 0.2f, 0.2f, 0.2f, 1.0f });
+    gridMesh.DrawLines = true; 
+    auto grid_model = std::make_shared<openGL::model::ModelBase>(gridMesh, defaultColouredVertexShader, camera);
+    grid_model->Orientation = glm::vec3{ 0.0f, 0.0f, -90.0f }; // Rotate the grid by -90 degrees around the Z-axis
+    core.addModel(grid_model);
+
+    auto test_primitive = openGL::primitives::UVSpherePrimitive::generate_uv_sphere(12, 12, 2);
     openGL::mesh::MeshBase test_Mesh(test_primitive.get_vertices(), test_primitive.get_indices(), { 1.0f, 1.0f, 1.0f, 1.0f });
     auto test_model = std::make_shared<openGL::model::ModelBase>(test_Mesh, defaultColouredVertexShader, camera);
     test_model->Position += glm::vec3(2.0f, 2.0f, -3.0f);

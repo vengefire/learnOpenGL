@@ -61,8 +61,21 @@ namespace openGL::mesh
     std::vector<base::VertexBase> vertices_;
     std::vector<unsigned int> indices_;
     entity::property::EntityPropertyColor default_color_;
+    bool draw_lines_ = false; // Flag to indicate if the mesh should be drawn as lines
 
   public:
+    [[nodiscard]] bool draw_lines() const
+    {
+      return draw_lines_;
+    }
+
+    void set_draw_lines(const bool draw_lines)
+    {
+      draw_lines_ = draw_lines;
+    }
+
+    __declspec(property(get = draw_lines, put = set_draw_lines)) bool DrawLines;
+
     [[nodiscard]] std::vector<base::VertexBase> vertices() const
     {
       return vertices_;

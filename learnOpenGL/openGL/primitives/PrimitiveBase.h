@@ -1,12 +1,7 @@
 #pragma once
 #include <vector>
 
-#include "../core/VertexBase.h"
-
-namespace openGL::mesh::base
-{
-  class VertexBase;
-}
+#include "../learnOpenGL/openGL/mesh/base/VertexBase.h"
 
 namespace openGL::primitives
 {
@@ -39,6 +34,7 @@ namespace openGL::primitives
     float _height = 0.0f;
     float _depth = 0.0f;
     std::vector<mesh::base::VertexBase> _vertices;
+    std::vector<unsigned int> _indices;
 
   public:
     [[nodiscard]] float get_width() const
@@ -76,8 +72,5 @@ namespace openGL::primitives
     }
 
     __declspec(property(get = get_depth, put = set_depth)) float Depth;
-
-  protected:
-    std::vector<unsigned int> _indices;
   };
 }

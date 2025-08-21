@@ -70,9 +70,9 @@ namespace openGL::model
     {
       GLenum mode = GL_TRIANGLES;
 
-      if (DrawLines)
+      if (Mesh.DrawLines)
       {
-        GLenum mode = GL_LINES;
+        mode = GL_LINES;
       }
 
       glDrawArrays(mode, 0, static_cast<GLsizei>(count));

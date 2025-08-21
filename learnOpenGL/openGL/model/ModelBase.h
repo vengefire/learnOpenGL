@@ -35,21 +35,8 @@ namespace openGL::model
 
     // REFACTOR
   public:
-    bool draw_lines_ = false;
     void set_texture_from_file(const std::string& textureFilePath, bool flip_vertically = true);
     void set_texture(const std::shared_ptr<textures::TextureBase>& texture);
-
-    [[nodiscard]] bool draw_lines() const
-    {
-      return draw_lines_;
-    }
-
-    void set_draw_lines(const bool draw_lines)
-    {
-      draw_lines_ = draw_lines;
-    }
-
-    __declspec(property(get = draw_lines, put = set_draw_lines)) bool DrawLines;
 
     [[nodiscard]] entity::property::EntityPropertyPosition position() const
     {
