@@ -6,11 +6,17 @@
 namespace openGL::primitives
 {
   class UVSpherePrimitive :
-    public TypedPrimitiveBase<UVSpherePrimitive>
+    public SegmentedTypedPrimitiveBase<UVSpherePrimitive>
   {
   public:
-    UVSpherePrimitive(float width, float height, float depth)
-      : TypedPrimitiveBase(glm::vec3{ width, height, depth })
+    UVSpherePrimitive(const entity::property::EntityPropertyDimensions& dimensions,
+      const entity::property::EntityPropertyDimensions& segments)
+      : SegmentedTypedPrimitiveBase<UVSpherePrimitive>(dimensions, segments)
+    {
+    }
+
+    UVSpherePrimitive(float rings, float sectors, float radius)
+      : UVSpherePrimitive(glm::vec3{ radius * 2, radius * 2, radius *2 }, glm::vec3(rings, sectors, radius))
     {
     }
 
@@ -25,8 +31,8 @@ namespace openGL::primitives
     {
       _vertices.clear();
       _indices.clear();
-      const unsigned int rings = Dimensions.Height; // Number of horizontal segments
-      const unsigned int sectors = Dimensions.Width; // Number of vertical segments
+      const unsigned int rings = Segments.Height; // Number of horizontal segments
+      const unsigned int sectors = Segments.Width; // Number of vertical segments
       const float radius = Dimensions.Depth / 2.0f;
       for (unsigned int r = 0; r <= rings; ++r)
       {

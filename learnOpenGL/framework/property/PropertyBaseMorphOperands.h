@@ -20,6 +20,13 @@ namespace framework::property
       lhs.PropertyValue += rhs;
       return lhs;
     }
+
+    TDerived& operator = (const TProperty& rhs)
+    {
+      auto derivedPtr = reinterpret_cast<TDerived*>(this);
+      derivedPtr->PropertyValue = rhs;
+      return *derivedPtr;
+    }
   };
 
 }

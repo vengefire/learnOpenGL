@@ -20,15 +20,5 @@ namespace openGL::entity::property
       : EntityPropertyBase(glm::vec3(x, y, z))
     {
     }
-
-    /*EntityPropertyPosition& operator+=(const glm::vec3& rhs) {
-      this->PropertyValue += rhs;
-      return *this;
-    }
-
-    EntityPropertyPosition operator+(const glm::vec3& rhs) {
-      this->PropertyValue += rhs;
-      return *this;
-    }*/
   };
 }

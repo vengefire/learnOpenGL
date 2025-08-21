@@ -7,8 +7,8 @@ namespace openGL::primitives
     public TypedPrimitiveBase<TrianglePrimitive>
   {
   public:
-    TrianglePrimitive(entity::property::EntityPropertyDimensions)
-      : TypedPrimitiveBase(dimensions())
+    TrianglePrimitive(entity::property::EntityPropertyDimensions dimensions)
+      : TypedPrimitiveBase(dimensions)
     {
     }
 

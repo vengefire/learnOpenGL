@@ -152,10 +152,7 @@
     <ClInclude Include="framework\property\PropertyBaseMorphOperands.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="openGL\primitives\CartesianPrimitiveFactory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="openGL\primitives\CartesianPrimitiveBase.h">
+    <ClInclude Include="openGL\primitives\PrimitiveFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="openGL\primitives\PrimitiveBase.h">

@@ -1,27 +1,28 @@
 #pragma once
+#include "SegmentedTypedPrimitiveBase.h"
 #include "TypedPrimitiveBase.h"
 
 namespace openGL::primitives
 {
-  class GridPrimitive : public TypedPrimitiveBase<GridPrimitive>
+  class GridPrimitive : public SegmentedTypedPrimitiveBase<GridPrimitive>
   {
   public:
+    GridPrimitive(const entity::property::EntityPropertyDimensions& dimensions,
+                  const entity::property::EntityPropertyDimensions& segments)
+      : SegmentedTypedPrimitiveBase<GridPrimitive>(dimensions, segments)
+    {
+      centered_ = true;
+    }
 
-    GridPrimitive(entity::property::EntityPropertyDimensions dimensions, float grid_line_spacing, bool centered)
-      : TypedPrimitiveBase(dimensions),
-        grid_line_spacing_(grid_line_spacing),
-        centered_(centered)
+    GridPrimitive(entity::property::EntityPropertyDimensions dimensions, float grid_line_spacing)
+      : GridPrimitive(dimensions, glm::vec3(grid_line_spacing, grid_line_spacing, grid_line_spacing))
     {
     }
 
     static GridPrimitive generate_grid(float width, float height, float depth, float grid_line_spacing, bool centered)
     {
-      auto gridPrimitive = GridPrimitive(
-        glm::vec3{width, height, depth},
-        grid_line_spacing,
-        centered
-      );
-      gridPrimitive = TypedPrimitiveBase::generate_primitive(gridPrimitive);
+      auto gridPrimitive = GridPrimitive(glm::vec3{width, height, depth}, grid_line_spacing);
+      gridPrimitive = generate_primitive(gridPrimitive);
       gridPrimitive.Mesh.DrawLines = true;
       return gridPrimitive;
     }
@@ -35,42 +36,48 @@ namespace openGL::primitives
       float halfWidth = Dimensions.Width / 2.0f;
       float halfHeight = Dimensions.Height / 2.0f;
       float halfDepth = Dimensions.Depth / 2.0f;
-      float width_excess = !centered_ ? 0.0f : fmod(halfWidth, grid_line_spacing_);
-      float height_excess = !centered_ ? 0.0f : fmod(halfHeight, grid_line_spacing_);
-      float depth_excess = !centered_ ? 0.0f : fmod(halfDepth, grid_line_spacing_);
 
-      glm::vec3 start = glm::vec3(-halfWidth + width_excess, -halfHeight + height_excess, -halfDepth + depth_excess);
-      glm::vec3 end = glm::vec3(halfWidth - width_excess, halfHeight - height_excess, halfDepth - depth_excess);
+      float x_line_spacing = Segments.Width;
+      float y_line_spacing = Segments.Height;
+      float z_line_spacing = Segments.Depth;
 
-      for (float z = start.z; z <= halfDepth; z += grid_line_spacing_)
+      float width_excess = !centered_ ? 0.0f : fmod(halfWidth, x_line_spacing);
+      float height_excess = !centered_ ? 0.0f : fmod(halfHeight, y_line_spacing);
+      float depth_excess = !centered_ ? 0.0f : fmod(halfDepth, z_line_spacing);
+
+      auto start = glm::vec3(-halfWidth + width_excess, -halfHeight + height_excess, -halfDepth + depth_excess);
+      auto end = glm::vec3(halfWidth - width_excess, halfHeight - height_excess, halfDepth - depth_excess);
+
+      for (float z = start.z; z <= halfDepth; z += z_line_spacing)
       {
-        for (float x = start.x; x <= halfWidth; x += grid_line_spacing_)
+        for (float x = start.x; x <= halfWidth; x += x_line_spacing)
         {
           _vertices.emplace_back(x, -halfHeight, z);
           _vertices.emplace_back(x, halfHeight, z);
         }
 
-        for (float y = start.y; y <= halfHeight; y += grid_line_spacing_)
+        for (float y = start.y; y <= halfHeight; y += y_line_spacing)
         {
           _vertices.emplace_back(-halfWidth, y, z);
           _vertices.emplace_back(halfWidth, y, z);
         }
       }
 
-      for (float x = start.x; x <= halfWidth; x += grid_line_spacing_)
+      for (float x = start.x; x <= halfWidth; x += x_line_spacing)
       {
-        for (float y = start.y; y <= halfHeight; y += grid_line_spacing_)
+        for (float y = start.y; y <= halfHeight; y += y_line_spacing)
         {
           _vertices.emplace_back(x, y, -halfDepth);
           _vertices.emplace_back(x, y, halfDepth);
         }
       }
 
-      return { _vertices, _indices };
+      auto mesh = mesh::MeshBase{ _vertices, _indices };
+      mesh.DrawLines = true;
+      return mesh;
     }
 
   private:
-    float grid_line_spacing_;
     bool centered_;
   };
 }

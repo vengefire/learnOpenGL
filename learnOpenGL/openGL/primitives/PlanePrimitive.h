@@ -3,50 +3,50 @@
 
 namespace openGL::primitives
 {
-  class PlanePrimitive : public TypedPrimitiveBase<PlanePrimitive>
+  class PlanePrimitive : public SegmentedTypedPrimitiveBase<PlanePrimitive>
   {
   public:
-    PlanePrimitive(float width, float height, unsigned int widthSegments = 1, unsigned int heightSegments = 1) :
-      TypedPrimitiveBase(glm::vec3{width, height, 0.0f}),
-      width_segments_(widthSegments), height_segments_(heightSegments)
+    PlanePrimitive(const entity::property::EntityPropertyDimensions& dimensions,
+      const entity::property::EntityPropertyDimensions& segments)
+      : SegmentedTypedPrimitiveBase<PlanePrimitive>(dimensions, segments)
     {
     }
 
-    mesh::MeshBase generate_primitive_mesh() override
+    PlanePrimitive(float width, float height, unsigned int widthSegments = 1, unsigned int heightSegments = 1) :
+      SegmentedTypedPrimitiveBase(glm::vec3(width, height, 0.0f), glm::vec3(widthSegments, heightSegments, 0))
     {
-      generate_plane_impl(Dimensions.Width, Dimensions.Height, width_segments_, height_segments_);
     }
 
     static PlanePrimitive generate_plane(float width, float height, unsigned int widthSegments = 1,
-                                         unsigned int heightSegments = 1)
+      unsigned int heightSegments = 1)
     {
       auto planePrimitive = PlanePrimitive(width, height, widthSegments, heightSegments);
       TypedPrimitiveBase::generate_primitive(planePrimitive);
       return planePrimitive;
     }
 
-    void generate_plane_impl(float width, float height, unsigned int widthSegments = 1, unsigned int heightSegments = 1)
+    mesh::MeshBase generate_primitive_mesh() override
     {
       _vertices.clear();
       _indices.clear();
-      float halfWidth = width / 2.0f;
-      float halfHeight = height / 2.0f;
-      for (unsigned int y = 0; y <= heightSegments; ++y)
+      float halfWidth = Dimensions.Width / 2.0f;
+      float halfHeight = Dimensions.Height / 2.0f;
+      for (unsigned int y = 0; y <= Segments.Height; ++y)
       {
-        for (unsigned int x = 0; x <= widthSegments; ++x)
+        for (unsigned int x = 0; x <= Segments.Width; ++x)
         {
-          float posX = -halfWidth + (static_cast<float>(x) / widthSegments) * width;
-          float posY = -halfHeight + (static_cast<float>(y) / heightSegments) * height;
+          float posX = -halfWidth + (static_cast<float>(x) / Segments.Width) * Dimensions.Width;
+          float posY = -halfHeight + (static_cast<float>(y) / Segments.Height) * Dimensions.Height;
           _vertices.emplace_back(posX, posY, 0.0f);
         }
       }
-      for (unsigned int y = 0; y < heightSegments; ++y)
+      for (unsigned int y = 0; y < Segments.Height; ++y)
       {
-        for (unsigned int x = 0; x < widthSegments; ++x)
+        for (unsigned int x = 0; x < Segments.Width; ++x)
         {
-          unsigned int topLeft = y * (widthSegments + 1) + x;
+          unsigned int topLeft = y * (Segments.Width + 1) + x;
           unsigned int topRight = topLeft + 1;
-          unsigned int bottomLeft = topLeft + (widthSegments + 1);
+          unsigned int bottomLeft = topLeft + (Segments.Width + 1);
           unsigned int bottomRight = bottomLeft + 1;
           _indices.push_back(topLeft);
           _indices.push_back(bottomLeft);
@@ -56,6 +56,7 @@ namespace openGL::primitives
           _indices.push_back(bottomRight);
         }
       }
+      return { _vertices, _indices, };
     }
 
     unsigned int width_segments_;

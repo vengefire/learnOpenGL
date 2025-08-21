@@ -3,7 +3,6 @@
 #include <glm/detail/type_vec.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "CartesianPrimitiveBase.h"
 #include "TypedPrimitiveBase.h"
 
 namespace openGL::primitives

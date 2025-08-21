@@ -2,14 +2,10 @@
 #include "openGL/shaders/ShaderProgram.h"
 #include "openGL/core/OpenGLCore.h"
 #include "openGL/camera/CameraBase.h"
-#include "openGL/primitives/GridPrimitive.h"
-#include "openGL/primitives/PlanePrimitive.h"
 
 #include "stb_image_impl.h"
 #include "openGL/model/ModelBase.h"
-#include "openGL/primitives/CartesianPrimitiveFactory.h"
-#include "openGL/primitives/CirclePrimitive.h"
-#include "openGL/primitives/UVSpherePrimitive.h"
+#include "openGL/primitives/PrimitiveFactory.h"
 
 int main()
 {
@@ -22,9 +18,12 @@ int main()
     auto inputEvent = core.get_process_input_event();
     auto renderEvent = core.get_render_event();
     auto mouseInputEvent = core.get_mouse_input_event();
-    renderEvent->subscribe(static_cast<framework::events::TEventSubscriberBase<openGL::event::FrameRenderEventData>*>(camera.get()));
-    inputEvent->subscribe(static_cast<framework::events::TEventSubscriberBase<openGL::event::ProcessInputEventData>*>(camera.get()));
-    mouseInputEvent->subscribe(static_cast<framework::events::TEventSubscriberBase<openGL::event::MouseInputEventData>*>(camera.get()));
+    renderEvent->subscribe(
+      static_cast<framework::events::TEventSubscriberBase<openGL::event::FrameRenderEventData>*>(camera.get()));
+    inputEvent->subscribe(
+      static_cast<framework::events::TEventSubscriberBase<openGL::event::ProcessInputEventData>*>(camera.get()));
+    mouseInputEvent->subscribe(
+      static_cast<framework::events::TEventSubscriberBase<openGL::event::MouseInputEventData>*>(camera.get()));
 
     // Default shader program for coloured vertices
     auto defaultColouredVertexShader = std::make_shared<openGL::shaders::ShaderProgram>("Default Coloured Shader");
@@ -38,109 +37,66 @@ int main()
     texturedVertexShader->load_shader_from_file("./res/shaders/texturedshader.fs", GL_FRAGMENT_SHADER);
     texturedVertexShader->linkProgram();
 
-    /*
-    auto trianglePrimitive = openGL::primitives::TrianglePrimitive::generate_triangle(1.0f, 1.0f, 0.0f);
-    auto triangleModel = std::make_shared<openGL::model::ModelBaseDep>(texturedVertexShader);
-    triangleModel->set_vertices(trianglePrimitive.get_vertices());
-    triangleModel->set_camera(camera);
-    triangleModel->set_texture_from_file("./res/textures/awesomeface.jpg");
-    triangleModel->TranslationX -= 2.0f;
-    triangleModel->TranslationZ -= 1.0f;
-    triangleModel->TranslationY += 1.0f; // Rotate the triangle by 45 degrees around the X-axis
-    */
-    /*auto rectModel1 = std::make_shared<openGL::models::ModelBaseDep>();
-    rectModel1->set_vertices({
-         {0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f}, // top right
-         {0.5f, -0.5f, 0.0f,0.0f, 1.0f, 0.0f, 1.0f, 0.0f}, // bottom right
-        {-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f}, // bottom left
-        {-0.5f,  0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f}  // top left 
-      }
-    );
+    // A couple test models using the factories...
+    auto generate_model = [camera](const std::shared_ptr<openGL::shaders::ShaderProgram>& shader,
+                                   openGL::primitives::PrimitiveFactory::EPrimitiveType primitive_type,
+                                   glm::vec3 dimensions, glm::vec4 default_color = glm::vec4(0.5f))
+    {
+      auto primitive = openGL::primitives::PrimitiveFactory::create_primitive(primitive_type, dimensions);
+      primitive->Mesh.DefaultColor = default_color; // Set the default color for the primitive
+      return std::make_shared<openGL::model::ModelBase>(primitive->Mesh, shader, camera);
+    };
 
-    rectModel1->set_indices({
-      0, 1, 3,
-      1, 2, 3
-    });
+    auto generate_segmented_model = [camera](const std::shared_ptr<openGL::shaders::ShaderProgram>& shader,
+                                             openGL::primitives::PrimitiveFactory::ESegmentedPrimitiveType
+                                             primitive_type,
+                                             glm::vec3 dimensions, glm::vec3 segments,
+                                             glm::vec4 default_color = glm::vec4(0.5f))
+    {
+      auto primitive = openGL::primitives::PrimitiveFactory::create_segmented_primitive(
+        primitive_type, dimensions, segments);
+      primitive->Mesh.DefaultColor = default_color; // Set the default color for the primitive
+      return std::make_shared<openGL::model::ModelBase>(primitive->Mesh, shader, camera);
+    };
 
-    rectModel1->set_shader_program(texturedColouredVertexShader);
-    rectModel1->set_texture_from_file("./res/textures/container.jpg");
-    rectModel1->set_texture_from_file("./res/textures/awesomeface.jpg");
-    core.get_process_input_event()->subscribe(rectModel1.get());
-    rectModel1->RotationX = -55.0f; // Rotate the rectangle by 45 degrees around the X-axis
-    core.addModel(rectModel1);*/
-    /*
-    auto planePrimitive = openGL::primitives::PlanePrimitive::generate_plane(5.0f, 5.0f, 1, 1);
-    auto planeModel = std::make_shared<openGL::model::ModelBaseDep>(defaultColouredVertexShader);
-    planeModel->set_vertices(planePrimitive.get_vertices());
-    planeModel->set_indices(planePrimitive.get_indices());
-    planeModel->set_camera(camera);
-    planeModel->RotationX = -90.0f;
-    // planeModel->RotationZ = 45.0f; // Rotate the plane by 45 degrees around the Z-axis
-    planeModel->TranslationY = -2.0f; // Move the plane down by 2 units
-    planeModel->UseDefaultColor = true;
-
-    auto gridPrimitive = openGL::primitives::GridPrimitive::generate_grid_(10.0f, 10.0f, 10.0f, 11.0f, 1);
-    auto gridModel = std::make_shared<openGL::model::ModelBaseDep>(defaultColouredVertexShader);
-    gridModel->DefaultColor = { 0.2f, 0.2f, 0.2f, 1.0f };
-    gridModel->set_vertices(gridPrimitive.get_vertices());
-    gridModel->DrawLines = true; // Set the grid model to draw lines
-    gridModel->RotationX = -90.0f;
-    // gridModel->RotationZ = 45.0f;
-    // gridModel->TranslationY = -1.0f; // Move the grid down by 1 unit
-    gridModel->set_camera(camera);
-
-    auto cubePrimitive = openGL::primitives::CubePrimitive::generate_cube_primitive(1.0f, 1.0f, 1.0f);
-    auto cubePrimitiveModel = std::make_shared<openGL::model::ModelBaseDep>(texturedVertexShader);
-    cubePrimitiveModel->DefaultColor = { 0.6, 0.5, 0.4, 1.0 };
-    cubePrimitiveModel->UseDefaultColor = false;
-    cubePrimitiveModel->set_vertices(cubePrimitive.get_vertices());
-    cubePrimitiveModel->set_indices(cubePrimitive.get_indices());
-    cubePrimitiveModel->set_camera(camera);
-    cubePrimitiveModel->set_texture_from_file("./res/textures/container.jpg");
-    cubePrimitiveModel->set_texture_from_file("./res/textures/awesomeface.jpg");
-
-    auto circlePrimitive = openGL::primitives::CirclePrimitive::generate_circle(1.0f, 64);
-    auto circleModel = std::make_shared<openGL::model::ModelBaseDep>(defaultColouredVertexShader);
-    circleModel->DefaultColor = { 0.8f, 0.2f, 0.2f, 1.0f };
-    circleModel->UseDefaultColor = true;
-    circleModel->set_vertices(circlePrimitive.get_vertices());
-    circleModel->set_indices(circlePrimitive.get_indices());
-    circleModel->set_camera(camera);
-    */
-    /*auto uvSphereModel = std::make_shared<openGL::model::ModelBaseDep>(texturedVertexShader);
-    uvSphereModel->DefaultColor = { 0.2f, 0.5f, 0.8f, 1.0f };
-     uvSphereModel->UseDefaultColor = false;
-    uvSphereModel->set_vertices(uvSpherePrimitive.get_vertices());
-    uvSphereModel->set_indices(uvSpherePrimitive.get_indices());
-    uvSphereModel->set_camera(camera);
-    uvSphereModel->set_texture_from_file("./res/textures/container.jpg");
-    uvSphereModel->set_texture_from_file("./res/textures/awesomeface.jpg");
-    core.get_process_input_event()->subscribe(uvSphereModel.get());*/
-    
-    //core.addModel(triangleModel);
-    //core.addModel(planeModel);
-    //core.addModel(cubePrimitiveModel);
-    //core.addModel(gridModel);
-    //core.addModel(uvSphereModel);
-    //core.addModel(circleModel);
-    //core.toggleWireFrameMode();
-    auto gridPrimitive = openGL::primitives::GridPrimitive::generate_grid(10.0f, 10.0f, 10.0f, 11.0f, 1);
-    auto grid_model = std::make_shared<openGL::model::ModelBase>(gridPrimitive.Mesh, defaultColouredVertexShader, camera);
-    grid_model->Orientation = glm::vec3{ 0.0f, 0.0f, -90.0f }; // Rotate the grid by -90 degrees around the Z-axis
+    auto grid_model = generate_segmented_model(defaultColouredVertexShader,
+                                               openGL::primitives::PrimitiveFactory::GridLines,
+                                               glm::vec3(10.0f, 10.0f, 10.0f), glm::vec3(11.0f, 11.0f, 11.0f),
+                                               glm::vec4(0.1f));
+    // grid_model->Orientation = glm::vec3{0.0f, 0.0f, -90.0f};
+    // Rotate the grid by -90 degrees around the Z-axis so that it is horizontal
     core.addModel(grid_model);
 
-    auto test_primitive = openGL::primitives::UVSpherePrimitive::generate_uv_sphere(12, 12, 2);
-    auto test_model = std::make_shared<openGL::model::ModelBase>(test_primitive.Mesh, defaultColouredVertexShader, camera);
-    test_model->Position += glm::vec3(2.0f, 2.0f, -3.0f);
-    test_model->Scale = glm::vec3(0.5f, 0.5f, 0.5f);
+    auto circle_model = generate_segmented_model(defaultColouredVertexShader,
+                                                 openGL::primitives::PrimitiveFactory::Circle, glm::vec3(1.0f),
+                                                 glm::vec3(32, 0, 0), glm::vec4(0.1f, 0.2, 0.3, 1.0));
+    circle_model->Position = glm::vec3(-2.0f, 2.0f, -3.0f);
+    circle_model->Scale = glm::vec3(1.2f);
+    core.addModel(circle_model);
 
-    auto cubePrimitive = openGL::primitives::CartesianPrimitiveFactory::create_primitive(openGL::primitives::CartesianPrimitiveFactory::Cube, glm::vec3(1.0,1.0,1.0));
-    auto cube_model = std::make_shared<openGL::model::ModelBase>(cubePrimitive->Mesh, texturedVertexShader, camera);
+    auto plane_model = generate_segmented_model(defaultColouredVertexShader,
+                                                openGL::primitives::PrimitiveFactory::Plane,
+                                                glm::vec3(2.0f, 2.0f, 0.0f), glm::vec3(1, 1, 0), glm::vec4(0.5f, 0.2, 0.7, 1.0));
+    plane_model->Position = glm::vec3(0.0f, -2.0f, 0.0f);
+    plane_model->Orientation = glm::vec3(90.0f, 0.0f, 0.0f);
+    core.addModel(plane_model);
+
+    auto triangle_Model = generate_model(defaultColouredVertexShader, openGL::primitives::PrimitiveFactory::Triangle,
+                                         glm::vec3(1.0f), glm::vec4(0.1f, 0.1, 0.7, 1.0));
+    triangle_Model->Position = glm::vec3(-2.0f, 2.0f, -4.0f);
+    core.addModel(triangle_Model);
+
+    auto cube_model = generate_model(texturedVertexShader, openGL::primitives::PrimitiveFactory::Cube, glm::vec3(1.0f), glm::vec4(0.1f, 0.2, 0.3, 1.0));
     cube_model->set_texture_from_file("./res/textures/container.jpg");
     cube_model->set_texture_from_file("./res/textures/awesomeface.jpg");
     core.addModel(cube_model);
 
-    core.addModel(test_model);
+    auto sphere_model = generate_segmented_model(defaultColouredVertexShader,
+                                                 openGL::primitives::PrimitiveFactory::UVSphere, glm::vec3(2.0f),
+                                                 glm::vec3(12, 12, 0), glm::vec4(1.0f, 1.0, 1.0, 1.0));
+    sphere_model->Position += glm::vec3(2.0f, 2.0f, -3.0f);
+    sphere_model->Scale = glm::vec3(0.5f, 0.5f, 0.5f);
+    core.addModel(sphere_model);
 
     core.enable_depth_testing();
     core.run();

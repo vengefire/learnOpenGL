@@ -7,11 +7,11 @@
 namespace openGL::entity::property
 {
   class EntityPropertyColor :
-    public openGl::entity::property::EntityPropertyBase<glm::vec4>
+    public openGl::entity::property::EntityPropertyBase<glm::vec4>,
+    public framework::property::PropertyBaseMorphOperands<EntityPropertyColor, glm::vec3>
   {
   public:
     EntityPropertyColor() = default;
-
     EntityPropertyColor(const glm::vec4& color) : EntityPropertyBase(color)
     {
     }

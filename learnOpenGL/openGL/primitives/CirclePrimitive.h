@@ -1,13 +1,20 @@
 #pragma once
+#include "SegmentedTypedPrimitiveBase.h"
 #include "TypedPrimitiveBase.h"
 
 namespace openGL::primitives
 {
-  class CirclePrimitive : public TypedPrimitiveBase<CirclePrimitive>
+  class CirclePrimitive : public SegmentedTypedPrimitiveBase<CirclePrimitive>
   {
   public:
+    CirclePrimitive(const entity::property::EntityPropertyDimensions& dimensions,
+                    const entity::property::EntityPropertyDimensions& segments)
+      : SegmentedTypedPrimitiveBase<CirclePrimitive>(dimensions, segments)
+    {
+    }
+
     CirclePrimitive(float radius = 1.0f, unsigned int segments = 32)
-      : TypedPrimitiveBase(glm::vec3{radius * 2.0f, radius * 2.0f, 0.0f}), radius_(radius), segments_(segments)
+      : CirclePrimitive(glm::vec3{radius * 2.0f, radius * 2.0f, radius}, glm::vec3{segments, 0.0f, 0.0f})
     {
     }
 
@@ -24,7 +31,7 @@ namespace openGL::primitives
       }
 
       auto circle_primitive = CirclePrimitive(radius, segments);
-      return TypedPrimitiveBase::generate_primitive(circle_primitive);
+      return generate_primitive(circle_primitive);
     }
 
   protected:
@@ -33,27 +40,25 @@ namespace openGL::primitives
       _vertices.clear();
       _indices.clear();
       // Generate vertices for the circle
-      _vertices.emplace_back(0.0f, 0.0f, 0.0f, (0 / radius_ + 1.0f) / 2.0f, (0 / radius_ + 1.0f) / 2.0f);
-      for (unsigned int i = 0; i <= segments_; ++i)
+      float radius = Dimensions.Depth / 2.0f; // Assuming Depth is the radius
+      unsigned int segments = static_cast<unsigned int>(Segments.Width); // Assuming Width is the number of segments
+      _vertices.emplace_back(0.0f, 0.0f, 0.0f, (0 / radius + 1.0f) / 2.0f, (0 / radius + 1.0f) / 2.0f);
+      for (unsigned int i = 0; i <= segments; ++i)
       {
-        float angle = 2.0f * glm::pi<float>() * static_cast<float>(i) / static_cast<float>(segments_);
-        float x = radius_ * cos(angle);
-        float y = radius_ * sin(angle);
-        _vertices.emplace_back(x, y, 0.0f, (x / radius_ + 1.0f) / 2.0f, (y / radius_ + 1.0f) / 2.0f);
+        float angle = 2.0f * glm::pi<float>() * static_cast<float>(i) / static_cast<float>(segments);
+        float x = radius * cos(angle);
+        float y = radius * sin(angle);
+        _vertices.emplace_back(x, y, 0.0f, (x / radius + 1.0f) / 2.0f, (y / radius + 1.0f) / 2.0f);
       }
       // Generate indices for the circle
-      for (unsigned int i = 1; i <= segments_; ++i)
+      for (unsigned int i = 1; i <= segments; ++i)
       {
         _indices.push_back(0); // Center vertex
         _indices.push_back(i);
-        _indices.push_back((i % segments_) + 1); // Wrap around to the first vertex
+        _indices.push_back((i % segments) + 1); // Wrap around to the first vertex
       }
 
-      return { _vertices, _indices };
+      return {_vertices, _indices};
     }
-
-  private:
-    float radius_;
-    unsigned int segments_;
   };
 }

@@ -11,6 +11,7 @@ namespace openGL::primitives
                                 const entity::property::EntityPropertyDimensions& segments)
       : TypedPrimitiveBase<TDerived>(dimensions)
     {
+      Segments = segments;
     }
 
   protected:
