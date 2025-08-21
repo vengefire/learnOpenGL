@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include <glm/detail/type_mat.hpp>
 #include <glm/detail/type_vec.hpp>
 
@@ -31,6 +32,21 @@ namespace openGL::shaders
   protected:
     virtual void Init();
     std::vector<std::unique_ptr<Shader>> attached_shaders_;
+    std::function<void(std::shared_ptr<ShaderProgram>)> onRender = nullptr;
+
+  public:
+    [[nodiscard]] std::function<void(std::shared_ptr<ShaderProgram>)> on_render() const
+    {
+      return onRender;
+    }
+
+    void set_on_render(const std::function<void(std::shared_ptr<ShaderProgram>)>& on_render)
+    {
+      onRender = on_render;
+    }
+
+    __declspec(property(get = on_render, put = set_on_render)) std::function<void(std::shared_ptr<ShaderProgram>)>
+    OnRender;
 
   private:
     std::string name_;

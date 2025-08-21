@@ -25,6 +25,10 @@ namespace openGL::model
   void ModelBase::renderModel()
   {
     shader_program_->use();
+    if (shader_program_->OnRender)
+    {
+      shader_program_->OnRender(shader_program_);
+    }
 
     // Generate an identity matrix
     glm::mat4 trans = glm::mat4(1.0f);

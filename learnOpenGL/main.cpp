@@ -48,8 +48,10 @@ int main()
     lightedColouredVertexShader->load_shader_from_file("./res/shaders/shader.vs", GL_VERTEX_SHADER);
     lightedColouredVertexShader->load_shader_from_file("./res/shaders/light-shader.fs", GL_FRAGMENT_SHADER);
     lightedColouredVertexShader->linkProgram();
-    lightedColouredVertexShader->use();
-    lightedColouredVertexShader->set_vec4("lightColor", solidColoredLight->Color.PropertyValue);
+    lightedColouredVertexShader->OnRender = [solidColoredLight](std::shared_ptr<openGL::shaders::ShaderProgram> shader)
+    {
+        shader->set_vec4("lightColor", solidColoredLight->Color.PropertyValue);
+    };
 
     // A couple test models using the factories...
     auto generate_model = [camera](const std::shared_ptr<openGL::shaders::ShaderProgram>& shader,
