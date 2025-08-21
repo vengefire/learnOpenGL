@@ -225,6 +225,11 @@ namespace openGL::camera
       return position_;
     }
 
-    __declspec(property(get = position)) glm::vec3 Position;
+    void set_position(const glm::vec3& position)
+    {
+      position_ = position;
+    }
+
+    __declspec(property(get = position, put = set_position)) glm::vec3 Position;
   };
 }

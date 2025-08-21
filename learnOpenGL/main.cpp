@@ -21,7 +21,6 @@ int main()
 
     // Setup the camera
     auto camera = std::make_shared<openGL::camera::CameraBase>();
-
     renderEvent->subscribe(
       static_cast<framework::events::TEventSubscriberBase<openGL::event::FrameRenderEventData>*>(camera.get()));
     inputEvent->subscribe(
@@ -48,16 +47,6 @@ int main()
     lightedColouredVertexShader->load_shader_from_file("./res/shaders/colored_normals_shader.vs", GL_VERTEX_SHADER);
     lightedColouredVertexShader->load_shader_from_file("./res/shaders/light-shader.fs", GL_FRAGMENT_SHADER);
     lightedColouredVertexShader->linkProgram();
-    lightedColouredVertexShader->OnRender = [solidColoredLight, camera](std::shared_ptr<openGL::shaders::ShaderProgram> shader)
-    {
-        shader->use();
-        shader->set_float("ambientLightStrength", 0.10f);
-        shader->set_vec4("lightColor", solidColoredLight->Color.PropertyValue);
-        shader->set_vec3("lightPosition", solidColoredLight->Position.PropertyValue);
-        shader->set_vec3("cameraPosition", camera->position());
-        shader->set_float("specularStrength", 0.7f);
-        shader->set_int("specularFocus", 32);
-    };
 
     // A couple test models using the factories...
     auto generate_model = [camera](const std::shared_ptr<openGL::shaders::ShaderProgram>& shader,
@@ -124,6 +113,24 @@ int main()
     core.addModel(triangle_Model);
     core.addModel(cube_model);
     core.addModel(sphere_model);
+
+    camera->Position = glm::vec3(0.0f, 2.0f, 5.0f); // Set the camera position
+
+    lightedColouredVertexShader->OnRender = [solidColoredLight, camera, sphere_model](std::shared_ptr<openGL::shaders::ShaderProgram> shader)
+      {
+        float x = solidColoredLight->Position.PropertyValue.x + 0.01f * sin(glfwGetTime());
+        float y = solidColoredLight->Position.PropertyValue.y + 0.01f * cos(glfwGetTime());
+        float z = solidColoredLight->Position.PropertyValue.z + 0.01f * sin(glfwGetTime());
+        solidColoredLight->Position.set_property_value(glm::vec3(x, y, z));
+        sphere_model->Position = solidColoredLight->Position.PropertyValue; // Update the sphere position to match the light position
+        shader->use();
+        shader->set_float("ambientLightStrength", 0.10f);
+        shader->set_vec4("lightColor", solidColoredLight->Color.PropertyValue);
+        shader->set_vec3("lightPosition", solidColoredLight->Position.PropertyValue);
+        shader->set_vec3("cameraPosition", camera->position());
+        shader->set_float("specularStrength", 0.7f);
+        shader->set_int("specularFocus", 32);
+      };
 
     core.enable_depth_testing();
     core.run();

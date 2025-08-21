@@ -49,7 +49,7 @@ namespace openGL::entity
 
     __declspec(property(get = name, put = set_name)) property::EntityPropertyName Name;
 
-    [[nodiscard]] property::EntityPropertyPosition position() const
+    [[nodiscard]] property::EntityPropertyPosition& position()
     {
       return position_;
     }
@@ -59,7 +59,7 @@ namespace openGL::entity
       position_ = position;
     }
 
-    __declspec(property(get = position, put = set_position)) property::EntityPropertyPosition Position;
+    __declspec(property(get = position, put = set_position)) property::EntityPropertyPosition& Position;
 
     [[nodiscard]] property::EntityPropertyOrientation orientation() const
     {
