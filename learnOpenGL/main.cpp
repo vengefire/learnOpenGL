@@ -7,9 +7,8 @@
 
 #include "stb_image_impl.h"
 #include "openGL/model/ModelBase.h"
+#include "openGL/primitives/CartesianPrimitiveFactory.h"
 #include "openGL/primitives/CirclePrimitive.h"
-#include "openGL/primitives/CubePrimitive.h"
-#include "openGL/primitives/TrianglePrimitive.h"
 #include "openGL/primitives/UVSpherePrimitive.h"
 
 int main()
@@ -125,23 +124,27 @@ int main()
     //core.addModel(uvSphereModel);
     //core.addModel(circleModel);
     //core.toggleWireFrameMode();
-    auto gridPrimitive = openGL::primitives::GridPrimitive::generate_grid_(10.0f, 10.0f, 10.0f, 11.0f, 1);
-    openGL::mesh::MeshBase gridMesh(gridPrimitive.get_vertices(), gridPrimitive.get_indices(), { 0.2f, 0.2f, 0.2f, 1.0f });
-    gridMesh.DrawLines = true; 
-    auto grid_model = std::make_shared<openGL::model::ModelBase>(gridMesh, defaultColouredVertexShader, camera);
+    auto gridPrimitive = openGL::primitives::GridPrimitive::generate_grid(10.0f, 10.0f, 10.0f, 11.0f, 1);
+    auto grid_model = std::make_shared<openGL::model::ModelBase>(gridPrimitive.Mesh, defaultColouredVertexShader, camera);
     grid_model->Orientation = glm::vec3{ 0.0f, 0.0f, -90.0f }; // Rotate the grid by -90 degrees around the Z-axis
     core.addModel(grid_model);
 
     auto test_primitive = openGL::primitives::UVSpherePrimitive::generate_uv_sphere(12, 12, 2);
-    openGL::mesh::MeshBase test_Mesh(test_primitive.get_vertices(), test_primitive.get_indices(), { 1.0f, 1.0f, 1.0f, 1.0f });
-    auto test_model = std::make_shared<openGL::model::ModelBase>(test_Mesh, defaultColouredVertexShader, camera);
+    auto test_model = std::make_shared<openGL::model::ModelBase>(test_primitive.Mesh, defaultColouredVertexShader, camera);
     test_model->Position += glm::vec3(2.0f, 2.0f, -3.0f);
     test_model->Scale = glm::vec3(0.5f, 0.5f, 0.5f);
+
+    auto cubePrimitive = openGL::primitives::CartesianPrimitiveFactory::create_primitive(openGL::primitives::CartesianPrimitiveFactory::Cube, glm::vec3(1.0,1.0,1.0));
+    auto cube_model = std::make_shared<openGL::model::ModelBase>(cubePrimitive->Mesh, texturedVertexShader, camera);
+    cube_model->set_texture_from_file("./res/textures/container.jpg");
+    cube_model->set_texture_from_file("./res/textures/awesomeface.jpg");
+    core.addModel(cube_model);
 
     core.addModel(test_model);
 
     core.enable_depth_testing();
     core.run();
+
     return 0;
   }
   catch (const std::exception& e)

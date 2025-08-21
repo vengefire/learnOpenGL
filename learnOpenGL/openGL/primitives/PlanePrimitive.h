@@ -1,28 +1,28 @@
 #pragma once
-#include "PrimitiveBase.h"
+#include "TypedPrimitiveBase.h"
 
 namespace openGL::primitives
 {
-  class PlanePrimitive : public PrimitiveBase
+  class PlanePrimitive : public TypedPrimitiveBase<PlanePrimitive>
   {
   public:
     PlanePrimitive(float width, float height, unsigned int widthSegments = 1, unsigned int heightSegments = 1) :
-      PrimitiveBase(width, height, 0.0f),
+      TypedPrimitiveBase(glm::vec3{width, height, 0.0f}),
       width_segments_(widthSegments), height_segments_(heightSegments)
     {
-      PlanePrimitive::generate_primitive();
     }
 
-    void generate_primitive() override
+    mesh::MeshBase generate_primitive_mesh() override
     {
-      generate_plane_impl(_width, _height, width_segments_, height_segments_);
+      generate_plane_impl(Dimensions.Width, Dimensions.Height, width_segments_, height_segments_);
     }
 
     static PlanePrimitive generate_plane(float width, float height, unsigned int widthSegments = 1,
                                          unsigned int heightSegments = 1)
     {
-      PlanePrimitive plane(width, height, widthSegments, heightSegments);
-      return plane;
+      auto planePrimitive = PlanePrimitive(width, height, widthSegments, heightSegments);
+      TypedPrimitiveBase::generate_primitive(planePrimitive);
+      return planePrimitive;
     }
 
     void generate_plane_impl(float width, float height, unsigned int widthSegments = 1, unsigned int heightSegments = 1)

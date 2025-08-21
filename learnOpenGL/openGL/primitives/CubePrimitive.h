@@ -3,29 +3,31 @@
 #include <glm/detail/type_vec.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "PrimitiveBase.h"
+#include "CartesianPrimitiveBase.h"
+#include "TypedPrimitiveBase.h"
 
 namespace openGL::primitives
 {
   class CubePrimitive :
-    public PrimitiveBase
+    public TypedPrimitiveBase<CubePrimitive>
   {
   public:
-    CubePrimitive(float width = 1.0f, float height = 1.0f, float depth = 1.0f) : PrimitiveBase(width, height, depth)
+    CubePrimitive(entity::property::EntityPropertyDimensions dimensions) : TypedPrimitiveBase(dimensions)
     {
-      CubePrimitive::generate_primitive();
     }
 
     static CubePrimitive generate_cube_primitive(float width = 1.0f, float height = 1.0f, float depth = 1.0f)
     {
-      return {width, height, depth};
+      auto cubePrimitive = CubePrimitive(glm::vec3{ width, height, depth });
+      return TypedPrimitiveBase::generate_primitive(cubePrimitive);
     }
 
-    void generate_primitive() override
+    mesh::MeshBase generate_primitive_mesh() override
     {
-      auto half_width = _width / 2.0f;
-      auto half_height = _height / 2.0f;
-      auto half_depth = _depth / 2.0f;
+      auto half_width = Dimensions.Width / 2.0f;
+      auto half_height = Dimensions.Height / 2.0f;
+      auto half_depth = Dimensions.Depth / 2.0f;
+
       // Generate vertices for a cube centered at the origin
       std::vector<glm::vec4> front_face = {
         // Front Face - BottomLeft-BottomRight-TopRight-TopLeft : Indices 0,1,2-2,3,0
@@ -95,6 +97,8 @@ namespace openGL::primitives
       generate_face(front_face, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, -90.0f, 0.0f)); // Left face
       generate_face(front_face, glm::vec3(0, 0.0f, 0.0f), glm::vec3(90.0f, 0.0f, 0.0f)); // Top face
       generate_face(front_face, glm::vec3(0, 0.0f, 0.0f), glm::vec3(-90.0f, 0.0f, 0.0f)); // Bottom face
+
+      return { _vertices, _indices };
     }
   };
 }

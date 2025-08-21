@@ -139,6 +139,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\dep\stb\stb_image.h" />
+    <ClInclude Include="openGL\primitives\CartesianPrimitiveBase.h" />
     <ClInclude Include="framework\property\PropertyBase.h" />
     <ClInclude Include="openGL\model\ModelBase.h" />
     <ClInclude Include="openGL\mesh\base\property\VertexBasePropertyTexelCoordinates.h" />
@@ -166,8 +167,11 @@
     <ClInclude Include="openGL\shaders\Shader.h" />
     <ClInclude Include="openGL\event\ProcessInputEvent.h" />
     <ClInclude Include="openGL\primitives\PlanePrimitive.h" />
-    <ClInclude Include="openGL\primitives\PrimitiveBase.h" />
+    <ClInclude Include="openGL\primitives\TypedPrimitiveBase.h" />
     <ClInclude Include="framework\property\PropertyBaseMorphOperands.h" />
+    <ClInclude Include="openGL\primitives\CartesianPrimitiveFactory.h" />
+    <ClInclude Include="openGL\primitives\PrimitiveBase.h" />
+    <ClInclude Include="openGL\primitives\SegmentedTypedPrimitiveBase.h" />
     <ClInclude Include="stb_image_impl.h" />
     <ClInclude Include="openGL\textures\TextureBase.h" />
     <ClInclude Include="framework\events\TEventBase.h" />

@@ -4,31 +4,29 @@
 namespace openGL::primitives
 {
   class TrianglePrimitive :
-    public PrimitiveBase
+    public TypedPrimitiveBase<TrianglePrimitive>
   {
   public:
-    TrianglePrimitive(float width, float height, float depth)
-      : PrimitiveBase(width, height, depth)
+    TrianglePrimitive(entity::property::EntityPropertyDimensions)
+      : TypedPrimitiveBase(dimensions())
     {
-      generate_primitive();
     }
 
-    void generate_primitive() override;
-    static TrianglePrimitive generate_triangle(float width, float height, float depth = 0.0f)
+    static TrianglePrimitive& generate_triangle(float width, float height, float depth = 0.0f)
     {
-      return { width, height, depth };
+      auto trianglePrimitive = TrianglePrimitive(glm::vec3{width, height, depth});
+      TypedPrimitiveBase::generate_primitive(trianglePrimitive);
+      return trianglePrimitive;
+    }
+
+    mesh::MeshBase generate_primitive_mesh() override
+    {
+      _vertices.clear();
+      _indices.clear();
+      _vertices.emplace_back(-Dimensions.Width / 2.0f, -Dimensions.Height / 2.0f, 0.0f, 0.0f, 0.0f); // Bottom left
+      _vertices.emplace_back(Dimensions.Width / 2.0f, -Dimensions.Height / 2.0f, 0.0f, 1.0f, 0.0f);  // Bottom right
+      _vertices.emplace_back(0.0f, Dimensions.Height / 2.0f, 0.0f, 0.5f, 1.0f);           // Top
+      return { _vertices, _indices };
     }
   };
-
-  inline void TrianglePrimitive::generate_primitive()
-  {
-    _vertices.clear();
-    _indices.clear();
-    // Define the vertices of the triangle
-    _vertices.emplace_back(-_width / 2.0f, -_height / 2.0f, 0.0f, 0.0f, 0.0f); // Bottom left
-    _vertices.emplace_back(_width / 2.0f, -_height / 2.0f, 0.0f, 1.0f, 0.0f);  // Bottom right
-    _vertices.emplace_back(0.0f, _height / 2.0f, 0.0f, 0.5f, 1.0f);           // Top
-    // Define the indices for the triangle
-    //_indices = { 0, 1, 2 };
-  }
 }

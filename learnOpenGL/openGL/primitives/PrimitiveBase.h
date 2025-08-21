@@ -1,76 +1,51 @@
 #pragma once
-#include <vector>
-
-#include "../learnOpenGL/openGL/mesh/base/VertexBase.h"
+#include "../mesh/base/MeshBase.h"
+#include "../entity/property/EntityPropertyDimensions.h"
 
 namespace openGL::primitives
 {
   class PrimitiveBase
   {
   public:
-    PrimitiveBase(float width, float height, float depth)
-      : _width(width),
-        _height(height),
-        _depth(depth)
+    PrimitiveBase(const entity::property::EntityPropertyDimensions& dimensions) : dimensions_(dimensions)
     {
     }
 
+    PrimitiveBase() = default;
     virtual ~PrimitiveBase() = default;
 
-    virtual std::vector<mesh::base::VertexBase> get_vertices() const
-    {
-      return _vertices;
-    }
-
-    virtual std::vector<unsigned int> get_indices() const
-    {
-      return _indices;
-    }
-
-    virtual void generate_primitive() = 0;
-
   protected:
-    float _width = 0.0f;
-    float _height = 0.0f;
-    float _depth = 0.0f;
+    virtual mesh::MeshBase generate_primitive_mesh() = 0;
+    mesh::MeshBase mesh_;
     std::vector<mesh::base::VertexBase> _vertices;
     std::vector<unsigned int> _indices;
 
   public:
-    [[nodiscard]] float get_width() const
+    [[nodiscard]] mesh::MeshBase& mesh()
     {
-      return _width;
+      return mesh_;
     }
 
-    void set_width(const float width)
+    void set_mesh(const mesh::MeshBase& mesh)
     {
-      _width = width;
+      mesh_ = mesh;
     }
 
-    __declspec(property(get = get_width, put = set_width)) float Width;
+    __declspec(property(get = mesh, put = set_mesh)) mesh::MeshBase Mesh;
 
-    [[nodiscard]] float get_height() const
+  protected:
+    entity::property::EntityPropertyDimensions dimensions_;
+
+    [[nodiscard]] entity::property::EntityPropertyDimensions dimensions() const
     {
-      return _height;
+      return dimensions_;
     }
 
-    void set_height(const float height)
+    void set_dimensions(const entity::property::EntityPropertyDimensions& dimensions)
     {
-      _height = height;
+      dimensions_ = dimensions;
     }
 
-    __declspec(property(get = get_height, put = set_height)) float Height;
-
-    [[nodiscard]] float get_depth() const
-    {
-      return _depth;
-    }
-
-    void set_depth(const float depth)
-    {
-      _depth = depth;
-    }
-
-    __declspec(property(get = get_depth, put = set_depth)) float Depth;
+    __declspec(property(get = dimensions, put = set_dimensions)) entity::property::EntityPropertyDimensions Dimensions;
   };
 }

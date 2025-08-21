@@ -13,6 +13,24 @@ namespace openGL::entity::property
       : EntityPropertyBase(dimensions)
     {
     }
-  };
 
+    float get_width() const
+    {
+      return PropertyValue.x;
+    }
+
+    float get_height() const
+    {
+      return PropertyValue.y;
+    }
+
+    float get_depth() const
+    {
+      return PropertyValue.z;
+    }
+
+    __declspec(property(get = get_width)) float Width;
+    __declspec(property(get = get_height)) float Height;
+    __declspec(property(get = get_depth)) float Depth;
+  };
 }
