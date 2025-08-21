@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../../config.h"
-#include "../model/ModelBaseDep.h"
 #include "../../framework/events/EventPublisher.h"
 #include "../../framework/events/TEventSubscriberBase.h"
 #include "../event/ProcessInputEvent.h"

@@ -133,7 +133,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="openGL\model\ModelBase.cpp" />
     <ClCompile Include="openGL\core\OpenGLCore.cpp" />
-    <ClCompile Include="openGL\core\Vector3f.cpp" />
     <ClCompile Include="openGL\shaders\Shader.cpp" />
     <ClCompile Include="openGL\shaders\ShaderProgram.cpp" />
     <ClCompile Include="openGL\textures\TextureBase.cpp" />
@@ -163,7 +162,6 @@
     <ClInclude Include="framework\events\EventPublisher.h" />
     <ClInclude Include="framework\events\EventBase.hpp" />
     <ClInclude Include="openGL\core\OpenGLCore.h" />
-    <ClInclude Include="openGL\model\ModelBaseDep.h" />
     <ClInclude Include="openGL\shaders\ShaderProgram.h" />
     <ClInclude Include="openGL\shaders\Shader.h" />
     <ClInclude Include="openGL\event\ProcessInputEvent.h" />
@@ -172,8 +170,6 @@
     <ClInclude Include="framework\property\PropertyBaseMorphOperands.h" />
     <ClInclude Include="stb_image_impl.h" />
     <ClInclude Include="openGL\textures\TextureBase.h" />
-    <ClInclude Include="openGL\core\Vector3f.h" />
-    <ClInclude Include="openGL\core\VertexBase.h" />
     <ClInclude Include="framework\events\TEventBase.h" />
     <ClInclude Include="framework\events\TEventSubscriberBase.h" />
     <ClInclude Include="openGL\primitives\TrianglePrimitive.h" />
