@@ -31,7 +31,7 @@ namespace openGL::model
     std::vector<std::shared_ptr<textures::TextureBase>> textures_;
     entity::property::EntityPropertyPosition position_;
     entity::property::EntityPropertyOrientation orientation_;
-    entity::property::EntityPropertyScale scale_;
+    entity::property::EntityPropertyScale scale_ = glm::vec3(1.0f);
 
     // REFACTOR
   public:

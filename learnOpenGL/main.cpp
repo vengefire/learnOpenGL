@@ -127,10 +127,10 @@ int main()
     //core.addModel(circleModel);
     //core.toggleWireFrameMode();
     auto test_primitive = openGL::primitives::UVSpherePrimitive::generate_uv_sphere(64, 64, 2);
-    openGL::mesh::MeshBase test_Mesh(test_primitive.get_vertices(), test_primitive.get_indices());
-    auto test_model = std::make_shared<openGL::model::ModelBase>(test_Mesh, texturedVertexShader, camera);
-    test_model->set_texture_from_file("./res/textures/container.jpg");
-    test_model->set_texture_from_file("./res/textures/awesomeface.jpg");
+    openGL::mesh::MeshBase test_Mesh(test_primitive.get_vertices(), test_primitive.get_indices(), { 1.0f, 1.0f, 1.0f, 1.0f });
+    auto test_model = std::make_shared<openGL::model::ModelBase>(test_Mesh, defaultColouredVertexShader, camera);
+    test_model->Position += glm::vec3(2.0f, 2.0f, -3.0f);
+    test_model->Scale = glm::vec3(0.5f, 0.5f, 0.5f);
 
     core.addModel(test_model);
 

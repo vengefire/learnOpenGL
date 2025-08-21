@@ -169,6 +169,7 @@
     <ClInclude Include="openGL\event\ProcessInputEvent.h" />
     <ClInclude Include="openGL\primitives\PlanePrimitive.h" />
     <ClInclude Include="openGL\primitives\PrimitiveBase.h" />
+    <ClInclude Include="framework\property\PropertyBaseMorphOperands.h" />
     <ClInclude Include="stb_image_impl.h" />
     <ClInclude Include="openGL\textures\TextureBase.h" />
     <ClInclude Include="openGL\core\Vector3f.h" />

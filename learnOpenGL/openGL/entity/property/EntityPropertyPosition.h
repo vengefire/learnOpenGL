@@ -6,7 +6,9 @@
 namespace openGL::entity::property
 {
   // EntityPropertyPosition is a base class for entities that have a position in 3D space.
-  class EntityPropertyPosition : public openGl::entity::property::EntityPropertyBase<glm::vec3>
+  class EntityPropertyPosition :
+    public openGl::entity::property::EntityPropertyBase<glm::vec3>,
+    public framework::property::PropertyBaseMorphOperands<EntityPropertyPosition, glm::vec3>
   {
   public:
     EntityPropertyPosition() = default;
@@ -18,5 +20,15 @@ namespace openGL::entity::property
       : EntityPropertyBase(glm::vec3(x, y, z))
     {
     }
+
+    /*EntityPropertyPosition& operator+=(const glm::vec3& rhs) {
+      this->PropertyValue += rhs;
+      return *this;
+    }
+
+    EntityPropertyPosition operator+(const glm::vec3& rhs) {
+      this->PropertyValue += rhs;
+      return *this;
+    }*/
   };
 }
