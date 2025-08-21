@@ -30,6 +30,13 @@ namespace openGL::mesh::base
     {
     }
 
+    VertexBase(const float& x, const float& y, const float& z, const float& u, const float& v, const float& nx, const float& ny, const float& nz)
+      : position_(glm::vec3(x, y, z)),
+        texture_coordinates_(glm::vec2(u, v)),
+        normal_(glm::vec3(nx, ny, nz))
+    {
+    }
+
     VertexBase(const entity::property::EntityPropertyPosition& position,
       const entity::property::EntityPropertyColor& color)
       : position_(position),

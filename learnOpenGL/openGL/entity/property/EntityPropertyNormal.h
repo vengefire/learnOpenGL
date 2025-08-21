@@ -14,5 +14,24 @@ namespace openGL::entity::property
       : EntityPropertyBase(property_value)
     {
     }
+
+    float x() const
+    {
+      return PropertyValue.x;
+    }
+
+    float y() const
+    {
+      return PropertyValue.y;
+    }
+
+    float z() const
+    {
+      return PropertyValue.z;
+    }
+
+    __declspec(property(get = x)) float X;
+    __declspec(property(get = y)) float Y;
+    __declspec(property(get = z)) float Z;
   };
 }

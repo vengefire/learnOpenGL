@@ -125,6 +125,7 @@ namespace openGL::model
     int floatCount = 3; // Position
     int offset = 0;
     unsigned int position = 0;
+    floatCount += Mesh.vertices_have_normals() ? 3 : 0; // Color
     floatCount += Mesh.vertices_have_color() ? 4 : 0; // Color
     floatCount += Mesh.vertices_have_texture_coordinates() ? 2 : 0; // Texture Coordinates
     int stride = floatCount * static_cast<int>(sizeof(float));
@@ -133,6 +134,15 @@ namespace openGL::model
     glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, stride, static_cast<void*>(nullptr));
     offset += 3 * sizeof(float);
     glEnableVertexAttribArray(position++);
+
+    // Normals Optional
+    if (Mesh.vertices_have_normals())
+    {
+      glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, stride, (void*)(offset));
+      glEnableVertexAttribArray(position++);
+      offset += 3 * sizeof(float);
+    }
+
     // Color Optional
     if (Mesh.vertices_have_color())
     {
@@ -140,6 +150,7 @@ namespace openGL::model
       glEnableVertexAttribArray(position++);
       offset += 4 * sizeof(float);
     }
+
     // Texture Coordinates Optional
     if (Mesh.vertices_have_texture_coordinates())
     {
@@ -147,6 +158,7 @@ namespace openGL::model
       glEnableVertexAttribArray(position++);
       offset += 2 * sizeof(float);
     }
+
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
   }

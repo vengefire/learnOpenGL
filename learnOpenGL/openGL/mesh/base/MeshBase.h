@@ -28,7 +28,12 @@ namespace openGL::mesh
       {
         const auto& position = vertex.get_position().PropertyValue;
         vertex_data.insert(vertex_data.end(), { position.x, position.y, position.z });
-        
+
+        if (vertex.Normal.HasValue)
+        {
+          vertex_data.insert(vertex_data.end(), { vertex.Normal.X, vertex.Normal.Y, vertex.Normal.Z });
+        }
+
         if (vertex.Color.HasValue)
         {
           const auto& color = vertex.Color;
@@ -45,6 +50,11 @@ namespace openGL::mesh
         }
       }
       return vertex_data;
+    }
+
+    bool vertices_have_normals() const
+    {
+      return !vertices_.empty() && vertices_[0].Normal.HasValue;
     }
 
     bool vertices_have_color() const

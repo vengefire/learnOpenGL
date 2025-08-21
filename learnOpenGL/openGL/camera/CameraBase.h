@@ -19,6 +19,7 @@ namespace openGL::camera
     public framework::events::TEventSubscriberBase<event::MouseInputEventData>
   {
   public:
+
     CameraBase() : CameraBase(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0, 0.0, 4.0))
     {
     }
@@ -218,5 +219,12 @@ namespace openGL::camera
     float yaw_ = -90.0f; // Yaw
     float pitch_ = 0.0f; // Pitch
     float roll_ = 0.0f; // Roll
+  public:
+    [[nodiscard]] glm::vec3 position() const
+    {
+      return position_;
+    }
+
+    __declspec(property(get = position)) glm::vec3 Position;
   };
 }

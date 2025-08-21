@@ -27,7 +27,8 @@ namespace openGL::shaders
       return id_;
     }
 
-    void set_vec4(const std::string& name, const glm::vec4& color);
+    void set_vec4(const std::string& name, const glm::vec4& vec4);
+    void set_vec3(const std::string& name, const glm::vec3& vec3);
 
   protected:
     virtual void Init();

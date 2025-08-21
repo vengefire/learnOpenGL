@@ -185,6 +185,9 @@
     <ClInclude Include="openGL\mesh\base\VertexBase.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="res\shaders\colored_normals_shader.vs">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
     <None Include="res\shaders\light-shader.fs" />
     <None Include="res\shaders\shader.fs">
       <DeploymentContent>true</DeploymentContent>

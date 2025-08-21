@@ -24,6 +24,67 @@ namespace openGL::entity
     {
     }
 
+  public:
+    [[nodiscard]] property::EntityPropertyId id() const
+    {
+      return id_;
+    }
+
+    void set_id(const property::EntityPropertyId& id)
+    {
+      id_ = id;
+    }
+
+    __declspec(property(get = id, put = set_id)) property::EntityPropertyId Id;
+
+    [[nodiscard]] property::EntityPropertyName name() const
+    {
+      return name_;
+    }
+
+    void set_name(const property::EntityPropertyName& name)
+    {
+      name_ = name;
+    }
+
+    __declspec(property(get = name, put = set_name)) property::EntityPropertyName Name;
+
+    [[nodiscard]] property::EntityPropertyPosition position() const
+    {
+      return position_;
+    }
+
+    void set_position(const property::EntityPropertyPosition& position)
+    {
+      position_ = position;
+    }
+
+    __declspec(property(get = position, put = set_position)) property::EntityPropertyPosition Position;
+
+    [[nodiscard]] property::EntityPropertyOrientation orientation() const
+    {
+      return orientation_;
+    }
+
+    void set_orientation(const property::EntityPropertyOrientation& orientation)
+    {
+      orientation_ = orientation;
+    }
+
+    __declspec(property(get = orientation, put = set_orientation)) property::EntityPropertyOrientation Orientation;
+
+    [[nodiscard]] property::EntityPropertyScale scale() const
+    {
+      return scale_;
+    }
+
+    void set_scale(const property::EntityPropertyScale& scale)
+    {
+      scale_ = scale;
+    }
+
+    __declspec(property(get = scale, put = set_scale)) property::EntityPropertyScale Scale;
+
   protected:
     property::EntityPropertyId id_{0};
     property::EntityPropertyName name_{""};

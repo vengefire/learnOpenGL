@@ -36,6 +36,8 @@ namespace openGL::primitives
         {-half_width, half_height, half_depth, 1}
       };
 
+      auto front_normal = glm::vec3(0.0f, 0.0f, 1.0f); // Normal for the front face
+
       std::vector<glm::vec2> front_face_texels = {
         { 0.0f, 0.0f}, // Bottom Left
         { 1.0f, 0.0f}, // Bottom Right
@@ -44,12 +46,12 @@ namespace openGL::primitives
       };
 
 
-      std::function<void(const std::vector<glm::vec4>&)> add_vertices = [this, front_face_texels](const std::vector<glm::vec4>& vertices)
+      std::function<void(const std::vector<glm::vec4>&, const glm::vec4&)> add_vertices = [this, front_face_texels](const std::vector<glm::vec4>& vertices, const glm::vec3& normal)
       {
         for (int index = 0; index < vertices.size(); ++index)
         {
           // Add texture coordinates to the vertex
-          this->_vertices.emplace_back(vertices[index].x, vertices[index].y, vertices[index].z,front_face_texels[index].x, front_face_texels[index].y);
+          this->_vertices.emplace_back(vertices[index].x, vertices[index].y, vertices[index].z,front_face_texels[index].x, front_face_texels[index].y, normal.x, normal.y, normal.z);
         }
       };
 
@@ -68,34 +70,36 @@ namespace openGL::primitives
       unsigned int indexOffset = 0;
 
       // Use matrix translations to generate the other faces
-      auto translate = [](const std::vector<glm::vec4>& face, const glm::vec3& translation, const glm::vec3& rotation)
+      auto translate = [](const std::vector<glm::vec4>& face, const glm::vec3&normal, const glm::vec3& translation, const glm::vec3& rotation)
       {
         std::vector<glm::vec4> translated_face;
+        auto translatedMatrix = glm::translate(glm::mat4(1.0f), translation);
+        translatedMatrix = glm::rotate(translatedMatrix, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+        translatedMatrix = glm::rotate(translatedMatrix, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+        translatedMatrix = glm::rotate(translatedMatrix, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+
+        glm::vec4 translated_normal = glm::normalize(translatedMatrix * glm::vec4(normal.x, normal.y, normal.z, 1.0f));
         for (auto& vertex : face)
         {
-          auto translatedMatrix = glm::translate(glm::mat4(1.0f), translation);
-          translatedMatrix = glm::rotate(translatedMatrix, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
-          translatedMatrix = glm::rotate(translatedMatrix, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
-          translatedMatrix = glm::rotate(translatedMatrix, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
           translated_face.emplace_back(translatedMatrix * glm::vec4(vertex.x, vertex.y, vertex.z, 1.0f));
         }
-        return translated_face;
+        return std::make_pair(translated_face, translated_normal);
       };
 
-      auto generate_face = [this, &add_vertices, &add_indices, &indexOffset, &translate](const std::vector<glm::vec4>& face, const glm::vec3& translation, const glm::vec3& rotation)
+      auto generate_face = [this, &add_vertices, &add_indices, &indexOffset, &translate](const std::vector<glm::vec4>& face, const glm::vec3& normal, const glm::vec3& translation, const glm::vec3& rotation)
       {
-        auto translated_face = translate(face, translation, rotation);
-        add_vertices(translated_face);
+        auto translated_face_and_normal = translate(face, normal, translation, rotation);
+        add_vertices(translated_face_and_normal.first, translated_face_and_normal.second);
         add_indices(indexOffset);
         indexOffset += 4;
       };
 
-      generate_face(front_face, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f)); // Front face
-      generate_face(front_face, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 180.0f, 0.0f)); // Back face
-      generate_face(front_face, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 90.0f, 0.0f)); // Right face
-      generate_face(front_face, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, -90.0f, 0.0f)); // Left face
-      generate_face(front_face, glm::vec3(0, 0.0f, 0.0f), glm::vec3(90.0f, 0.0f, 0.0f)); // Top face
-      generate_face(front_face, glm::vec3(0, 0.0f, 0.0f), glm::vec3(-90.0f, 0.0f, 0.0f)); // Bottom face
+      generate_face(front_face, front_normal, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f)); // Front face
+      generate_face(front_face, front_normal, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 180.0f, 0.0f)); // Back face
+      generate_face(front_face, front_normal, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 90.0f, 0.0f)); // Right face
+      generate_face(front_face, front_normal, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, -90.0f, 0.0f)); // Left face
+      generate_face(front_face, front_normal, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(90.0f, 0.0f, 0.0f)); // Top face
+      generate_face(front_face, front_normal, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(-90.0f, 0.0f, 0.0f)); // Bottom face
 
       return { _vertices, _indices };
     }
