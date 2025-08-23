@@ -1,16 +1,16 @@
 #pragma once
 #include <glm/detail/type_vec.hpp>
 #include <glm/detail/type_vec3.hpp>
-#include "EntityPropertyBase.h"
+#include "TEntityPropertyBase.h"
 
 namespace openGL::entity::property
 {
-  class EntityPropertyOrientation : public openGL::entity::property::EntityPropertyBase<glm::vec3>
+  class EntityPropertyOrientation : public openGL::entity::property::TEntityPropertyBase<glm::vec3>
   {
   public:
     EntityPropertyOrientation() = default;
     EntityPropertyOrientation(const glm::vec3& orientation)
-      : EntityPropertyBase(orientation)
+      : TEntityPropertyBase(orientation)
     {
     }
 

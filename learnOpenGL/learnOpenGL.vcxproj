@@ -130,7 +130,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\dep\glad\glad.c" />
-    <ClCompile Include="framework\behavior\event\property\TRotationPropertyEventBehavior.h" />
+    <ClCompile Include="openGL\entity\property\behavior\RotationPropertyBehavior.h" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="openGL\model\ModelBase.cpp" />
     <ClCompile Include="openGL\core\OpenGLCore.cpp" />
@@ -153,7 +153,7 @@
     <ClInclude Include="openGL\entity\property\EntityPropertyColor.h" />
     <ClInclude Include="openGL\mesh\base\MeshBase.h" />
     <ClInclude Include="openGL\entity\property\EntityPropertyDimensions.h" />
-    <ClInclude Include="openGL\entity\property\EntityPropertyBase.h" />
+    <ClInclude Include="openGL\entity\property\TEntityPropertyBase.h" />
     <ClInclude Include="openGL\entity\property\EntityPropertyScale.h" />
     <ClInclude Include="openGL\entity\property\EntityPropertyOrientation.h" />
     <ClInclude Include="openGL\entity\property\EntityPropertyPosition.h" />

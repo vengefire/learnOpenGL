@@ -39,7 +39,7 @@
     <ClCompile Include="openGL\model\ModelBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="framework\behavior\event\property\TRotationPropertyEventBehavior.h">
+    <ClCompile Include="openGL\entity\property\behavior\RotationPropertyBehavior.h">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -125,7 +125,7 @@
     <ClInclude Include="openGL\entity\property\EntityPropertyScale.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="openGL\entity\property\EntityPropertyBase.h">
+    <ClInclude Include="openGL\entity\property\TEntityPropertyBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="openGL\entity\property\EntityPropertyDimensions.h">

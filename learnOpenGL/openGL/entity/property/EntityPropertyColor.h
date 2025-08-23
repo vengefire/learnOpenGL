@@ -2,18 +2,18 @@
 #include <glm/detail/type_vec.hpp>
 #include <glm/vec4.hpp>
 
-#include "EntityPropertyBase.h"
+#include "TEntityPropertyBase.h"
 #include "../../../framework/property/PropertyBaseMorphOperands.h"
 
 namespace openGL::entity::property
 {
   class EntityPropertyColor :
-    public EntityPropertyBase<glm::vec4>,
+    public TEntityPropertyBase<glm::vec4>,
     public framework::property::PropertyBaseMorphOperands<EntityPropertyColor, glm::vec3>
   {
   public:
     EntityPropertyColor() = default;
-    EntityPropertyColor(const glm::vec4& color) : EntityPropertyBase(color)
+    EntityPropertyColor(const glm::vec4& color) : TEntityPropertyBase(color)
     {
     }
 

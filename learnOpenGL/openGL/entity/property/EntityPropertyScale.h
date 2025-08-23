@@ -6,12 +6,12 @@
 
 namespace openGL::entity::property
 {
-  class EntityPropertyScale : public EntityPropertyBase<glm::vec3>
+  class EntityPropertyScale : public TEntityPropertyBase<glm::vec3>
   {
   public:
     EntityPropertyScale() = default;
     EntityPropertyScale(const glm::vec3& scale)
-      : EntityPropertyBase(scale)
+      : TEntityPropertyBase(scale)
     {
     }
   };
