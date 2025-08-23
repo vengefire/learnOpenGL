@@ -109,12 +109,19 @@ int main()
     sphere_model->Scale = glm::vec3(0.5f);
     solidColoredLight->Position = sphere_model->Position; // Set the light position to the sphere position
 
+    auto sphere_model2 = generate_segmented_model(lightedColouredVertexShader,
+      openGL::primitives::PrimitiveFactory::UVSphere, glm::vec3(1.0f),
+      glm::vec3(64, 64, 0), glm::vec4(0.753, 0.753, 0.753, 1.0f));
+    sphere_model2->Position += glm::vec3(0.0f, 1.75f, -0.5f);
+    sphere_model2->Scale = glm::vec3(0.75f);
+
     core.addModel(grid_model);
     core.addModel(circle_model);
     core.addModel(plane_model);
     core.addModel(triangle_Model);
     core.addModel(cube_model);
     core.addModel(sphere_model);
+    core.addModel(sphere_model2);
 
     camera->Position = glm::vec3(0.0f, 2.0f, 5.0f); // Set the camera position
 
@@ -133,11 +140,6 @@ int main()
         shader->set_float("specularStrength", 0.7f);
         shader->set_int("specularFocus", 32);
       };
-
-    //auto cubeRotationOnEventBehavior = std::make_shared<openGL::entity::property::behavior::event::TEntityEventDrivenPropertyBehavior<openGL::event::FrameRenderEventData, openGL::entity::property::EntityPropertyOrientation>>();
-    //auto testProperty = new framework::property::behavior::TPropertyBehaviorBase<openGL::entity::property::EntityPropertyOrientation>(
-      //glm::vec3(0.0f), cube_model->OrientationPtr());
-    //testProperty->applyAddBehavior(glm::vec3{ 1.0f });
 
     auto cubeRotationOnEventBehavior = new openGL::entity::property::behavior::event::TEntityEventDrivenPropertyBehavior<openGL::event::FrameRenderEventData, openGL::entity::property::EntityPropertyOrientation>(
       [](openGL::event::FrameRenderEventData pEventData)

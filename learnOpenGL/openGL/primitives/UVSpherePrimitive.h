@@ -51,7 +51,12 @@ namespace openGL::primitives
           // Texture coordinates
           float u = -static_cast<float>(s) / sectors;
           float v = -static_cast<float>(r) / rings;
-          _vertices.emplace_back(x, y, z, u, v);
+
+          float normalx = sinPhi * cosTheta;
+          float normaly = sinPhi * sinTheta;
+          float normalz = cosPhi;
+
+          _vertices.emplace_back(x, y, z, u, v, normalx, normaly, normalz);
         }
       }
 
