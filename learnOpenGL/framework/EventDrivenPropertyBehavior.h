@@ -1,22 +1,22 @@
 #pragma once
-#include "../../../../../framework/behavior/event/property/TEventPropertyBehavior.h"
-#include "../../../../../framework/property/TPropertyBehaviorBase.h"
+#include "behavior/event/property/TEventPropertyBehavior.h"
+#include "property/TPropertyBehaviorBase.h"
 
-namespace openGL::entity::property::behavior::event
+namespace framework
 {
   template <class TEventData, class TProperty>
-  class TEntityEventDrivenPropertyBehavior :
+  class TEventDrivenPropertyBehavior :
     public framework::behavior::event::base::TEventBehaviorBase<TEventData, framework::property::behavior::tPropertyBehaviorData<TProperty>>,
     public framework::property::behavior::TPropertyBehaviorBase<TProperty>
   {
   public:
-    TEntityEventDrivenPropertyBehavior() :
+    TEventDrivenPropertyBehavior() :
       framework::behavior::event::base::TEventBehaviorBase<TEventData, framework::property::behavior::tPropertyBehaviorData<TProperty>>(NULL),
       framework::property::behavior::TPropertyBehaviorBase<TProperty>(NULL, NULL)
     {
     }
 
-    TEntityEventDrivenPropertyBehavior(
+    TEventDrivenPropertyBehavior(
       std::function<framework::property::behavior::tPropertyBehaviorData<TProperty>(TEventData)> event_data_transform_handler, 
       const TProperty& default_value,
       const std::shared_ptr<TProperty>& p_property)

@@ -130,8 +130,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\dep\glad\glad.c" />
-    <ClCompile Include="openGL\entity\property\behavior\event\EntityEventDrivenPropertyBehavior.h" />
-    <ClCompile Include="openGL\entity\property\behavior\RotationPropertyBehavior.h" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="openGL\model\ModelBase.cpp" />
     <ClCompile Include="openGL\core\OpenGLCore.cpp" />
@@ -141,10 +139,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\dep\stb\stb_image.h" />
+    <ClInclude Include="openGL\model\EntityModelBase.h" />
     <ClInclude Include="framework\behavior\base\BehaviorBase.h" />
     <ClInclude Include="framework\behavior\base\BehaviorDataBase.h" />
     <ClInclude Include="framework\behavior\event\base\TEventBehaviorBase.h" />
     <ClInclude Include="framework\behavior\base\TBehaviorBase.h" />
+    <ClInclude Include="framework\EventDrivenPropertyBehavior.h" />
     <ClInclude Include="framework\property\PropertyBase.h" />
     <ClInclude Include="framework\property\TPropertyBehaviorBase.h" />
     <ClInclude Include="openGL\entity\property\EntityPropertyId.h" />

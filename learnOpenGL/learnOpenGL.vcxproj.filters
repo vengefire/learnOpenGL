@@ -39,12 +39,6 @@
     <ClCompile Include="openGL\model\ModelBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="openGL\entity\property\behavior\RotationPropertyBehavior.h">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="openGL\entity\property\behavior\event\EntityEventDrivenPropertyBehavior.h">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h">
@@ -201,6 +195,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="framework\property\PropertyBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="framework\EventDrivenPropertyBehavior.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="openGL\model\EntityModelBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

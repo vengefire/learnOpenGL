@@ -10,6 +10,13 @@ namespace openGL::mesh::base::property
     public framework::property::TPropertyBase<glm::vec2>
   {
   public:
+    VertexBasePropertyTexelCoordinates() = default;
+
+    VertexBasePropertyTexelCoordinates(const glm::tvec2<float>& property_value)
+      : TPropertyBase<glm::tvec2<float>>(property_value)
+    {
+    }
+
     float U() const { return PropertyValue.x; }
     float V() const { return PropertyValue.y; }
   };

@@ -4,8 +4,9 @@
 #include "openGL/camera/CameraBase.h"
 
 #include "stb_image_impl.h"
-#include "openGL/entity/property/behavior/event/EntityEventDrivenPropertyBehavior.h"
+#include "framework/EventDrivenPropertyBehavior.h"
 #include "openGL/lighting/SolidColoredLight.h"
+#include "openGL/model/EntityModelBase.h"
 #include "openGL/model/ModelBase.h"
 #include "openGL/primitives/PrimitiveFactory.h"
 
@@ -56,7 +57,7 @@ int main()
     {
       auto primitive = openGL::primitives::PrimitiveFactory::create_primitive(primitive_type, dimensions);
       primitive->Mesh.DefaultColor = default_color; // Set the default color for the primitive
-      return std::make_shared<openGL::model::ModelBase>(primitive->Mesh, shader, camera);
+      return std::make_shared<openGL::model::EntityModelBase>(primitive->Mesh, shader, camera);
     };
 
     auto generate_segmented_model = [camera](const std::shared_ptr<openGL::shaders::ShaderProgram>& shader,
@@ -68,7 +69,7 @@ int main()
       auto primitive = openGL::primitives::PrimitiveFactory::create_segmented_primitive(
         primitive_type, dimensions, segments);
       primitive->Mesh.DefaultColor = default_color; // Set the default color for the primitive
-      return std::make_shared<openGL::model::ModelBase>(primitive->Mesh, shader, camera);
+      return std::make_shared<openGL::model::EntityModelBase>(primitive->Mesh, shader, camera);
     };
 
     auto grid_model = generate_segmented_model(defaultColouredVertexShader,
@@ -141,28 +142,39 @@ int main()
         shader->set_int("specularFocus", 32);
       };
 
-    auto cubeRotationOnEventBehavior = new openGL::entity::property::behavior::event::TEntityEventDrivenPropertyBehavior<openGL::event::FrameRenderEventData, openGL::entity::property::EntityPropertyOrientation>(
+    /*
+    cube_model->Properties["Orientation"]->AddEventBehavior(
+      renderEvent,
+      [](openGL::event::FrameRenderEventData pEventData)
+      {
+        return framework::property::behavior::tPropertyBehaviorData<openGL::entity::property::EntityPropertyOrientation>(
+          openGL::entity::property::EntityPropertyOrientation(glm::vec3(1.0f, 0.0f, 0.0f)), framework::property::behavior::ePropertyBehaviorTypeAdd);
+      });
+    */
+
+    /*
+    auto cubeRotationOnEventBehavior = new framework::TEventDrivenPropertyBehavior<openGL::event::FrameRenderEventData, openGL::entity::property::EntityPropertyOrientation>(
       [](openGL::event::FrameRenderEventData pEventData)
       {
         return framework::property::behavior::tPropertyBehaviorData<openGL::entity::property::EntityPropertyOrientation>(
           openGL::entity::property::EntityPropertyOrientation(glm::vec3(1.0f, 0.0f, 0.0f)), framework::property::behavior::ePropertyBehaviorTypeAdd);
       },
-      glm::vec3(0.0f), cube_model->OrientationPtr());
+      glm::vec3(0.0f), cube_model->Orientation);
 
-    auto triangleRotationOnEventBehavior = new openGL::entity::property::behavior::event::TEntityEventDrivenPropertyBehavior<openGL::event::FrameRenderEventData, openGL::entity::property::EntityPropertyOrientation>(
+    auto triangleRotationOnEventBehavior = new framework::TEventDrivenPropertyBehavior<openGL::event::FrameRenderEventData, openGL::entity::property::EntityPropertyOrientation>(
       [](openGL::event::FrameRenderEventData pEventData)
       {
         return framework::property::behavior::tPropertyBehaviorData<openGL::entity::property::EntityPropertyOrientation>(
           openGL::entity::property::EntityPropertyOrientation(glm::vec3(1.0f, 1.0f, 1.0f)), framework::property::behavior::ePropertyBehaviorTypeAdd);
       },
-      glm::vec3(0.0f), triangle_Model->OrientationPtr());
+      glm::vec3(0.0f), triangle_Model->Orientation);
 
     renderEvent->subscribe(
       static_cast<framework::events::TEventSubscriberBase<openGL::event::FrameRenderEventData>*>(cubeRotationOnEventBehavior));
 
     renderEvent->subscribe(
       static_cast<framework::events::TEventSubscriberBase<openGL::event::FrameRenderEventData>*>(triangleRotationOnEventBehavior));
-    
+    */
 
     core.enable_depth_testing();
     core.run();

@@ -61,7 +61,7 @@ namespace openGL::mesh::base
     }
 
   protected:
-    entity::property::EntityPropertyPosition position_ = glm::vec3{ 0.0f, 0.0f , 0.0f };
+    entity::property::EntityPropertyPosition position_;
     entity::property::EntityPropertyNormal normal_;
     entity::property::EntityPropertyColor color_;
     property::VertexBasePropertyTexelCoordinates texture_coordinates_;

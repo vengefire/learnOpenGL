@@ -4,13 +4,44 @@
 namespace framework::property
 {
   template<class TProperty>
-  class TPropertyBase : PropertyBase
+  class TPropertyBase : public PropertyBase
   {
   public:
     TPropertyBase() = default;
     TPropertyBase(const TProperty& property_value)
     {
       this->PropertyValue = property_value;
+    }
+
+    // Allow derived classes to access the property value directly
+    TPropertyBase<TProperty>& operator += (const TProperty& rhs)
+    {
+      this->PropertyValue += rhs;
+      return this;
+    }
+
+    TPropertyBase<TProperty>& operator -= (const TProperty& rhs)
+    {
+      this->PropertyValue -= rhs;
+      return this;
+    }
+
+    TPropertyBase<TProperty> operator + (const TProperty& rhs)
+    {
+      this->PropertyValue += rhs;
+      return *this;
+    }
+
+    TPropertyBase<TProperty> operator - (const TProperty& rhs)
+    {
+      this->PropertyValue -= rhs;
+      return *this;
+    }
+
+    TPropertyBase<TProperty>& operator = (const TProperty& rhs)
+    {
+      this->PropertyValue = rhs;
+      return *this;
     }
 
   protected:

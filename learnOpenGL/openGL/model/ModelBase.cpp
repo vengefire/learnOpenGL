@@ -31,7 +31,7 @@ namespace openGL::model
     }
 
     // Generate an identity matrix
-    glm::mat4 trans = glm::mat4(1.0f);
+    glm::mat4 trans = calculate_translation(); /*glm::mat4(1.0f);
 
     // Apply Scaling
     trans = glm::scale(trans, Scale.PropertyValue);
@@ -40,7 +40,7 @@ namespace openGL::model
     // Apply orientation
     trans = glm::rotate(trans, glm::radians(Orientation.X), glm::vec3(1.0, 0.0, 0.0));
     trans = glm::rotate(trans, glm::radians(Orientation.Y), glm::vec3(0.0, 1.0, 0.0));
-    trans = glm::rotate(trans, glm::radians(Orientation.Z), glm::vec3(0.0, 0.0, 1.0));
+    trans = glm::rotate(trans, glm::radians(Orientation.Z), glm::vec3(0.0, 0.0, 1.0));*/
 
     // view
     glm::mat4 view = glm::mat4(1.0f);
