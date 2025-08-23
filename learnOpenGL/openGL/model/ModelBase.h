@@ -29,47 +29,50 @@ namespace openGL::model
     std::shared_ptr<camera::CameraBase> camera_;
     mesh::MeshBase mesh_;
     std::vector<std::shared_ptr<textures::TextureBase>> textures_;
-    entity::property::EntityPropertyPosition position_;
-    entity::property::EntityPropertyOrientation orientation_;
-    entity::property::EntityPropertyScale scale_ = glm::vec3(1.0f);
+
+    std::shared_ptr<entity::property::EntityPropertyPosition> position_ = std::make_shared<entity::property::EntityPropertyPosition>();
+    std::shared_ptr<entity::property::EntityPropertyOrientation> orientation_ = std::make_shared<entity::property::EntityPropertyOrientation>();
+    std::shared_ptr<entity::property::EntityPropertyScale> scale_ = std::make_shared<entity::property::EntityPropertyScale>(glm::vec3(1.0f));
 
     // REFACTOR
   public:
     void set_texture_from_file(const std::string& textureFilePath, bool flip_vertically = true);
     void set_texture(const std::shared_ptr<textures::TextureBase>& texture);
 
+    [[nodiscard]] std::shared_ptr<entity::property::EntityPropertyOrientation> OrientationPtr() { return orientation_;  };
+
     [[nodiscard]] entity::property::EntityPropertyPosition position() const
     {
-      return position_;
+      return *position_;
     }
 
     void set_position(const entity::property::EntityPropertyPosition& position)
     {
-      position_ = position;
+      *position_ = position;
     }
 
     __declspec(property(get = position, put = set_position)) entity::property::EntityPropertyPosition Position;
 
     [[nodiscard]] entity::property::EntityPropertyOrientation orientation() const
     {
-      return orientation_;
+      return *orientation_;
     }
 
     void set_rotation(const entity::property::EntityPropertyOrientation& orientation)
     {
-      orientation_ = orientation;
+      *orientation_ = orientation;
     }
 
     __declspec(property(get = orientation, put = set_rotation)) entity::property::EntityPropertyOrientation Orientation;
 
     [[nodiscard]] entity::property::EntityPropertyScale scale() const
     {
-      return scale_;
+      return *scale_;
     }
 
     void set_scale(const entity::property::EntityPropertyScale& scale)
     {
-      this->scale_ = scale;
+      *this->scale_ = scale;
     }
 
     __declspec(property(get = scale, put = set_scale)) entity::property::EntityPropertyScale Scale;

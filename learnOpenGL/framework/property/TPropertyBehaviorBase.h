@@ -18,6 +18,12 @@ namespace framework::property::behavior
   template <class TProperty>
   struct tPropertyBehaviorData : framework::behavior::base::BehaviorDataBase
   {
+    tPropertyBehaviorData(const TProperty& value, E_PROPERTY_BEHAVIOR_TYPE behavior_type)
+      : type(behavior_type),
+        pValue(std::make_shared<TProperty>(value))
+    {
+    }
+
     E_PROPERTY_BEHAVIOR_TYPE type; // Type of property behavior
     std::shared_ptr<TProperty> pValue;               // Value associated with the behavior
   };
@@ -29,7 +35,7 @@ namespace framework::property::behavior
   public:
     TPropertyBehaviorBase(const TProperty& default_value, std::shared_ptr<TProperty> pProperty)
       : _default_value(default_value),
-        _pProperty(pProperty)
+        _pProperty(std::move(pProperty))
     {
     }
 

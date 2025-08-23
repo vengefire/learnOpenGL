@@ -127,7 +127,7 @@ namespace openGL::core
       double currentFrame = glfwGetTime();
       double deltaTime = currentFrame - lastFrame;
       lastFrame = currentFrame;
-      //processInput(pWindow_.get());
+
       emit_event(typeid(event::ProcessInputEvent));
       emit_event(typeid(event::FrameRenderEvent), std::make_shared<event::FrameRenderEventData>(deltaTime, lastFrame));
 

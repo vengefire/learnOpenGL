@@ -13,11 +13,11 @@ namespace framework::behavior::event::base
     public events::TEventSubscriberBase<TEventData>
   {
   public:
-    TEventBehaviorBase(const std::function<TBehaviorData(TEventData)>& event_data_transform_handler) : _event_data_transform_handler(event_data_transform_handler)
+    TEventBehaviorBase(std::function<TBehaviorData(const TEventData&)> event_data_transform_handler) : _event_data_transform_handler(event_data_transform_handler)
     {
     }
 
   protected:
-    std::function<TBehaviorData(TEventData)> _event_data_transform_handler;
+    std::function<TBehaviorData(const  TEventData&)> _event_data_transform_handler;
   };
 }
