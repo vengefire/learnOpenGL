@@ -6,13 +6,13 @@
 namespace openGL::entity::property
 {
   class EntityPropertyName :
-    public TEntityPropertyBase<std::string>
+    public TEntityPropertyBase<EntityPropertyName, std::string>
   {
   public:
     EntityPropertyName() = default;
 
     EntityPropertyName(const std::string& property_value)
-      : TEntityPropertyBase<std::string>(property_value)
+      : TEntityPropertyBase(property_value)
     {
     }
 

@@ -1,11 +1,11 @@
 #pragma once
 #include <glm/detail/type_vec.hpp>
 #include <glm/detail/type_vec3.hpp>
-#include "EntityPropertyBase.h"
+#include "TEntityPropertyBase.h"
 
 namespace openGL::entity::property
 {
-  class EntityPropertyDimensions : public TEntityPropertyBase<glm::vec3>
+  class EntityPropertyDimensions : public TEntityPropertyBase<EntityPropertyDimensions, glm::vec3>
   {
   public:
     EntityPropertyDimensions() = default;

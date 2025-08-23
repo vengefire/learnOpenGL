@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include "EventDataBase.h"
 
 namespace framework::events

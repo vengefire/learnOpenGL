@@ -130,6 +130,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\dep\glad\glad.c" />
+    <ClCompile Include="openGL\entity\property\behavior\event\EntityEventDrivenPropertyBehavior.h" />
     <ClCompile Include="openGL\entity\property\behavior\RotationPropertyBehavior.h" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="openGL\model\ModelBase.cpp" />
@@ -141,11 +142,12 @@
   <ItemGroup>
     <ClInclude Include="..\dep\stb\stb_image.h" />
     <ClInclude Include="framework\behavior\event\base\TEventBehaviorBase.h" />
-    <ClInclude Include="framework\behavior\base\BehaviorBase.h" />
+    <ClInclude Include="framework\behavior\base\TBehaviorBase.h" />
+    <ClInclude Include="framework\property\TPropertyBehaviorBase.h" />
     <ClInclude Include="openGL\entity\property\EntityPropertyId.h" />
     <ClInclude Include="openGL\entity\property\EntityPropertyName.h" />
     <ClInclude Include="openGL\entity\EntityBase.h" />
-    <ClInclude Include="framework\property\PropertyBase.h" />
+    <ClInclude Include="framework\property\TPropertyBase.h" />
     <ClInclude Include="openGL\lighting\base\LightBase.h" />
     <ClInclude Include="openGL\model\ModelBase.h" />
     <ClInclude Include="openGL\mesh\base\property\VertexBasePropertyTexelCoordinates.h" />
@@ -174,7 +176,7 @@
     <ClInclude Include="openGL\event\ProcessInputEvent.h" />
     <ClInclude Include="openGL\primitives\PlanePrimitive.h" />
     <ClInclude Include="openGL\primitives\TypedPrimitiveBase.h" />
-    <ClInclude Include="framework\property\PropertyBaseMorphOperands.h" />
+    <ClInclude Include="framework\property\TPropertyBaseMorphOperands.h" />
     <ClInclude Include="openGL\primitives\PrimitiveFactory.h" />
     <ClInclude Include="openGL\primitives\PrimitiveBase.h" />
     <ClInclude Include="openGL\primitives\SegmentedTypedPrimitiveBase.h" />

@@ -1,18 +1,20 @@
 #pragma once
 
-#include "../../learnOpenGL/framework/property/PropertyBase.h"
+#include "../../../framework/property/TPropertyBaseMorphOperands.h"
+#include "../../learnOpenGL/framework/property/TPropertyBase.h"
 
 namespace openGL::entity::property
 {
-  template <class TEntityProperty>
+  template <class TDerivedEntity, class TEntityProperty>
   class TEntityPropertyBase :
-    public framework::property::PropertyBase<TEntityProperty>
+    public framework::property::TPropertyBase<TEntityProperty>,
+    public framework::property::TPropertyBaseMorphOperands<TDerivedEntity, TEntityProperty>
   {
   public:
-    TEntityPropertyBase() : framework::property::PropertyBase<TEntityProperty>()
+    TEntityPropertyBase() : framework::property::TPropertyBase<TEntityProperty>()
     {
     }
-    TEntityPropertyBase(const TEntityProperty& property_value) : framework::property::PropertyBase<TEntityProperty>(property_value)
+    TEntityPropertyBase(const TEntityProperty& property_value) : framework::property::TPropertyBase<TEntityProperty>(property_value)
     {}
   };
 }

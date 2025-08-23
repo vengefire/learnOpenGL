@@ -6,7 +6,7 @@
 
 namespace openGL::entity::property
 {
-  class EntityPropertyNormal : public TEntityPropertyBase<glm::vec3>
+  class EntityPropertyNormal : public TEntityPropertyBase<EntityPropertyNormal, glm::vec3>
   {
   public:
     EntityPropertyNormal() = default;

@@ -42,6 +42,9 @@
     <ClCompile Include="openGL\entity\property\behavior\RotationPropertyBehavior.h">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="openGL\entity\property\behavior\event\EntityEventDrivenPropertyBehavior.h">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h">
@@ -146,13 +149,13 @@
     <ClInclude Include="openGL\mesh\base\property\VertexBasePropertyTexelCoordinates.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="framework\property\PropertyBase.h">
+    <ClInclude Include="framework\property\TPropertyBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="openGL\model\ModelBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="framework\property\PropertyBaseMorphOperands.h">
+    <ClInclude Include="framework\property\TPropertyBaseMorphOperands.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="openGL\primitives\PrimitiveFactory.h">
@@ -179,13 +182,16 @@
     <ClInclude Include="openGL\lighting\SolidColoredLight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="framework\behavior\base\BehaviorBase.h">
+    <ClInclude Include="framework\behavior\base\TBehaviorBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="framework\behavior\event\base\TEventBehaviorBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="framework\behavior\event\property\TEventPropertyBehavior.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="framework\property\TPropertyBehaviorBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -4,13 +4,13 @@
 namespace openGL::entity::property
 {
   class EntityPropertyId :
-    public TEntityPropertyBase<unsigned int>
+    public TEntityPropertyBase<EntityPropertyId, unsigned int>
   {
   public:
     EntityPropertyId() = default;
 
     EntityPropertyId(const unsigned& property_value)
-      : TEntityPropertyBase<unsigned>(property_value)
+      : TEntityPropertyBase(property_value)
     {
     }
   };

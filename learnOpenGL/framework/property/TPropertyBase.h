@@ -3,11 +3,11 @@
 namespace framework::property
 {
   template<class TProperty>
-  class PropertyBase
+  class TPropertyBase
   {
   public:
-    PropertyBase() = default;
-    PropertyBase(const TProperty& property_value)
+    TPropertyBase() = default;
+    TPropertyBase(const TProperty& property_value)
     {
       this->PropertyValue = property_value;
     }

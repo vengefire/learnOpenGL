@@ -1,14 +1,12 @@
 #pragma once
-#include "TEventBehaviorBase.h"
 
 #include "../base/TEventBehaviorBase.h"
 
-namespace openGL::framework::behavior::event::property
+namespace framework::behavior::event::property
 {
-
-  template <class TEventData>
+  template <class TEventData, class TBehaviorData>
   class TEventPropertyBehavior :
-    public base::TEventBehaviorBase<TEventData>
+    public framework::behavior::event::base::TEventBehaviorBase<TEventData, TBehaviorData>
   {
   };
 
