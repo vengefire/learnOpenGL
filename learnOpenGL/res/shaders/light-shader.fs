@@ -1,7 +1,7 @@
 #version 330 core
 
 in vec4 vertexColor;
-in vec4 vertexNormal;
+in vec3 vertexNormal;
 in vec3 FragPosition;
 
 out vec4 FragColor;
@@ -19,7 +19,7 @@ void main()
    vec3 ambient = ambientLightStrength * lightColor.rgb;
 
    // Calculate diffuse
-   vec3 norm = normalize(vertexNormal.xyz);
+   vec3 norm = normalize(vertexNormal);
    vec3 lightDirection = normalize(lightPosition - FragPosition);
    float difference = max(dot(norm, lightDirection), 0.0);
    vec3 diffuse = difference * lightColor.rgb;
