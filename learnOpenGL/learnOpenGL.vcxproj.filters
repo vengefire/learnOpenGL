@@ -39,6 +39,9 @@
     <ClCompile Include="openGL\model\ModelBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="framework\behavior\event\property\TRotationPropertyEventBehavior.h">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h">
@@ -174,6 +177,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="openGL\lighting\SolidColoredLight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="framework\behavior\base\BehaviorBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="framework\behavior\event\base\TEventBehaviorBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="framework\behavior\event\property\TEventPropertyBehavior.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

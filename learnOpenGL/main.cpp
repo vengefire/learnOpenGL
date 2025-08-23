@@ -73,23 +73,24 @@ int main()
     auto grid_model = generate_segmented_model(defaultColouredVertexShader,
                                                openGL::primitives::PrimitiveFactory::GridLines,
                                                glm::vec3(10.0f, 10.0f, 10.0f), glm::vec3(11.0f, 11.0f, 11.0f),
-                                               glm::vec4(0.2f));
+                                               glm::vec4(0.0f));
 
-    auto circle_model = generate_segmented_model(defaultColouredVertexShader,
+    auto circle_model = generate_segmented_model(lightedColouredVertexShader,
                                                  openGL::primitives::PrimitiveFactory::Circle, glm::vec3(1.0f),
                                                  glm::vec3(32, 0, 0), glm::vec4(0.1f, 0.2, 0.3, 1.0));
-    circle_model->Position = glm::vec3(-2.0f, 2.0f, -3.0f);
+    circle_model->Position = glm::vec3(-2.0f, 2.0f, -1.0f);
+    circle_model->Orientation = glm::vec3(10.0f, 45.0f, 0.0f);
     circle_model->Scale = glm::vec3(1.2f);
     
 
-    auto plane_model = generate_segmented_model(defaultColouredVertexShader,
+    auto plane_model = generate_segmented_model(lightedColouredVertexShader,
                                                 openGL::primitives::PrimitiveFactory::Plane,
                                                 glm::vec3(2.0f, 2.0f, 0.0f), glm::vec3(1, 1, 0), glm::vec4(0.5f, 0.2, 0.7, 1.0));
     plane_model->Position = glm::vec3(0.0f, -2.0f, 0.0f);
     plane_model->Orientation = glm::vec3(90.0f, 0.0f, 0.0f);
     
 
-    auto triangle_Model = generate_model(defaultColouredVertexShader, openGL::primitives::PrimitiveFactory::Triangle,
+    auto triangle_Model = generate_model(lightedColouredVertexShader, openGL::primitives::PrimitiveFactory::Triangle,
                                          glm::vec3(1.0f), glm::vec4(0.8f, 0.1, 0.1, 1.0));
     triangle_Model->Position = glm::vec3(-2.0f, 2.0f, -4.0f);
     

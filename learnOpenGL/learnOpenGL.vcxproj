@@ -130,6 +130,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\dep\glad\glad.c" />
+    <ClCompile Include="framework\behavior\event\property\TRotationPropertyEventBehavior.h" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="openGL\model\ModelBase.cpp" />
     <ClCompile Include="openGL\core\OpenGLCore.cpp" />
@@ -139,6 +140,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\dep\stb\stb_image.h" />
+    <ClInclude Include="framework\behavior\event\base\TEventBehaviorBase.h" />
+    <ClInclude Include="framework\behavior\base\BehaviorBase.h" />
     <ClInclude Include="openGL\entity\property\EntityPropertyId.h" />
     <ClInclude Include="openGL\entity\property\EntityPropertyName.h" />
     <ClInclude Include="openGL\entity\EntityBase.h" />
@@ -183,6 +186,7 @@
     <ClInclude Include="openGL\primitives\TrianglePrimitive.h" />
     <ClInclude Include="openGL\primitives\UVSpherePrimitive.h" />
     <ClInclude Include="openGL\mesh\base\VertexBase.h" />
+    <ClInclude Include="framework\behavior\event\property\TEventPropertyBehavior.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\colored_normals_shader.vs">

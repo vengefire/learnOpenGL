@@ -42,13 +42,14 @@ namespace openGL::primitives
       // Generate vertices for the circle
       float radius = Dimensions.Depth / 2.0f; // Assuming Depth is the radius
       unsigned int segments = static_cast<unsigned int>(Segments.Width); // Assuming Width is the number of segments
-      _vertices.emplace_back(0.0f, 0.0f, 0.0f, (0 / radius + 1.0f) / 2.0f, (0 / radius + 1.0f) / 2.0f);
+      glm::vec3 normal = glm::vec3(0.0f, 0.0f, 1.0f); // Normal pointing up in Z direction
+      _vertices.emplace_back(0.0f, 0.0f, 0.0f, (0 / radius + 1.0f) / 2.0f, (0 / radius + 1.0f) / 2.0f, normal.x, normal.y, normal.z);
       for (unsigned int i = 0; i <= segments; ++i)
       {
         float angle = 2.0f * glm::pi<float>() * static_cast<float>(i) / static_cast<float>(segments);
         float x = radius * cos(angle);
         float y = radius * sin(angle);
-        _vertices.emplace_back(x, y, 0.0f, (x / radius + 1.0f) / 2.0f, (y / radius + 1.0f) / 2.0f);
+        _vertices.emplace_back(x, y, 0.0f, (x / radius + 1.0f) / 2.0f, (y / radius + 1.0f) / 2.0f, normal.x, normal.y, normal.z);
       }
       // Generate indices for the circle
       for (unsigned int i = 1; i <= segments; ++i)

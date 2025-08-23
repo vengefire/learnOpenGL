@@ -31,13 +31,14 @@ namespace openGL::primitives
       _indices.clear();
       float halfWidth = Dimensions.Width / 2.0f;
       float halfHeight = Dimensions.Height / 2.0f;
+      auto normal = glm::vec3(0.0f, 1.0f, 0.0f); // Normal pointing up in Y direction
       for (unsigned int y = 0; y <= Segments.Height; ++y)
       {
         for (unsigned int x = 0; x <= Segments.Width; ++x)
         {
           float posX = -halfWidth + (static_cast<float>(x) / Segments.Width) * Dimensions.Width;
           float posY = -halfHeight + (static_cast<float>(y) / Segments.Height) * Dimensions.Height;
-          _vertices.emplace_back(posX, posY, 0.0f);
+          _vertices.emplace_back(posX, posY, 0.0f, posX, posY, normal.x, normal.y, normal.z);
         }
       }
       for (unsigned int y = 0; y < Segments.Height; ++y)

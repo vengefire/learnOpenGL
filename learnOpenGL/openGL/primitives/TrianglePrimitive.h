@@ -23,9 +23,10 @@ namespace openGL::primitives
     {
       _vertices.clear();
       _indices.clear();
-      _vertices.emplace_back(-Dimensions.Width / 2.0f, -Dimensions.Height / 2.0f, 0.0f, 0.0f, 0.0f); // Bottom left
-      _vertices.emplace_back(Dimensions.Width / 2.0f, -Dimensions.Height / 2.0f, 0.0f, 1.0f, 0.0f);  // Bottom right
-      _vertices.emplace_back(0.0f, Dimensions.Height / 2.0f, 0.0f, 0.5f, 1.0f);           // Top
+      auto normal = glm::vec3(0.0f, 0.0f, 1.0f); // Normal pointing up in Z direction
+      _vertices.emplace_back(-Dimensions.Width / 2.0f, -Dimensions.Height / 2.0f, 0.0f, 0.0f, 0.0f, normal.x, normal.y, normal.z); // Bottom left
+      _vertices.emplace_back(Dimensions.Width / 2.0f, -Dimensions.Height / 2.0f, 0.0f, 1.0f, 0.0f, normal.x, normal.y, normal.z);  // Bottom right
+      _vertices.emplace_back(0.0f, Dimensions.Height / 2.0f, 0.0f, 0.5f, 1.0f, normal.x, normal.y, normal.z);           // Top
       return { _vertices, _indices };
     }
   };
