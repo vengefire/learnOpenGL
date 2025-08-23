@@ -1,4 +1,8 @@
 #pragma once
+#include <map>
+
+#include "../../framework/behavior/base/BehaviorBase.h"
+#include "../../framework/property/TPropertyBehaviorBase.h"
 #include "property/EntityPropertyId.h"
 #include "property/EntityPropertyName.h"
 #include "property/EntityPropertyOrientation.h"
@@ -22,6 +26,10 @@ namespace openGL::entity
         orientation_(orientation),
         scale_(scale)
     {
+      // Constructor initialization list
+      // Initialize behaviors_ if needed, or leave it empty
+      auto orientationBehaviour = std::make_shared<framework::property::behavior::TPropertyBehaviorBase<property::EntityPropertyOrientation>>(glm::vec3(0.0f), std::make_shared<property::EntityPropertyOrientation>(orientation_));
+      add_behavior(orientationBehaviour);
     }
 
   public:
@@ -85,11 +93,20 @@ namespace openGL::entity
 
     __declspec(property(get = scale, put = set_scale)) property::EntityPropertyScale Scale;
 
+  public:
+    // Refactor
+    void add_behavior(const std::shared_ptr<framework::behavior::base::BehaviorBase> behavior)
+    {
+      behaviors_.push_back(behavior);
+    }
+
   protected:
     property::EntityPropertyId id_{0};
     property::EntityPropertyName name_{""};
     property::EntityPropertyPosition position_{glm::vec3(0.0f, 0.0f, 0.0f)};
     property::EntityPropertyOrientation orientation_{glm::vec3(0.0f, 0.0f, 0.0f)};
     property::EntityPropertyScale scale_{glm::vec3(1.0f, 1.0f, 1.0f)};
+
+    std::vector<std::shared_ptr<framework::behavior::base::BehaviorBase>> behaviors_{};
   };
 }

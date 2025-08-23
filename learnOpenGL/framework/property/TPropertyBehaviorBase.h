@@ -16,7 +16,7 @@ namespace framework::property::behavior
   };
 
   template <class TProperty>
-  struct tPropertyBehaviorData
+  struct tPropertyBehaviorData : framework::behavior::base::BehaviorDataBase
   {
     E_PROPERTY_BEHAVIOR_TYPE type; // Type of property behavior
     std::shared_ptr<TProperty> pValue;               // Value associated with the behavior
@@ -27,9 +27,9 @@ namespace framework::property::behavior
   class TPropertyBehaviorBase : public framework::behavior::base::TBehaviorBase<tPropertyBehaviorData<TProperty>>
   {
   public:
-    TPropertyBehaviorBase(const TProperty& default_value, const std::shared_ptr<TProperty>& p_orientation_property)
+    TPropertyBehaviorBase(const TProperty& default_value, std::shared_ptr<TProperty> pProperty)
       : _default_value(default_value),
-        _pOrientation_property(p_orientation_property)
+        _pProperty(pProperty)
     {
     }
 
@@ -37,18 +37,19 @@ namespace framework::property::behavior
     virtual ~TPropertyBehaviorBase() = default;
     // Virtual methods to be overridden by derived classes for specific behaviors
 
-    void executeBehavior(const tPropertyBehaviorData<TProperty>& data) override
+  public:
+    void executeBehavior(const std::shared_ptr<tPropertyBehaviorData<TProperty>>& pData) override
     {
-      switch (data.type)
+      switch (pData->type)
       {
       case ePropertyBehaviorTypeAdd:
-        applyAddBehavior(*data.pValue);
+        applyAddBehavior(*pData->pValue);
         break;
       case ePropertyBehaviorTypeRemove:
-        applyRemoveBehavior(*data.pValue);
+        applyRemoveBehavior(*pData->pValue);
         break;
       case ePropertyBehaviorTypeSet:
-        applySetBehavior(*data.pValue);
+        applySetBehavior(*pData->pValue);
         break;
         // case ePropertyBehaviorTypeProduct:
         //   applyProductBehavior(*data.pValue);
@@ -64,17 +65,17 @@ namespace framework::property::behavior
 
     virtual void applySetBehavior(const TProperty& value)
     {
-      _pOrientation_property->PropertyValue = value.PropertyValue; // Set the orientation property to the new value
+      _pProperty->PropertyValue = value.PropertyValue; // Set the orientation property to the new value
     }
 
     virtual void applyAddBehavior(const TProperty& value)
     {
-      _pOrientation_property->PropertyValue += value.PropertyValue; // Add the value to the current orientation property
+      _pProperty->PropertyValue += value.PropertyValue; // Add the value to the current orientation property
     }
 
     virtual void applyRemoveBehavior(const TProperty& value)
     {
-      _pOrientation_property->PropertyValue -= value.PropertyValue;
+      _pProperty->PropertyValue -= value.PropertyValue;
     }
 
     /*virtual void applyProductBehavior(const EntityPropertyOrientation& value)
@@ -87,11 +88,11 @@ namespace framework::property::behavior
     }*/
     virtual void applyResetBehavior()
     {
-      *_pOrientation_property = _default_value; // Reset the orientation property to the specified value
+      *_pProperty = _default_value; // Reset the orientation property to the specified value
     }
 
   protected:
     TProperty _default_value; // Default value for the orientation property
-    std::shared_ptr<TProperty> _pOrientation_property;
+    std::shared_ptr<TProperty> _pProperty;
   };
 }

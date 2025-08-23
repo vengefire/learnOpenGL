@@ -1,9 +1,10 @@
 #pragma once
+#include "PropertyBase.h"
 
 namespace framework::property
 {
   template<class TProperty>
-  class TPropertyBase
+  class TPropertyBase : PropertyBase
   {
   public:
     TPropertyBase() = default;

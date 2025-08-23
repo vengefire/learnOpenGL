@@ -14,6 +14,7 @@ namespace framework::events
     EventBase(std::string event_name) : event_name_(std::move(event_name)), pEvent_data_(nullptr)
     {
     }
+
     EventBase(std::string event_name, std::shared_ptr<EventDataBase> pEvent_data) : event_name_(std::move(event_name)),
       pEvent_data_(std::move(pEvent_data))
     {

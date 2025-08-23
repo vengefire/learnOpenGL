@@ -194,6 +194,15 @@
     <ClInclude Include="framework\property\TPropertyBehaviorBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="framework\behavior\base\BehaviorBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="framework\behavior\base\BehaviorDataBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="framework\property\PropertyBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\shader.fs" />
