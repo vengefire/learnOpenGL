@@ -1,5 +1,6 @@
 #pragma once
 #include <map>
+#include <utility>
 
 #include "../../framework/behavior/base/BehaviorBase.h"
 #include "../../framework/property/TPropertyBehaviorBase.h"
@@ -17,9 +18,9 @@ namespace openGL::entity
     virtual ~EntityBase() = default;
 
   public:
-    [[nodiscard]] framework::property::TPropertyBase<int> id() const
+    [[nodiscard]] std::shared_ptr<framework::property::TPropertyBase<int>> id() const
     {
-      return *std::static_pointer_cast<framework::property::TPropertyBase<int>>(_properties.at("Id"));
+      return std::static_pointer_cast<framework::property::TPropertyBase<int>>(_properties.at("Id"));
     }
 
     void set_id(const int& id)
@@ -27,11 +28,11 @@ namespace openGL::entity
       *std::static_pointer_cast<framework::property::TPropertyBase<int>>(_properties.at("Id")) = id;
     }
 
-    __declspec(property(get = id, put = set_id)) framework::property::TPropertyBase<int> Id;
+    __declspec(property(get = id)) std::shared_ptr<framework::property::TPropertyBase<int>> Id;
 
-    [[nodiscard]] framework::property::TPropertyBase<std::string> name() const
+    [[nodiscard]] std::shared_ptr<framework::property::TPropertyBase<std::string>> name() const
     {
-      return *std::static_pointer_cast<framework::property::TPropertyBase<std::string>>(_properties.at("Name"));
+      return std::static_pointer_cast<framework::property::TPropertyBase<std::string>>(_properties.at("Name"));
     }
 
     void set_name(const std::string& name)
@@ -39,11 +40,11 @@ namespace openGL::entity
       *std::static_pointer_cast<framework::property::TPropertyBase<std::string>>(_properties.at("Name")) = name;
     }
 
-    __declspec(property(get = name, put = set_name)) framework::property::TPropertyBase<std::string> Name;
+    __declspec(property(get = name)) std::shared_ptr<framework::property::TPropertyBase<std::string>> Name;
 
-    [[nodiscard]] framework::property::TPropertyBase<glm::vec3>& position()
+    [[nodiscard]] std::shared_ptr<framework::property::TPropertyBase<glm::vec3>> position()
     {
-      return *std::static_pointer_cast<framework::property::TPropertyBase<glm::vec3>>(_properties.at("Position"));
+      return std::static_pointer_cast<framework::property::TPropertyBase<glm::vec3>>(_properties.at("Position"));
     }
 
     void set_position(const framework::property::TPropertyBase<glm::vec3>& position)
@@ -51,23 +52,24 @@ namespace openGL::entity
       *std::static_pointer_cast<framework::property::TPropertyBase<glm::vec3>>(_properties.at("Position")) = position;
     }
 
-    __declspec(property(get = position, put = set_position)) framework::property::TPropertyBase<glm::vec3>& Position;
+    __declspec(property(get = position)) std::shared_ptr<framework::property::TPropertyBase<glm::vec3>> Position;
 
-    [[nodiscard]] framework::property::TPropertyBase<glm::vec3> orientation() const
+    [[nodiscard]] std::shared_ptr<framework::property::TPropertyBase<glm::vec3>> orientation() const
     {
-      return *std::static_pointer_cast<framework::property::TPropertyBase<glm::vec3>>(_properties.at("Orientation"));
+      return std::static_pointer_cast<framework::property::TPropertyBase<glm::vec3>>(_properties.at("Orientation"));
     }
 
     void set_orientation(const framework::property::TPropertyBase<glm::vec3>& orientation)
     {
-      *std::static_pointer_cast<framework::property::TPropertyBase<glm::vec3>>(_properties.at("Orientation")) = orientation;
+      *std::static_pointer_cast<framework::property::TPropertyBase<glm::vec3>>(_properties.at("Orientation")) =
+        orientation;
     }
 
-    __declspec(property(get = orientation, put = set_orientation)) framework::property::TPropertyBase<glm::vec3> Orientation;
+    __declspec(property(get = orientation)) std::shared_ptr<framework::property::TPropertyBase<glm::vec3>> Orientation;
 
-    [[nodiscard]] framework::property::TPropertyBase<glm::vec3> scale() const
+    [[nodiscard]] std::shared_ptr<framework::property::TPropertyBase<glm::vec3>> scale() const
     {
-      return *std::static_pointer_cast<framework::property::TPropertyBase<glm::vec3>>(_properties.at("Scale"));
+      return std::static_pointer_cast<framework::property::TPropertyBase<glm::vec3>>(_properties.at("Scale"));
     }
 
     void set_scale(const framework::property::TPropertyBase<glm::vec3>& scale)
@@ -75,17 +77,29 @@ namespace openGL::entity
       *std::static_pointer_cast<framework::property::TPropertyBase<glm::vec3>>(_properties.at("Scale")) = scale;
     }
 
-    __declspec(property(get = scale, put = set_scale)) framework::property::TPropertyBase<glm::vec3> Scale;
+    __declspec(property(get = scale)) std::shared_ptr<framework::property::TPropertyBase<glm::vec3>> Scale;
 
-  public:
-    // Refactor
-    void add_behavior(const std::shared_ptr<framework::behavior::base::BehaviorBase> behavior)
+    // Refactor to use a more generic method to add properties
+    std::pair<std::shared_ptr<framework::property::PropertyBase>, std::shared_ptr<
+                framework::behavior::base::BehaviorBase>> add_property_behavior(
+      std::shared_ptr<framework::property::PropertyBase> property, std::string behavior_name,
+      std::shared_ptr<framework::behavior::base::BehaviorBase> behavior)
     {
-      _behaviors.push_back(behavior);
+      if (!_propertyBehaviors.contains(property))
+      {
+        _propertyBehaviors[property] = std::map<std::string, std::shared_ptr<
+                                                  framework::behavior::base::BehaviorBase>>();
+      }
+      _propertyBehaviors[property][behavior_name] = std::move(behavior);
+      return {property, behavior};
+    }
+
+    void add_behavior_event(std::shared_ptr<framework::behavior::base::BehaviorBase> behavior, framework::behavior::event::base::EventBehaviorBase eventBehavior)
+    {
+      _eventBehaviors.push_back(std::move(eventBehavior));
     }
 
   protected:
-
     std::map<std::string, std::shared_ptr<framework::property::PropertyBase>> _properties = {
       {"Id", std::make_shared<framework::property::TPropertyBase<int>>(0)},
       {"Name", std::make_shared<framework::property::TPropertyBase<std::string>>("N/A")},
@@ -94,6 +108,7 @@ namespace openGL::entity
       {"Scale", std::make_shared<framework::property::TPropertyBase<glm::vec3>>(glm::vec3(1.0f, 1.0f, 1.0f))}
     };
 
-    std::vector<std::shared_ptr<framework::behavior::base::BehaviorBase>> _behaviors{};
+    std::map<std::shared_ptr<framework::property::PropertyBase>, std::map<std::string, std::shared_ptr<framework::behavior::base::BehaviorBase>>> _propertyBehaviors;
+    std::vector<framework::behavior::event::base::EventBehaviorBase> _eventBehaviors;
   };
 }

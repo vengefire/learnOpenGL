@@ -80,41 +80,41 @@ int main()
     auto circle_model = generate_segmented_model(lightedColouredVertexShader,
                                                  openGL::primitives::PrimitiveFactory::Circle, glm::vec3(1.0f),
                                                  glm::vec3(32, 0, 0), glm::vec4(0.1f, 0.2, 0.3, 1.0));
-    circle_model->Position = glm::vec3(-2.0f, 2.0f, -1.0f);
-    circle_model->Orientation = glm::vec3(10.0f, 45.0f, 0.0f);
-    circle_model->Scale = glm::vec3(1.2f);
+    *circle_model->Position = glm::vec3(-2.0f, 2.0f, -1.0f);
+    *circle_model->Orientation = glm::vec3(10.0f, 45.0f, 0.0f);
+    *circle_model->Scale = glm::vec3(1.2f);
     
 
     auto plane_model = generate_segmented_model(lightedColouredVertexShader,
                                                 openGL::primitives::PrimitiveFactory::Plane,
                                                 glm::vec3(2.0f, 2.0f, 0.0f), glm::vec3(1, 1, 0), glm::vec4(0.5f, 0.2, 0.7, 1.0));
-    plane_model->Position = glm::vec3(0.0f, -2.0f, 0.0f);
-    plane_model->Orientation = glm::vec3(90.0f, 0.0f, 0.0f);
+    *plane_model->Position = glm::vec3(0.0f, -2.0f, 0.0f);
+    *plane_model->Orientation = glm::vec3(90.0f, 0.0f, 0.0f);
     
 
     auto triangle_Model = generate_model(lightedColouredVertexShader, openGL::primitives::PrimitiveFactory::Triangle,
                                          glm::vec3(1.0f), glm::vec4(0.8f, 0.1, 0.1, 1.0));
-    triangle_Model->Position = glm::vec3(-2.0f, 2.0f, -4.0f);
+    *triangle_Model->Position = glm::vec3(-2.0f, 2.0f, -4.0f);
     
 
     auto cube_model = generate_model(lightedColouredVertexShader, openGL::primitives::PrimitiveFactory::Cube, glm::vec3(1.0f), glm::vec4(1.0f, 0.1, 0.1, 1.0));
     cube_model->set_texture_from_file("./res/textures/container.jpg");
     cube_model->set_texture_from_file("./res/textures/awesomeface.jpg");
-    cube_model->Orientation = glm::vec3(12.0f, 12.0f, 12.0f);
+    *cube_model->Orientation = glm::vec3(12.0f, 12.0f, 12.0f);
     
 
     auto sphere_model = generate_segmented_model(defaultColouredVertexShader,
                                                  openGL::primitives::PrimitiveFactory::UVSphere, glm::vec3(1.0f),
                                                  glm::vec3(12, 12, 0), glm::vec4(1.0f, 1.0, 1.0, 1.0));
-    sphere_model->Position += glm::vec3(2.0f, 2.0f, -3.0f);
-    sphere_model->Scale = glm::vec3(0.5f);
-    solidColoredLight->Position = sphere_model->Position; // Set the light position to the sphere position
+    *sphere_model->Position += glm::vec3(2.0f, 2.0f, -3.0f);
+    *sphere_model->Scale = glm::vec3(0.5f);
+    *solidColoredLight->Position = sphere_model->Position->PropertyValue; // Set the light position to the sphere position
 
     auto sphere_model2 = generate_segmented_model(lightedColouredVertexShader,
       openGL::primitives::PrimitiveFactory::UVSphere, glm::vec3(1.0f),
       glm::vec3(64, 64, 0), glm::vec4(0.753, 0.753, 0.753, 1.0f));
-    sphere_model2->Position += glm::vec3(0.0f, 1.75f, -0.5f);
-    sphere_model2->Scale = glm::vec3(0.75f);
+    *sphere_model2->Position += glm::vec3(0.0f, 1.75f, -0.5f);
+    *sphere_model2->Scale = glm::vec3(0.75f);
 
     core.addModel(grid_model);
     core.addModel(circle_model);
@@ -128,20 +128,24 @@ int main()
 
     lightedColouredVertexShader->OnRender = [solidColoredLight, camera, sphere_model](std::shared_ptr<openGL::shaders::ShaderProgram> shader)
       {
-        float x = solidColoredLight->Position.PropertyValue.x + 0.01f * sin(glfwGetTime());
-        float y = solidColoredLight->Position.PropertyValue.y + 0.01f * cos(glfwGetTime());
-        float z = solidColoredLight->Position.PropertyValue.z + 0.01f * sin(glfwGetTime());
-        solidColoredLight->Position.set_property_value(glm::vec3(x, y, z));
-        sphere_model->Position = solidColoredLight->Position.PropertyValue; // Update the sphere position to match the light position
+        float x = solidColoredLight->Position->PropertyValue.x + 0.01f * sin(glfwGetTime());
+        float y = solidColoredLight->Position->PropertyValue.y + 0.01f * cos(glfwGetTime());
+        float z = solidColoredLight->Position->PropertyValue.z + 0.01f * sin(glfwGetTime());
+        *solidColoredLight->Position = glm::vec3(x, y, z);
+        *sphere_model->Position = solidColoredLight->Position->PropertyValue; // Update the sphere position to match the light position
         shader->use();
-        shader->set_float("ambientLightStrength", 0.10f);
         shader->set_vec4("lightColor", solidColoredLight->Color.PropertyValue);
-        shader->set_vec3("lightPosition", solidColoredLight->Position.PropertyValue);
+        shader->set_vec3("lightPosition", solidColoredLight->Position->PropertyValue);
         shader->set_vec3("cameraPosition", camera->position());
+        shader->set_float("ambientLightStrength", 0.1f);
+        shader->set_float("diffuseLightStrength", 0.25f);
         shader->set_float("specularStrength", 0.7f);
         shader->set_int("specularFocus", 32);
       };
 
+    auto propertyBehavior = cube_model->add_property_behavior(cube_model->Orientation, "Orientation_Morph", std::make_shared<framework::property::behavior::TPropertyBehaviorBase<framework::property::TPropertyBase<glm::vec3>>>(glm::vec3(0.0f), cube_model->Orientation));
+    auto behavior_event = new framework::behavior::event::base::TEventBehaviorBase<openGL::event::FrameRenderEventData, framework::property::TPropertyBase<glm::vec3>>
+    ; cube_model->add_behavior_event(propertyBehavior.second, )
     /*
     cube_model->Properties["Orientation"]->AddEventBehavior(
       renderEvent,

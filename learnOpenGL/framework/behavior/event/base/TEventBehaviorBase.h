@@ -2,6 +2,7 @@
 
 #include <functional>
 
+#include "../../../../EventBehaviorBase.h"
 #include "../../../events/TEventSubscriberBase.h"
 #include "../../base/TBehaviorBase.h"
 
@@ -9,6 +10,7 @@ namespace framework::behavior::event::base
 {
   template <class TEventData, class TBehaviorData>
   class TEventBehaviorBase :
+    public EventBehaviorBase,
     public behavior::base::TBehaviorBase<TBehaviorData>,
     public events::TEventSubscriberBase<TEventData>
   {

@@ -17,13 +17,13 @@ namespace framework::property
     TPropertyBase<TProperty>& operator += (const TProperty& rhs)
     {
       this->PropertyValue += rhs;
-      return this;
+      return *this;
     }
 
     TPropertyBase<TProperty>& operator -= (const TProperty& rhs)
     {
       this->PropertyValue -= rhs;
-      return this;
+      return *this;
     }
 
     TPropertyBase<TProperty> operator + (const TProperty& rhs)

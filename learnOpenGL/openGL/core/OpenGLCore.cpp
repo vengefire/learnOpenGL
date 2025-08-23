@@ -131,7 +131,8 @@ namespace openGL::core
       emit_event(typeid(event::ProcessInputEvent));
       emit_event(typeid(event::FrameRenderEvent), std::make_shared<event::FrameRenderEventData>(deltaTime, lastFrame));
 
-      glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+      //glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+      glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
       // Render your models here
       for (const auto model : models_)

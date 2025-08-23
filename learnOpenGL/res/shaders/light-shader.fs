@@ -7,9 +7,10 @@ in vec3 FragPosition;
 out vec4 FragColor;
 
 uniform vec4 lightColor;
-uniform float ambientLightStrength;
 uniform vec3 lightPosition;
 uniform vec3 cameraPosition;
+uniform float ambientLightStrength;
+uniform float diffuseLightStrength;
 uniform int specularFocus;
 uniform float specularStrength;
 
@@ -22,7 +23,7 @@ void main()
    vec3 norm = normalize(vertexNormal);
    vec3 lightDirection = normalize(lightPosition - FragPosition);
    float difference = max(dot(norm, lightDirection), 0.0);
-   vec3 diffuse = difference * lightColor.rgb;
+   vec3 diffuse = difference * diffuseLightStrength * lightColor.rgb;
 
    // Specular lighting
    vec3 viewDirection = normalize(cameraPosition - FragPosition);

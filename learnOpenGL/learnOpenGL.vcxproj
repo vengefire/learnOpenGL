@@ -139,6 +139,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\dep\stb\stb_image.h" />
+    <ClInclude Include="EventBehaviorBase.h" />
     <ClInclude Include="openGL\model\EntityModelBase.h" />
     <ClInclude Include="framework\behavior\base\BehaviorBase.h" />
     <ClInclude Include="framework\behavior\base\BehaviorDataBase.h" />
