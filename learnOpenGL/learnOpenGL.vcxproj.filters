@@ -197,13 +197,13 @@
     <ClInclude Include="framework\property\PropertyBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="framework\EventDrivenPropertyBehavior.h">
+    <ClInclude Include="framework\TEventPropertyBehavior.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="openGL\model\EntityModelBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="EventBehaviorBase.h">
+    <ClInclude Include="framework\behavior\event\base\EventBehaviorBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

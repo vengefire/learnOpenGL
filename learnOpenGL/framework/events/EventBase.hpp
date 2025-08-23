@@ -34,7 +34,7 @@ namespace framework::events
     }
 
     virtual void emit_event(std::shared_ptr<EventDataBase> pEvent_data) = 0;
-    virtual void subscribe(EventSubscriberBase* subscriber)
+    virtual void register_subscriber(EventSubscriberBase* subscriber)
     {
       if (subscriber)
       {

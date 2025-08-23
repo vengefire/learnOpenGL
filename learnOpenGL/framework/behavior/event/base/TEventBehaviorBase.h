@@ -2,7 +2,7 @@
 
 #include <functional>
 
-#include "../../../../EventBehaviorBase.h"
+#include "EventBehaviorBase.h"
 #include "../../../events/TEventSubscriberBase.h"
 #include "../../base/TBehaviorBase.h"
 
@@ -10,16 +10,29 @@ namespace framework::behavior::event::base
 {
   template <class TEventData, class TBehaviorData>
   class TEventBehaviorBase :
-    public EventBehaviorBase,
-    public behavior::base::TBehaviorBase<TBehaviorData>,
-    public events::TEventSubscriberBase<TEventData>
+    virtual public EventBehaviorBase,
+    virtual public events::TEventSubscriberBase<TEventData>
   {
   public:
-    TEventBehaviorBase(std::function<TBehaviorData(const TEventData&)> event_data_transform_handler) : _event_data_transform_handler(event_data_transform_handler)
+    TEventBehaviorBase(const std::shared_ptr<behavior::base::TBehaviorBase<TBehaviorData>>& p_behavior,
+      const std::function<TBehaviorData(const TEventData&)>& event_data_transform_handler)
+      : _pBehavior(p_behavior),
+        _event_data_transform_handler(event_data_transform_handler)
     {
     }
 
+    void handle_event(std::shared_ptr<events::EventDataBase> pEventData) override
+    {
+      events::TEventSubscriberBase<TEventData>::handle_event(pEventData);
+    }
+
+    void handle_event(std::shared_ptr<TEventData> pEventData) override
+    {
+      _pBehavior->executeBehavior(std::make_shared<TBehaviorData>(_event_data_transform_handler(*pEventData)));
+    }
+
   protected:
-    std::function<TBehaviorData(const  TEventData&)> _event_data_transform_handler;
+    std::shared_ptr<behavior::base::TBehaviorBase<TBehaviorData>> _pBehavior;
+    std::function<TBehaviorData(const TEventData&)> _event_data_transform_handler;
   };
 }

@@ -4,7 +4,7 @@
 #include "openGL/camera/CameraBase.h"
 
 #include "stb_image_impl.h"
-#include "framework/EventDrivenPropertyBehavior.h"
+#include "framework/TEventPropertyBehavior.h"
 #include "openGL/lighting/SolidColoredLight.h"
 #include "openGL/model/EntityModelBase.h"
 #include "openGL/model/ModelBase.h"
@@ -23,11 +23,11 @@ int main()
 
     // Setup the camera
     auto camera = std::make_shared<openGL::camera::CameraBase>();
-    renderEvent->subscribe(
+    renderEvent->register_subscriber(
       static_cast<framework::events::TEventSubscriberBase<openGL::event::FrameRenderEventData>*>(camera.get()));
-    inputEvent->subscribe(
+    inputEvent->register_subscriber(
       static_cast<framework::events::TEventSubscriberBase<openGL::event::ProcessInputEventData>*>(camera.get()));
-    mouseInputEvent->subscribe(
+    mouseInputEvent->register_subscriber(
       static_cast<framework::events::TEventSubscriberBase<openGL::event::MouseInputEventData>*>(camera.get()));
 
     // Default shader program for coloured vertices
@@ -144,8 +144,17 @@ int main()
       };
 
     auto propertyBehavior = cube_model->add_property_behavior(cube_model->Orientation, "Orientation_Morph", std::make_shared<framework::property::behavior::TPropertyBehaviorBase<framework::property::TPropertyBase<glm::vec3>>>(glm::vec3(0.0f), cube_model->Orientation));
-    auto behavior_event = new framework::behavior::event::base::TEventBehaviorBase<openGL::event::FrameRenderEventData, framework::property::TPropertyBase<glm::vec3>>
-    ; cube_model->add_behavior_event(propertyBehavior.second, )
+    auto pfn = [](openGL::event::FrameRenderEventData pEventData)
+      {
+        return framework::property::behavior::tPropertyBehaviorData<framework::property::TPropertyBase<glm::vec3>>(glm::vec3(1.0f, 0.0f, 0.0f), framework::property::behavior::ePropertyBehaviorTypeAdd);
+      };
+    auto behavior_event = std::make_shared<framework::TEventPropertyBehavior<openGL::event::FrameRenderEventData, framework::property::TPropertyBase<glm::vec3>>>(
+      std::static_pointer_cast<framework::property::behavior::TPropertyBehaviorBase<framework::property::TPropertyBase<glm::vec3>>>(propertyBehavior.second),
+      pfn,
+      glm::vec3(0.0f), 
+      cube_model->Orientation);
+
+    cube_model->add_behavior_event(propertyBehavior.second, std::static_pointer_cast<framework::behavior::event::base::EventBehaviorBase>(behavior_event), renderEvent);
     /*
     cube_model->Properties["Orientation"]->AddEventBehavior(
       renderEvent,
@@ -157,7 +166,7 @@ int main()
     */
 
     /*
-    auto cubeRotationOnEventBehavior = new framework::TEventDrivenPropertyBehavior<openGL::event::FrameRenderEventData, openGL::entity::property::EntityPropertyOrientation>(
+    auto cubeRotationOnEventBehavior = new framework::TEventPropertyBehavior<openGL::event::FrameRenderEventData, openGL::entity::property::EntityPropertyOrientation>(
       [](openGL::event::FrameRenderEventData pEventData)
       {
         return framework::property::behavior::tPropertyBehaviorData<openGL::entity::property::EntityPropertyOrientation>(
@@ -165,7 +174,7 @@ int main()
       },
       glm::vec3(0.0f), cube_model->Orientation);
 
-    auto triangleRotationOnEventBehavior = new framework::TEventDrivenPropertyBehavior<openGL::event::FrameRenderEventData, openGL::entity::property::EntityPropertyOrientation>(
+    auto triangleRotationOnEventBehavior = new framework::TEventPropertyBehavior<openGL::event::FrameRenderEventData, openGL::entity::property::EntityPropertyOrientation>(
       [](openGL::event::FrameRenderEventData pEventData)
       {
         return framework::property::behavior::tPropertyBehaviorData<openGL::entity::property::EntityPropertyOrientation>(
@@ -173,10 +182,10 @@ int main()
       },
       glm::vec3(0.0f), triangle_Model->Orientation);
 
-    renderEvent->subscribe(
+    renderEvent->register_subscriber(
       static_cast<framework::events::TEventSubscriberBase<openGL::event::FrameRenderEventData>*>(cubeRotationOnEventBehavior));
 
-    renderEvent->subscribe(
+    renderEvent->register_subscriber(
       static_cast<framework::events::TEventSubscriberBase<openGL::event::FrameRenderEventData>*>(triangleRotationOnEventBehavior));
     */
 

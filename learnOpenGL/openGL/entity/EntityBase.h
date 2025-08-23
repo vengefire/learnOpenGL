@@ -90,13 +90,17 @@ namespace openGL::entity
         _propertyBehaviors[property] = std::map<std::string, std::shared_ptr<
                                                   framework::behavior::base::BehaviorBase>>();
       }
-      _propertyBehaviors[property][behavior_name] = std::move(behavior);
+      _propertyBehaviors[property][behavior_name] = behavior;
       return {property, behavior};
     }
 
-    void add_behavior_event(std::shared_ptr<framework::behavior::base::BehaviorBase> behavior, framework::behavior::event::base::EventBehaviorBase eventBehavior)
+    void add_behavior_event(const std::shared_ptr<framework::behavior::base::BehaviorBase>& behavior,
+                            const std::shared_ptr<framework::behavior::event::base::EventBehaviorBase>& eventBehavior,
+                            framework::events::EventBase* pEvent)
     {
-      _eventBehaviors.push_back(std::move(eventBehavior));
+      _eventBehaviors.push_back(eventBehavior);
+      pEvent->register_subscriber(
+        std::dynamic_pointer_cast<framework::events::EventSubscriberBase>(eventBehavior).get());
     }
 
   protected:
@@ -108,7 +112,8 @@ namespace openGL::entity
       {"Scale", std::make_shared<framework::property::TPropertyBase<glm::vec3>>(glm::vec3(1.0f, 1.0f, 1.0f))}
     };
 
-    std::map<std::shared_ptr<framework::property::PropertyBase>, std::map<std::string, std::shared_ptr<framework::behavior::base::BehaviorBase>>> _propertyBehaviors;
-    std::vector<framework::behavior::event::base::EventBehaviorBase> _eventBehaviors;
+    std::map<std::shared_ptr<framework::property::PropertyBase>, std::map<
+               std::string, std::shared_ptr<framework::behavior::base::BehaviorBase>>> _propertyBehaviors;
+    std::vector<std::shared_ptr<framework::behavior::event::base::EventBehaviorBase>> _eventBehaviors;
   };
 }

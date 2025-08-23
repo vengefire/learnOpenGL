@@ -1,11 +1,11 @@
 #pragma once
+#include "../../../events/EventSubscriberBase.h"
 
 namespace framework::behavior::event::base
 {
-
-  class EventBehaviorBase
+  class EventBehaviorBase : public events::EventSubscriberBase
   {
-  protected:
+  public:
     EventBehaviorBase() = default;
     virtual ~EventBehaviorBase() = default;
   };

@@ -49,7 +49,7 @@ namespace framework::events
       EventBase* event = get_event_by_type(eventType);
       if (event)
       {
-        event->subscribe(subscriber);
+        event->register_subscriber(subscriber);
       }
       else
       {
