@@ -6,7 +6,7 @@
 namespace openGL::entity::property
 {
   class EntityPropertyColor :
-    public TEntityPropertyBase<EntityPropertyColor, glm::vec4>
+    public TEntityPropertyBase<glm::vec4>
   {
   public:
     EntityPropertyColor() = default;
@@ -14,22 +14,22 @@ namespace openGL::entity::property
     {
     }
 
-    float R() const
+    float R()
     {
       return PropertyValue.x;
     }
 
-    float G() const
+    float G()
     {
       return PropertyValue.y;
     }
 
-    float B() const
+    float B()
     {
       return PropertyValue.z;
     }
 
-    float A() const
+    float A()
     {
       return PropertyValue.w;
     }

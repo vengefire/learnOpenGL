@@ -33,14 +33,13 @@ namespace framework::property::behavior
   class TPropertyBehaviorBase : public framework::behavior::base::TBehaviorBase<tPropertyBehaviorData<TProperty>>
   {
   public:
-    TPropertyBehaviorBase(const TProperty& default_value, std::shared_ptr<TProperty> pProperty)
+    TPropertyBehaviorBase(const TProperty& default_value, TProperty* pProperty)
       : _default_value(default_value),
-        _pProperty(std::move(pProperty))
+        _pProperty(pProperty)
     {
     }
 
     TPropertyBehaviorBase() = default;
-    ~TPropertyBehaviorBase() override = default;
     // Virtual methods to be overridden by derived classes for specific behaviors
 
     void executeBehavior(const std::shared_ptr<tPropertyBehaviorData<TProperty>>& pData) override
@@ -68,17 +67,17 @@ namespace framework::property::behavior
       }
     }
 
-    virtual void applySetBehavior(const TProperty& value)
+    virtual void applySetBehavior(TProperty& value)
     {
       _pProperty->PropertyValue = value.PropertyValue; // Set the orientation property to the new value
     }
 
-    virtual void applyAddBehavior(const TProperty& value)
+    virtual void applyAddBehavior(TProperty& value)
     {
       _pProperty->PropertyValue += value.PropertyValue; // Add the value to the current orientation property
     }
 
-    virtual void applyRemoveBehavior(const TProperty& value)
+    virtual void applyRemoveBehavior(TProperty& value)
     {
       _pProperty->PropertyValue -= value.PropertyValue;
     }
@@ -99,6 +98,6 @@ namespace framework::property::behavior
 
   protected:
     TProperty _default_value; // Default value for the orientation property
-    std::shared_ptr<TProperty> _pProperty;
+    TProperty* _pProperty;
   };
 }

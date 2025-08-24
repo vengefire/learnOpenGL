@@ -5,7 +5,7 @@
 
 namespace openGL::entity::property
 {
-  class EntityPropertyDimensions : public TEntityPropertyBase<EntityPropertyDimensions, glm::vec3>
+  class EntityPropertyDimensions : public TEntityPropertyBase<glm::vec3>
   {
   public:
     EntityPropertyDimensions() = default;
@@ -14,17 +14,17 @@ namespace openGL::entity::property
     {
     }
 
-    float get_width() const
+    float get_width() 
     {
       return PropertyValue.x;
     }
 
-    float get_height() const
+    float get_height() 
     {
       return PropertyValue.y;
     }
 
-    float get_depth() const
+    float get_depth() 
     {
       return PropertyValue.z;
     }

@@ -114,7 +114,7 @@ namespace openGL::model
     }
   }
 
-  void ModelBase::upload_vertex_data() const
+  void ModelBase::upload_vertex_data()
   {
     auto vertices = mesh_.get_formatted_vertices();
     glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);

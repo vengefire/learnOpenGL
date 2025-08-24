@@ -4,7 +4,7 @@
 namespace openGL::entity::property
 {
   class EntityPropertyId :
-    public TEntityPropertyBase<EntityPropertyId, unsigned int>
+    public TEntityPropertyBase<unsigned int>
   {
   public:
     EntityPropertyId() = default;

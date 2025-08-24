@@ -17,7 +17,7 @@ namespace openGL::mesh::base::property
     {
     }
 
-    float U() const { return PropertyValue.x; }
-    float V() const { return PropertyValue.y; }
+    float U() { return PropertyValue.x; }
+    float V() { return PropertyValue.y; }
   };
 }

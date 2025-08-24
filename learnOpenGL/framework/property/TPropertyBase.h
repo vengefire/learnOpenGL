@@ -74,7 +74,7 @@ namespace framework::property
 
     __declspec(property(get = is_dirty, put = set_dirty)) bool IsDirty;
 
-    [[nodiscard]] TProperty get_property_value() const
+    [[nodiscard]] TProperty& get_property_value()
     {
       return property_value_;
     }
@@ -91,7 +91,7 @@ namespace framework::property
       mark_property_as_set_and_dirty();
     }
 
-    __declspec(property(get = get_property_value, put = set_property_value)) TProperty PropertyValue;
+    __declspec(property(get = get_property_value, put = set_property_value)) TProperty& PropertyValue;
   };
 
 }

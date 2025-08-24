@@ -67,7 +67,7 @@ namespace openGL::model
 
   private:
     void initialize_buffers();
-    void upload_vertex_data() const;
+    void upload_vertex_data();
     void configure_vertex_attributes();
     void upload_indices_data();
     void set_mesh(const mesh::MeshBase& mesh);

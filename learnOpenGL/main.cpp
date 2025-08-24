@@ -143,51 +143,12 @@ int main()
         shader->set_int("specularFocus", 32);
       };
 
-    auto propertyBehavior = cube_model->add_property_behavior(cube_model->Orientation, "Orientation_Morph", std::make_shared<framework::property::behavior::TPropertyBehaviorBase<framework::property::TPropertyBase<glm::vec3>>>(glm::vec3(0.0f), cube_model->Orientation));
-    auto pfn = [](openGL::event::FrameRenderEventData pEventData)
-      {
-        return framework::property::behavior::tPropertyBehaviorData<framework::property::TPropertyBase<glm::vec3>>(glm::vec3(1.0f, 0.0f, 0.0f), framework::property::behavior::ePropertyBehaviorTypeAdd);
-      };
-    auto behavior_event = std::make_shared<framework::TEventPropertyBehavior<openGL::event::FrameRenderEventData, framework::property::TPropertyBase<glm::vec3>>>(
-      std::static_pointer_cast<framework::property::behavior::TPropertyBehaviorBase<framework::property::TPropertyBase<glm::vec3>>>(propertyBehavior.second),
-      pfn,
-      glm::vec3(0.0f), 
-      cube_model->Orientation);
-
-    cube_model->add_behavior_event(propertyBehavior.second, std::static_pointer_cast<framework::behavior::event::base::EventBehaviorBase>(behavior_event), renderEvent);
-    /*
-    cube_model->Properties["Orientation"]->AddEventBehavior(
-      renderEvent,
+    cube_model->Orientation->AddEventBehavior<openGL::event::FrameRenderEventData>(
+      std::shared_ptr<framework::events::EventBase>(renderEvent),
       [](openGL::event::FrameRenderEventData pEventData)
       {
-        return framework::property::behavior::tPropertyBehaviorData<openGL::entity::property::EntityPropertyOrientation>(
-          openGL::entity::property::EntityPropertyOrientation(glm::vec3(1.0f, 0.0f, 0.0f)), framework::property::behavior::ePropertyBehaviorTypeAdd);
-      });
-    */
-
-    /*
-    auto cubeRotationOnEventBehavior = new framework::TEventPropertyBehavior<openGL::event::FrameRenderEventData, openGL::entity::property::EntityPropertyOrientation>(
-      [](openGL::event::FrameRenderEventData pEventData)
-      {
-        return framework::property::behavior::tPropertyBehaviorData<openGL::entity::property::EntityPropertyOrientation>(
-          openGL::entity::property::EntityPropertyOrientation(glm::vec3(1.0f, 0.0f, 0.0f)), framework::property::behavior::ePropertyBehaviorTypeAdd);
-      },
-      glm::vec3(0.0f), cube_model->Orientation);
-
-    auto triangleRotationOnEventBehavior = new framework::TEventPropertyBehavior<openGL::event::FrameRenderEventData, openGL::entity::property::EntityPropertyOrientation>(
-      [](openGL::event::FrameRenderEventData pEventData)
-      {
-        return framework::property::behavior::tPropertyBehaviorData<openGL::entity::property::EntityPropertyOrientation>(
-          openGL::entity::property::EntityPropertyOrientation(glm::vec3(1.0f, 1.0f, 1.0f)), framework::property::behavior::ePropertyBehaviorTypeAdd);
-      },
-      glm::vec3(0.0f), triangle_Model->Orientation);
-
-    renderEvent->register_subscriber(
-      static_cast<framework::events::TEventSubscriberBase<openGL::event::FrameRenderEventData>*>(cubeRotationOnEventBehavior));
-
-    renderEvent->register_subscriber(
-      static_cast<framework::events::TEventSubscriberBase<openGL::event::FrameRenderEventData>*>(triangleRotationOnEventBehavior));
-    */
+        return framework::property::behavior::tPropertyBehaviorData<framework::property::TPropertyBase<glm::vec3>>(
+          openGL::entity::property::TEntityPropertyBase<glm::vec3>(glm::vec3(1.0f, 1.0f, 1.0f)), framework::property::behavior::ePropertyBehaviorTypeAdd);});
 
     core.enable_depth_testing();
     core.run();

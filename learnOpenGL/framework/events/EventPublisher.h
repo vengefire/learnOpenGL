@@ -12,7 +12,7 @@ namespace framework::events
     EventPublisher() = default;
     virtual ~EventPublisher() = default;
 
-    auto add_event(std::unique_ptr<EventBase> event)
+    auto add_event(std::shared_ptr<EventBase> event)
     {
       events_.emplace_back(std::move(event));
       return events_.back().get();
@@ -20,8 +20,7 @@ namespace framework::events
 
     void emit_event(const type_info& eventType) const
     {
-      EventBase* event = get_event_by_type(eventType);
-      if (event)
+      if (auto event = get_event_by_type(eventType))
       {
         event->emit_event();
       }
@@ -33,8 +32,7 @@ namespace framework::events
 
     template <typename TEventDataType> void emit_event(const type_info& eventType, std::shared_ptr<TEventDataType> pEventData) const
     {
-      EventBase* event = get_event_by_type(eventType);
-      if (event)
+      if (auto event = get_event_by_type(eventType))
       {
         event->emit_event(pEventData);
       }
@@ -46,8 +44,7 @@ namespace framework::events
 
     template <typename TEventDataType> void register_subscriber(TEventSubscriberBase<TEventDataType>* subscriber, const type_info& eventType)
     {
-      EventBase* event = get_event_by_type(eventType);
-      if (event)
+      if (auto event = get_event_by_type(eventType))
       {
         event->register_subscriber(subscriber);
       }
@@ -57,13 +54,13 @@ namespace framework::events
       }
     }
 
-    EventBase* get_event_by_type(const type_info& eventType) const
+    std::shared_ptr<EventBase> get_event_by_type(const type_info& eventType) const
     {
       for (const auto& event : events_)
       {
         if (event && typeid(*event) == eventType)
         {
-          return event.get();
+          return event;
         }
       }
       return nullptr;
@@ -81,7 +78,7 @@ namespace framework::events
       events_.clear();
     }
   protected:
-    std::vector<std::unique_ptr<EventBase>> events_;
+    std::vector<std::shared_ptr<EventBase>> events_;
   private:
   };
 

@@ -6,7 +6,7 @@
 
 namespace openGL::entity::property
 {
-  class EntityPropertyNormal : public TEntityPropertyBase<EntityPropertyNormal, glm::vec3>
+  class EntityPropertyNormal : public TEntityPropertyBase<glm::vec3>
   {
   public:
     EntityPropertyNormal() = default;
@@ -15,17 +15,17 @@ namespace openGL::entity::property
     {
     }
 
-    float x() const
+    float x()
     {
       return PropertyValue.x;
     }
 
-    float y() const
+    float y()
     {
       return PropertyValue.y;
     }
 
-    float z() const
+    float z()
     {
       return PropertyValue.z;
     }

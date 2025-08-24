@@ -19,20 +19,20 @@ namespace openGL::core
       public framework::events::TEventSubscriberBase<event::ProcessInputEventData>
   {
   public:
-    event::ProcessInputEvent* get_process_input_event() const
+    std::shared_ptr<event::ProcessInputEvent> get_process_input_event() const
     {
-      return static_cast<event::ProcessInputEvent*>(get_event_by_type(typeid(event::ProcessInputEvent)));
+      return std::dynamic_pointer_cast<event::ProcessInputEvent>(get_event_by_type(typeid(event::ProcessInputEvent)));
     }
     void handle_event(std::shared_ptr<event::ProcessInputEventData> pEventData) override;
 
-    event::FrameRenderEvent* get_render_event()
+    std::shared_ptr<event::FrameRenderEvent> get_render_event()
     {
-      return static_cast<event::FrameRenderEvent*>(get_event_by_type(typeid(event::FrameRenderEvent)));
+      return std::dynamic_pointer_cast<event::FrameRenderEvent>(get_event_by_type(typeid(event::FrameRenderEvent)));
     }
 
-    event::MouseInputEvent* get_mouse_input_event()
+    std::shared_ptr<event::MouseInputEvent> get_mouse_input_event()
     {
-      return static_cast<event::MouseInputEvent*>(get_event_by_type(typeid(event::MouseInputEvent)));
+      return std::dynamic_pointer_cast<event::MouseInputEvent>(get_event_by_type(typeid(event::MouseInputEvent)));
     }
 
     OpenGLCore(int majorVersion, int minorVersion);

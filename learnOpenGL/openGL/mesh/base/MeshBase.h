@@ -21,12 +21,12 @@ namespace openGL::mesh
     {
     }
 
-    std::vector<float> get_formatted_vertices() const
+    std::vector<float> get_formatted_vertices()
     {
       std::vector<float> vertex_data;
       for (const auto& vertex : vertices_)
       {
-        const auto& position = vertex.get_position().PropertyValue;
+        auto position = vertex.get_position().PropertyValue;
         vertex_data.insert(vertex_data.end(), { position.x, position.y, position.z });
 
         if (vertex.Normal.HasValue)
@@ -36,7 +36,7 @@ namespace openGL::mesh
 
         if (vertex.Color.HasValue)
         {
-          const auto& color = vertex.Color;
+          auto color = vertex.Color;
           vertex_data.insert(vertex_data.end(), { color.R(), color.G(), color.B(), color.A() });
         }
         else if (default_color_.HasValue)
@@ -45,7 +45,7 @@ namespace openGL::mesh
         }
         if (vertex.TextureCoordinates.HasValue)
         {
-          const auto& tex_coords = vertex.get_texture_coordinates();
+          auto tex_coords = vertex.get_texture_coordinates();
           vertex_data.insert(vertex_data.end(), { tex_coords.U(), tex_coords.V() });
         }
       }
