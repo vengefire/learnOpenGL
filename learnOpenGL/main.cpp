@@ -4,7 +4,6 @@
 #include "openGL/camera/CameraBase.h"
 
 #include "stb_image_impl.h"
-#include "framework/TEventPropertyBehavior.h"
 #include "openGL/lighting/SolidColoredLight.h"
 #include "openGL/model/EntityModelBase.h"
 #include "openGL/model/ModelBase.h"
@@ -151,6 +150,8 @@ int main()
           openGL::entity::property::TEntityPropertyBase<glm::vec3>(glm::vec3(1.0f, 1.0f, 1.0f)), framework::property::behavior::ePropertyBehaviorTypeAdd);});
 
     core.enable_depth_testing();
+    //core.toggleWireFrameMode();
+
     core.run();
 
     return 0;

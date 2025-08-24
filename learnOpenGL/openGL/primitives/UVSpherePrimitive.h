@@ -52,9 +52,9 @@ namespace openGL::primitives
           float u = -static_cast<float>(s) / sectors;
           float v = -static_cast<float>(r) / rings;
 
-          float normalx = sinPhi * cosTheta;
-          float normaly = sinPhi * sinTheta;
-          float normalz = cosPhi;
+          float normalx = x; // sinPhi* cosTheta;
+          float normaly = y; // sinPhi* sinTheta;
+          float normalz = z; // cosPhi;
 
           _vertices.emplace_back(x, y, z, u, v, normalx, normaly, normalz);
         }

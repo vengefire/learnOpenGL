@@ -31,17 +31,7 @@ namespace openGL::model
     }
 
     // Generate an identity matrix
-    glm::mat4 trans = calculate_translation(); /*glm::mat4(1.0f);
-
-    // Apply Scaling
-    trans = glm::scale(trans, Scale.PropertyValue);
-    // Apply translation
-    trans = glm::translate(trans, Position.PropertyValue);
-    // Apply orientation
-    trans = glm::rotate(trans, glm::radians(Orientation.X), glm::vec3(1.0, 0.0, 0.0));
-    trans = glm::rotate(trans, glm::radians(Orientation.Y), glm::vec3(0.0, 1.0, 0.0));
-    trans = glm::rotate(trans, glm::radians(Orientation.Z), glm::vec3(0.0, 0.0, 1.0));*/
-
+    glm::mat4 trans = calculate_translation();
     // view
     glm::mat4 view = glm::mat4(1.0f);
     view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f)); // Move the camera back
