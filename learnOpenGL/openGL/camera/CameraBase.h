@@ -276,7 +276,7 @@ namespace openGL::camera
     entity::property::TEntityPropertyBase<float> m_camera_speed = 0.05f;
     entity::property::TEntityPropertyBase<bool> m_mouse_capture_rmb = false;
     entity::property::TEntityPropertyBase<bool> m_mouse_capture_lmb = false;
-    EntityPropertyFloat m_camera_zoom = 45.0f;
+    EntityPropertyFloat m_camera_zoom = EntityPropertyFloat(45.0f, 1.0f, 70.0f);
     std::shared_ptr<core::OpenGLCore> m_pCore;
 
     float yaw_sensitivity_ = 0.1f;

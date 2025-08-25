@@ -7,6 +7,11 @@ namespace framework::property
   template<typename TProperty>
   concept Comparable = std::totally_ordered<TProperty>;
 
+  template <typename TProperty>
+  concept Arithmetic = requires(TProperty a, TProperty b) {
+    { a + b } -> std::same_as<TProperty>; // Requires that 'a + b' is a valid expression and returns a type convertible to T
+  };
+
   template  <class TProperty>
   class TPropertyBase : public PropertyBase
   {
@@ -42,12 +47,12 @@ namespace framework::property
     {
       if (max_value_ && newValue > this->max_value_.value())
       {
-        std::cout << "Clamping to max value: " << this->max_value_.value();
+        std::cout << "Clamping to max value: " << this->max_value_.value() << std::endl;
         newValue = this->max_value_.value();
       }
       else if (min_value_ && newValue < this->min_value_.value())
       {
-        std::cout << "Clamping to min value: " << this->min_value_.value();
+        std::cout << "Clamping to min value: " << this->min_value_.value() << std::endl;
         newValue = this->min_value_.value();
       }
     }
@@ -58,7 +63,7 @@ namespace framework::property
     }
 
     // Allow derived classes to access the property value directly
-    TPropertyBase<TProperty>& operator += (const TProperty& rhs)
+    TPropertyBase<TProperty>& operator += (const TProperty& rhs)  requires (Arithmetic<TProperty>)
     {
       auto newValue = this->PropertyValue + rhs;
       checkBounds(newValue);
@@ -67,7 +72,7 @@ namespace framework::property
       return *this;
     }
 
-    TPropertyBase<TProperty>& operator -= (const TProperty& rhs)
+    TPropertyBase<TProperty>& operator -= (const TProperty& rhs)  requires (Arithmetic<TProperty>)
     {
       auto newValue = this->PropertyValue - rhs;
       checkBounds(newValue);
@@ -75,13 +80,13 @@ namespace framework::property
       return *this;
     }
 
-    TPropertyBase<TProperty> operator + (const TProperty& rhs)
+    TPropertyBase<TProperty> operator + (const TProperty& rhs)  requires (Arithmetic<TProperty>)
     {
       this->PropertyValue += rhs;
       return *this;
     }
 
-    TPropertyBase<TProperty> operator - (const TProperty& rhs)
+    TPropertyBase<TProperty> operator - (const TProperty& rhs)  requires (Arithmetic<TProperty>)
     {
       this->PropertyValue -= rhs;
       return *this;

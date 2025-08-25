@@ -69,17 +69,17 @@ namespace framework::property::behavior
 
     virtual void applySetBehavior(TProperty& value)
     {
-      _pProperty->PropertyValue = value.PropertyValue; // Set the orientation property to the new value
+      *_pProperty = value.PropertyValue; // Set the orientation property to the new value
     }
 
     virtual void applyAddBehavior(TProperty& value)
     {
-      _pProperty->PropertyValue += value.PropertyValue; // Add the value to the current orientation property
+      *_pProperty += value.PropertyValue; // Add the value to the current orientation property
     }
 
     virtual void applyRemoveBehavior(TProperty& value)
     {
-      _pProperty->PropertyValue -= value.PropertyValue;
+      *_pProperty -= value.PropertyValue;
     }
 
     /*virtual void applyProductBehavior(const EntityPropertyOrientation& value)

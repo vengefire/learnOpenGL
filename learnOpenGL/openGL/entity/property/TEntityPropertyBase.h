@@ -13,23 +13,36 @@ namespace openGL::entity::property
     public framework::property::TPropertyBase<TEntityProperty>
   {
   public:
-    typedef framework::property::TPropertyBase<TEntityProperty> Property;
-    typedef framework::property::behavior::TPropertyBehaviorBase<Property> PropertyBehavior;
-    typedef framework::events::EventBase Event;
-    typedef framework::behavior::event::base::EventBehaviorBase EventBehavior;
+    using Property = framework::property::TPropertyBase<TEntityProperty>;
+    using PropertyBehavior = framework::property::behavior::TPropertyBehaviorBase<Property>;
+    using Event = framework::events::EventBase;
+    using EventBehavior = framework::behavior::event::base::EventBehaviorBase;
 
     TEntityPropertyBase() : Property()
     {
     }
 
     TEntityPropertyBase(const std::shared_ptr<framework::property::PropertyHostBase>& p_property_host,
-      const TEntityProperty& property_value)
+                        const TEntityProperty& property_value)
       : framework::property::TPropertyBase<TEntityProperty>(p_property_host, property_value)
     {
     }
 
     TEntityPropertyBase(const TEntityProperty& property_value)
       : Property(property_value),
+        _pDefaultPropertyBehavior(std::make_shared<PropertyBehavior>(property_value, this))
+    {
+    }
+
+    TEntityPropertyBase(const TEntityProperty& property_value, const std::optional<TEntityProperty>& min_value,
+                        const std::optional<TEntityProperty>& max_value)
+      : framework::property::TPropertyBase<TEntityProperty>(property_value, min_value, max_value),
+        _pDefaultPropertyBehavior(std::make_shared<PropertyBehavior>(property_value, this))
+    {
+    }
+
+    TEntityPropertyBase(const TEntityProperty& property_value, const std::optional<TEntityProperty>& default_value)
+      : framework::property::TPropertyBase<TEntityProperty>(property_value, default_value),
         _pDefaultPropertyBehavior(std::make_shared<PropertyBehavior>(property_value, this))
     {
     }
@@ -60,11 +73,16 @@ namespace openGL::entity::property
       return *this;
     }
 
-    template <class TEventDataType> void AddEventBehavior(std::shared_ptr<Event> pEvent,
-                                                          const std::function<framework::property::behavior::tPropertyBehaviorData<Property>(const TEventDataType&)>& event_data_transform_handler)
+    template <class TEventDataType>
+    void AddEventBehavior(std::shared_ptr<Event> pEvent,
+                          const std::function<framework::property::behavior::tPropertyBehaviorData<Property>(
+                            const TEventDataType&)>& event_data_transform_handler)
     {
-      _event_behaviors_.emplace_back(std::make_shared<framework::behavior::event::base::TEventBehaviorBase<TEventDataType, framework::property::behavior::tPropertyBehaviorData<Property>>>(_pDefaultPropertyBehavior, event_data_transform_handler));
-      pEvent->register_subscriber(static_cast<framework::behavior::event::base::EventBehaviorBase*>(_event_behaviors_.back().get()));
+      _event_behaviors_.emplace_back(
+        std::make_shared<framework::behavior::event::base::TEventBehaviorBase<
+          TEventDataType, framework::property::behavior::tPropertyBehaviorData<Property>>>(
+          _pDefaultPropertyBehavior, event_data_transform_handler));
+      pEvent->register_subscriber(_event_behaviors_.back().get());
     }
 
   protected:
