@@ -218,45 +218,6 @@ namespace openGL::camera
       update_camera_vectors();
     }
 
-    void handle_camera_movement(std::shared_ptr<event::ProcessInputEventData> pEventData)
-    {
-      if (enable_camera_movement_z)
-      {
-        if (glfwGetKey(pEventData->window, GLFW_KEY_W) == GLFW_PRESS)
-        {
-          *Position += front_ * m_camera_speed.PropertyValue;
-        }
-        else if (glfwGetKey(pEventData->window, GLFW_KEY_S) == GLFW_PRESS)
-        {
-          *Position -= front_ * m_camera_speed.PropertyValue;
-        }
-      }
-
-      if (enable_camera_movement_x)
-      {
-        if (glfwGetKey(pEventData->window, GLFW_KEY_A) == GLFW_PRESS)
-        {
-          *Position -= right_ * m_camera_speed.PropertyValue;
-        }
-        else if (glfwGetKey(pEventData->window, GLFW_KEY_D) == GLFW_PRESS)
-        {
-          *Position += right_ * m_camera_speed.PropertyValue;
-        }
-      }
-
-      if (enable_camera_movement_y)
-      {
-        if (glfwGetKey(pEventData->window, GLFW_KEY_R) == GLFW_PRESS)
-        {
-          *Position -= glm::normalize(glm::cross(front_, right_)) * m_camera_speed.PropertyValue;
-        }
-        else if (glfwGetKey(pEventData->window, GLFW_KEY_F) == GLFW_PRESS)
-        {
-          *Position += glm::normalize(glm::cross(front_, right_)) * m_camera_speed.PropertyValue;
-        }
-      }
-    }
-
   protected:
     bool m_restrict_orientation_change_to_rmb_down = false;
 
