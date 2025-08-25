@@ -7,6 +7,7 @@
 #include <glm/gtc/quaternion.hpp>
 
 #include "../../framework/events/TEventSubscriberBase.h"
+#include "../entity/EntityBase.h"
 #include "../event/ProcessInputEvent.h"
 #include "../event/FrameRenderEvent.h"
 #include "../event/MouseInputEvent.h"
@@ -14,9 +15,10 @@
 namespace openGL::camera
 {
   class CameraBase :
-    public framework::events::TEventSubscriberBase<event::ProcessInputEventData>,
-    public framework::events::TEventSubscriberBase<event::FrameRenderEventData>,
-    public framework::events::TEventSubscriberBase<event::MouseInputEventData>
+    public framework::events::TEventSubscriberBase<event::ProcessInputEventData>
+    , public framework::events::TEventSubscriberBase<event::FrameRenderEventData>
+    , public framework::events::TEventSubscriberBase<event::MouseInputEventData>
+    , public entity::EntityBase
   {
   public:
 
@@ -24,10 +26,11 @@ namespace openGL::camera
     {
     }
 
-    CameraBase(glm::vec3 position, glm::vec3 camera_target) : position_(position)
+    CameraBase(glm::vec3 position, glm::vec3 camera_target)
     {
+      set_position(position);
       // Initialize the front vector to point in the negative z direction
-      front_ = glm::normalize(position_ - camera_target);
+      front_ = glm::normalize(Position->PropertyValue - camera_target);
       // Calculate the right vector as the cross product of the front vector and the default world up vector
       right_ = glm::normalize(glm::cross(front_, glm::vec3(0.0f, 1.0f, 0.0f)));
       // Calculate the up vector as the cross product of the right vector and the front vector
@@ -40,7 +43,7 @@ namespace openGL::camera
 
     virtual glm::mat4 getViewMatrix()
     {
-      return glm::lookAt(position_, position_ + front_, up_);
+      return glm::lookAt(Position->PropertyValue, Position->PropertyValue + front_, up_);
     }
 
     float near_plane_ = 0.1f;
@@ -71,12 +74,12 @@ namespace openGL::camera
       // Handle zooming in and out
       camera_zoom_ -= pEventData->y_offset; // Adjust zoom based on mouse scroll
       camera_zoom_ = std::max(camera_zoom_, 1.0f); // Prevent zooming in too much
-      camera_zoom_ = std::min(camera_zoom_, 45.0f); // Prevent zooming out too much
+      camera_zoom_ = std::min(camera_zoom_, 70.0f); // Prevent zooming out too much
     }
 
     void handle_yaw_offset(std::shared_ptr<event::MouseInputEventData> pEventData)
     {
-      if (enable_pitch)
+      if (enable_yaw)
       {
         auto xOffSet = pEventData->x_pos - last_x_;
         last_x_ = pEventData->x_pos;
@@ -87,7 +90,7 @@ namespace openGL::camera
 
     void handle_pitch_offset(std::shared_ptr<event::MouseInputEventData> pEventData)
     {
-      if (enable_yaw)
+      if (enable_pitch)
       {
         auto yOffSet = last_y_ - pEventData->y_pos; // Invert y-axis for mouse movement
         last_y_ = pEventData->y_pos;
@@ -127,7 +130,7 @@ namespace openGL::camera
 
       handle_camera_zoom(pEventData);
 
-      if (pEventData->x_pos == 0 && pEventData->y_pos == 0)
+      if (pEventData->x_pos == 0.0 && pEventData->y_pos == 0.0)
       {
         return; // Ignore event with zero position
       }
@@ -148,11 +151,11 @@ namespace openGL::camera
       {
         if (glfwGetKey(pEventData->window, GLFW_KEY_W) == GLFW_PRESS)
         {
-          position_ += front_ * camera_speed_;
+          *Position += front_ * camera_speed_;
         }
         else if (glfwGetKey(pEventData->window, GLFW_KEY_S) == GLFW_PRESS)
         {
-          position_ -= front_ * camera_speed_;
+          *Position -= front_ * camera_speed_;
         }
       }
 
@@ -160,11 +163,11 @@ namespace openGL::camera
       {
         if (glfwGetKey(pEventData->window, GLFW_KEY_A) == GLFW_PRESS)
         {
-          position_ -= right_ * camera_speed_;
+          *Position -= right_ * camera_speed_;
         }
         else if (glfwGetKey(pEventData->window, GLFW_KEY_D) == GLFW_PRESS)
         {
-          position_ += right_ * camera_speed_;
+          *Position += right_ * camera_speed_;
         }
       }
 
@@ -172,11 +175,11 @@ namespace openGL::camera
       {
         if (glfwGetKey(pEventData->window, GLFW_KEY_R) == GLFW_PRESS)
         {
-          position_ -= glm::normalize(glm::cross(front_, right_)) * camera_speed_;
+          *Position -= glm::normalize(glm::cross(front_, right_)) * camera_speed_;
         }
         else if (glfwGetKey(pEventData->window, GLFW_KEY_F) == GLFW_PRESS)
         {
-          position_ += glm::normalize(glm::cross(front_, right_)) * camera_speed_;
+          *Position += glm::normalize(glm::cross(front_, right_)) * camera_speed_;
         }
       }
     }
@@ -203,8 +206,6 @@ namespace openGL::camera
     bool enable_camera_movement_y = true; // Enable or disable camera movement along the y-axis
     bool enable_camera_movement_z = true; // Enable or disable camera movement along the z-axis
 
-
-    glm::vec3 position_;
     glm::vec3 front_;
     glm::vec3 right_;
     glm::vec3 up_;
@@ -219,17 +220,5 @@ namespace openGL::camera
     float yaw_ = -90.0f; // Yaw
     float pitch_ = 0.0f; // Pitch
     float roll_ = 0.0f; // Roll
-  public:
-    [[nodiscard]] glm::vec3 position() const
-    {
-      return position_;
-    }
-
-    void set_position(const glm::vec3& position)
-    {
-      position_ = position;
-    }
-
-    __declspec(property(get = position, put = set_position)) glm::vec3 Position;
   };
 }

@@ -3,7 +3,7 @@
 #include <utility>
 
 #include "../../framework/behavior/base/BehaviorBase.h"
-#include "../../framework/property/TPropertyBehaviorBase.h"
+#include "../entity/property/TEntityPropertyBase.h"
 
 namespace openGL::entity
 {

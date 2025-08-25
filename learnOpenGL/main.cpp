@@ -123,7 +123,7 @@ int main()
     core.addModel(sphere_model);
     core.addModel(sphere_model2);
 
-    camera->Position = glm::vec3(0.0f, 2.0f, 5.0f); // Set the camera position
+    camera->set_position(glm::vec3(0.0f, 2.0f, 5.0f)); // Set the camera position
 
     lightedColouredVertexShader->OnRender = [solidColoredLight, camera, sphere_model](std::shared_ptr<openGL::shaders::ShaderProgram> shader)
       {
@@ -135,7 +135,7 @@ int main()
         shader->use();
         shader->set_vec4("lightColor", solidColoredLight->Color.PropertyValue);
         shader->set_vec3("lightPosition", solidColoredLight->Position->PropertyValue);
-        shader->set_vec3("cameraPosition", camera->position());
+        shader->set_vec3("cameraPosition", camera->Position->PropertyValue);
         shader->set_float("ambientLightStrength", 0.1f);
         shader->set_float("diffuseLightStrength", 0.25f);
         shader->set_float("specularStrength", 0.7f);
