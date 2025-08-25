@@ -6,6 +6,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/quaternion.hpp>
 
+#include "../core/OpenGLCore.h"
 #include "../../framework/events/TEventSubscriberBase.h"
 #include "../entity/EntityBase.h"
 #include "../event/ProcessInputEvent.h"
@@ -16,17 +17,17 @@ namespace openGL::camera
 {
   class CameraBase :
     public framework::events::TEventSubscriberBase<event::ProcessInputEventData>
-    , public framework::events::TEventSubscriberBase<event::FrameRenderEventData>
     , public framework::events::TEventSubscriberBase<event::MouseInputEventData>
     , public entity::EntityBase
   {
   public:
 
-    CameraBase() : CameraBase(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0, 0.0, 4.0))
+    CameraBase() : CameraBase(nullptr, glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0, 0.0, 4.0))
     {
     }
 
-    CameraBase(glm::vec3 position, glm::vec3 camera_target)
+    CameraBase(const std::shared_ptr<core::OpenGLCore>& pCore, glm::vec3 position, glm::vec3 camera_target)
+      : m_pCore(pCore)
     {
       set_position(position);
       // Initialize the front vector to point in the negative z direction
@@ -35,6 +36,17 @@ namespace openGL::camera
       right_ = glm::normalize(glm::cross(front_, glm::vec3(0.0f, 1.0f, 0.0f)));
       // Calculate the up vector as the cross product of the right vector and the front vector
       up_ = glm::normalize(glm::cross(right_, front_));
+
+      if (m_pCore)
+      {
+        auto renderEvent = m_pCore->get_render_event();
+        m_camera_speed.AddEventBehavior<event::FrameRenderEventData>(renderEvent, [](const event::FrameRenderEventData& eventData)
+          {
+            float cameraSpeed = eventData.delta_time * 2.5f; // Adjust camera speed based on delta time
+            auto behaviorData = framework::property::behavior::tPropertyBehaviorData<framework::property::TPropertyBase<float>>(cameraSpeed, framework::property::behavior::ePropertyBehaviorTypeSet);
+            return behaviorData;
+          });
+      }
     }
 
     ~CameraBase() override
@@ -61,12 +73,6 @@ namespace openGL::camera
     virtual glm::mat4 getProjectionMatrix(float aspect_ratio, float near_plane, float far_plane)
     {
       return glm::perspective(glm::radians(camera_zoom_), aspect_ratio, near_plane, far_plane);
-    }
-
-    void handle_event(std::shared_ptr<event::FrameRenderEventData> pEventData) override
-    {
-      if (!pEventData) return; // Handle null pointer case
-      camera_speed_ = pEventData->delta_time * 2.5f; // Adjust camera speed based on delta time
     }
 
     void handle_camera_zoom(std::shared_ptr<event::MouseInputEventData> pEventData)
@@ -151,11 +157,11 @@ namespace openGL::camera
       {
         if (glfwGetKey(pEventData->window, GLFW_KEY_W) == GLFW_PRESS)
         {
-          *Position += front_ * camera_speed_;
+          *Position += front_ * m_camera_speed.PropertyValue;
         }
         else if (glfwGetKey(pEventData->window, GLFW_KEY_S) == GLFW_PRESS)
         {
-          *Position -= front_ * camera_speed_;
+          *Position -= front_ * m_camera_speed.PropertyValue;
         }
       }
 
@@ -163,11 +169,11 @@ namespace openGL::camera
       {
         if (glfwGetKey(pEventData->window, GLFW_KEY_A) == GLFW_PRESS)
         {
-          *Position -= right_ * camera_speed_;
+          *Position -= right_ * m_camera_speed.PropertyValue;
         }
         else if (glfwGetKey(pEventData->window, GLFW_KEY_D) == GLFW_PRESS)
         {
-          *Position += right_ * camera_speed_;
+          *Position += right_ * m_camera_speed.PropertyValue;
         }
       }
 
@@ -175,11 +181,11 @@ namespace openGL::camera
       {
         if (glfwGetKey(pEventData->window, GLFW_KEY_R) == GLFW_PRESS)
         {
-          *Position -= glm::normalize(glm::cross(front_, right_)) * camera_speed_;
+          *Position -= glm::normalize(glm::cross(front_, right_)) * m_camera_speed.PropertyValue;
         }
         else if (glfwGetKey(pEventData->window, GLFW_KEY_F) == GLFW_PRESS)
         {
-          *Position += glm::normalize(glm::cross(front_, right_)) * camera_speed_;
+          *Position += glm::normalize(glm::cross(front_, right_)) * m_camera_speed.PropertyValue;
         }
       }
     }
@@ -211,7 +217,9 @@ namespace openGL::camera
     glm::vec3 up_;
 
     float camera_zoom_ = 45.0f;  // Default "zoom" level for the camera, aka field of view (FOV)
-    float camera_speed_ = 0.05f; // Adjust the speed of the camera movement
+    //float m_camera_speed.PropertyValue = 0.05f; // Adjust the speed of the camera movement
+    entity::property::TEntityPropertyBase<float> m_camera_speed = 0.05f;
+    std::shared_ptr<core::OpenGLCore> m_pCore;
 
     float yaw_sensitivity_ = 0.1f;
     float pitch_sensitivity_ = 0.1f;

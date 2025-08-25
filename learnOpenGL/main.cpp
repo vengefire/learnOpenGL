@@ -13,17 +13,15 @@ int main()
 {
   try
   {
-    openGL::core::OpenGLCore core(3, 3);
-    core.createWindow(800, 600, "Learn OpenGL");
+    auto pCore = std::make_shared<openGL::core::OpenGLCore>(3, 3);
+    pCore->createWindow(800, 600, "Learn OpenGL");
 
-    auto inputEvent = core.get_process_input_event();
-    auto renderEvent = core.get_render_event();
-    auto mouseInputEvent = core.get_mouse_input_event();
+    auto inputEvent = pCore->get_process_input_event();
+    auto renderEvent = pCore->get_render_event();
+    auto mouseInputEvent = pCore->get_mouse_input_event();
 
     // Setup the camera
-    auto camera = std::make_shared<openGL::camera::CameraBase>();
-    renderEvent->register_subscriber(
-      static_cast<framework::events::TEventSubscriberBase<openGL::event::FrameRenderEventData>*>(camera.get()));
+    auto camera = std::make_shared<openGL::camera::CameraBase>(pCore, glm::vec3(0.0f), glm::vec3(0.0f, 0.0f, 0.04));
     inputEvent->register_subscriber(
       static_cast<framework::events::TEventSubscriberBase<openGL::event::ProcessInputEventData>*>(camera.get()));
     mouseInputEvent->register_subscriber(
@@ -115,13 +113,13 @@ int main()
     *sphere_model2->Position += glm::vec3(0.0f, 1.75f, -0.5f);
     *sphere_model2->Scale = glm::vec3(0.75f);
 
-    core.addModel(grid_model);
-    core.addModel(circle_model);
-    core.addModel(plane_model);
-    core.addModel(triangle_Model);
-    core.addModel(cube_model);
-    core.addModel(sphere_model);
-    core.addModel(sphere_model2);
+    pCore->addModel(grid_model);
+    pCore->addModel(circle_model);
+    pCore->addModel(plane_model);
+    pCore->addModel(triangle_Model);
+    pCore->addModel(cube_model);
+    pCore->addModel(sphere_model);
+    pCore->addModel(sphere_model2);
 
     camera->set_position(glm::vec3(0.0f, 2.0f, 5.0f)); // Set the camera position
 
@@ -149,10 +147,10 @@ int main()
         return framework::property::behavior::tPropertyBehaviorData<framework::property::TPropertyBase<glm::vec3>>(
           openGL::entity::property::TEntityPropertyBase<glm::vec3>(glm::vec3(1.0f, 1.0f, 1.0f)), framework::property::behavior::ePropertyBehaviorTypeAdd);});
 
-    core.enable_depth_testing();
-    //core.toggleWireFrameMode();
+    pCore->enable_depth_testing();
+    //pCore->toggleWireFrameMode();
 
-    core.run();
+    pCore->run();
 
     return 0;
   }
