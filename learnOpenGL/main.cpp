@@ -22,8 +22,6 @@ int main()
 
     // Setup the camera
     auto camera = openGL::camera::CameraBase::Create(pCore, glm::vec3(0.0f), glm::vec3(0.0f, 0.0f, 0.04));
-    mouseInputEvent->register_subscriber(
-      static_cast<framework::events::TEventSubscriberBase<openGL::event::MouseInputEventData>*>(camera.get()));
 
     // Default shader program for coloured vertices
     auto defaultColouredVertexShader = std::make_shared<openGL::shaders::ShaderProgram>("Default Coloured Shader");

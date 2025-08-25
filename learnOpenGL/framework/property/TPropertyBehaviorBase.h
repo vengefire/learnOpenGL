@@ -12,7 +12,8 @@ namespace framework::property::behavior
     ePropertyBehaviorTypeRemove,
     // ePropertyBehaviorTypeProduct,
     // ePropertyBehaviorTypeDivision,
-    ePropertyBehaviorTypeReset
+    ePropertyBehaviorTypeReset,
+    ePropertyBehaviorTypeIgnore
   };
 
   template <class TProperty>
@@ -63,6 +64,9 @@ namespace framework::property::behavior
       //   break;
       case ePropertyBehaviorTypeReset:
         applyResetBehavior();
+        break;
+      case ePropertyBehaviorTypeIgnore:
+        // Do nothing
         break;
       }
     }

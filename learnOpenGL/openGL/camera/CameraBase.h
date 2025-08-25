@@ -15,9 +15,7 @@
 
 namespace openGL::camera
 {
-  class CameraBase :
-    public framework::events::TEventSubscriberBase<event::MouseInputEventData>
-    , public entity::EntityBase
+  class CameraBase : public entity::EntityBase
   {
   public:
 
@@ -55,6 +53,11 @@ namespace openGL::camera
         {
           return handleInputEventForCameraZoom(std::forward<decltype(mouseInputEventData)>(mouseInputEventData));
         });
+
+        Orientation->AddEventBehavior<event::MouseInputEventData>(mouseEvent, [this](const event::MouseInputEventData& mouseInputEventData)
+        {
+          return handleInputEventForOrientationProperty(std::forward<decltype(mouseInputEventData)>(mouseInputEventData));
+          });
       }
     }
 
@@ -71,7 +74,6 @@ namespace openGL::camera
     PropertyBehaviorFloatData handleInputEventForCameraZoom(const event::MouseInputEventData& eventData)
     {
       return { eventData.y_offset, framework::property::behavior::ePropertyBehaviorTypeRemove };
-      //return { std::min(std::max(static_cast<float>(eventData.y_offset), 1.0f), 70.0f), framework::property::behavior::ePropertyBehaviorTypeRemove };
     }
 
     typedef framework::property::behavior::tPropertyBehaviorData<framework::property::TPropertyBase<glm::vec3>> PropertyBehaviorVec3Data;
@@ -115,6 +117,31 @@ namespace openGL::camera
       }
       return { EntityProperty3Vec(newPosition), framework::property::behavior::ePropertyBehaviorTypeSet };
     }
+
+    PropertyBehaviorVec3Data handleInputEventForOrientationProperty(const event::MouseInputEventData& eventData)
+    {
+      static auto firstMouse = true; // Flag to check if it's the first mouse movement
+
+      if (firstMouse)
+      {
+        last_x_ = eventData.x_pos; // Initialize lastX_ with the current mouse position
+        last_y_ = eventData.y_pos; // Initialize lastY_ with the current mouse position
+        firstMouse = false; // Set the flag to false after the first mouse movement
+      }
+
+      if ((eventData.x_pos == 0.0 && eventData.y_pos == 0.0) || (!enable_pitch && !enable_yaw))
+      {
+        return {glm::vec3{0.0f}, framework::property::behavior::ePropertyBehaviorTypeIgnore }; // Ignore event with zero position
+      }
+
+      glm::vec3 newOrientation = Orientation->PropertyValue;
+
+      handle_yaw_offset(eventData);
+      handle_pitch_offset(eventData);
+      update_camera_vectors();
+
+      return { glm::vec3{0.0f}, framework::property::behavior::ePropertyBehaviorTypeIgnore };
+    }
     //---------------------------------------------------------------
 
     static std::shared_ptr<CameraBase> Create(const std::shared_ptr<core::OpenGLCore>& pCore, glm::vec3 position, glm::vec3 camera_target)
@@ -124,9 +151,7 @@ namespace openGL::camera
       return newCamera;
     }
 
-    ~CameraBase() override
-    {
-    }
+    ~CameraBase() override = default;
 
     virtual glm::mat4 getViewMatrix()
     {
@@ -150,23 +175,23 @@ namespace openGL::camera
       return glm::perspective(glm::radians(m_camera_zoom.PropertyValue), aspect_ratio, near_plane, far_plane);
     }
 
-    void handle_yaw_offset(std::shared_ptr<event::MouseInputEventData> pEventData)
+    void handle_yaw_offset(const event::MouseInputEventData& eventData)
     {
       if (enable_yaw)
       {
-        auto xOffSet = pEventData->x_pos - last_x_;
-        last_x_ = pEventData->x_pos;
+        auto xOffSet = eventData.x_pos - last_x_;
+        last_x_ = eventData.x_pos;
         xOffSet *= yaw_sensitivity_;
         yaw_ += xOffSet;
       }
     }
 
-    void handle_pitch_offset(std::shared_ptr<event::MouseInputEventData> pEventData)
+    void handle_pitch_offset(const event::MouseInputEventData& eventData)
     {
       if (enable_pitch)
       {
-        auto yOffSet = last_y_ - pEventData->y_pos; // Invert y-axis for mouse movement
-        last_y_ = pEventData->y_pos;
+        auto yOffSet = last_y_ - eventData.y_pos; // Invert y-axis for mouse movement
+        last_y_ = eventData.y_pos;
         yOffSet *= pitch_sensitivity_;
         pitch_ += yOffSet;
         // Clamp the pitch value to prevent flipping
@@ -189,6 +214,7 @@ namespace openGL::camera
       up_ = glm::normalize(glm::cross(right_, front_));
     }
 
+    /*
     void handle_event(std::shared_ptr<event::MouseInputEventData> pEventData) override
     {
       static auto firstMouse = true; // Flag to check if it's the first mouse movement
@@ -200,8 +226,6 @@ namespace openGL::camera
         last_y_ = pEventData->y_pos; // Initialize lastY_ with the current mouse position
         firstMouse = false; // Set the flag to false after the first mouse movement
       }
-
-      // handle_camera_zoom(pEventData);
 
       if (pEventData->x_pos == 0.0 && pEventData->y_pos == 0.0)
       {
@@ -217,6 +241,7 @@ namespace openGL::camera
       handle_pitch_offset(pEventData);
       update_camera_vectors();
     }
+    */
 
   protected:
     bool m_restrict_orientation_change_to_rmb_down = false;
