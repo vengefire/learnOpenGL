@@ -1,10 +1,10 @@
 #pragma once
 
-#include "../../config.h"
-#include "../../framework/events/TEventBase.h"
-#include "../../framework/events/EventDataBase.h"
+#include "../../../config.h"
+#include "../../../framework/events/TEventBase.h"
+#include "../../../framework/events/EventDataBase.h"
 
-namespace openGL::event
+namespace openGL::core::events
 {
   class ProcessInputEventData : public framework::events::EventDataBase
   {

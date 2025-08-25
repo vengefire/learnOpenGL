@@ -7,11 +7,10 @@
 #include <glm/gtc/quaternion.hpp>
 
 #include "../core/OpenGLCore.h"
-#include "../../framework/events/TEventSubscriberBase.h"
 #include "../entity/EntityBase.h"
-#include "../event/ProcessInputEvent.h"
-#include "../event/FrameRenderEvent.h"
-#include "../event/MouseInputEvent.h"
+#include "../core/events/ProcessInputEvent.h"
+#include "../core/events/FrameRenderEvent.h"
+#include "../core/events/MouseInputEvent.h"
 
 namespace openGL::camera
 {
@@ -37,26 +36,31 @@ namespace openGL::camera
       if (m_pCore)
       {
         auto renderEvent = m_pCore->get_render_event();
-        m_camera_speed.AddEventBehavior<event::FrameRenderEventData>(renderEvent, [this](const event::FrameRenderEventData& frameRenderEventData)
+        m_camera_speed.AddEventBehavior<core::events::FrameRenderEventData>(renderEvent, [this](const core::events::FrameRenderEventData& frameRenderEventData)
         {
           return handleRenderEventForCameraSpeedProperty(std::forward<decltype(frameRenderEventData)>(frameRenderEventData));
         });
 
         auto inputEvent = m_pCore->get_process_input_event();
-        Position->AddEventBehavior<event::ProcessInputEventData>(inputEvent, [this](const event::ProcessInputEventData& processInputEventData)
+        Position->AddEventBehavior<core::events::ProcessInputEventData>(inputEvent, [this](const core::events::ProcessInputEventData& processInputEventData)
         {
           return handleInputEventForPositionProperty(std::forward<decltype(processInputEventData)>(processInputEventData));
         });
 
         auto mouseEvent = m_pCore->get_mouse_input_event();
-        m_camera_zoom.AddEventBehavior<event::MouseInputEventData>(mouseEvent, [this](const event::MouseInputEventData& mouseInputEventData)
+        m_camera_zoom.AddEventBehavior<core::events::MouseInputEventData>(mouseEvent, [this](const core::events::MouseInputEventData& mouseInputEventData)
         {
           return handleInputEventForCameraZoom(std::forward<decltype(mouseInputEventData)>(mouseInputEventData));
         });
 
-        Orientation->AddEventBehavior<event::MouseInputEventData>(mouseEvent, [this](const event::MouseInputEventData& mouseInputEventData)
+        Orientation->AddEventBehavior<core::events::MouseInputEventData>(mouseEvent, [this](const core::events::MouseInputEventData& mouseInputEventData)
         {
           return handleInputEventForOrientationProperty(std::forward<decltype(mouseInputEventData)>(mouseInputEventData));
+          });
+
+        m_viewport_size.AddEventBehavior<core::events::ViewPortChangeEventData>(m_pCore->get_event_by_type(typeid(core::events::ViewPortChangeEvent)), [this](const core::events::ViewPortChangeEventData& viewPortChangeEventData)
+        {
+          return handleFrameBufferSetEventForViewportSize(std::forward<decltype(viewPortChangeEventData)>(viewPortChangeEventData));
           });
       }
     }
@@ -64,20 +68,26 @@ namespace openGL::camera
     //---------------------------------------------------------------
     // Property Event Handlers
     typedef framework::property::behavior::tPropertyBehaviorData<framework::property::TPropertyBase<float>> PropertyBehaviorFloatData;
-    PropertyBehaviorFloatData handleRenderEventForCameraSpeedProperty(const event::FrameRenderEventData& eventData)
+    PropertyBehaviorFloatData handleRenderEventForCameraSpeedProperty(const core::events::FrameRenderEventData& eventData)
     {
       float cameraSpeed = eventData.delta_time * 2.5f; // Adjust camera speed based on delta time
       return { cameraSpeed, framework::property::behavior::ePropertyBehaviorTypeSet };
     }
 
     // Handle zooming in and out
-    PropertyBehaviorFloatData handleInputEventForCameraZoom(const event::MouseInputEventData& eventData)
+    PropertyBehaviorFloatData handleInputEventForCameraZoom(const core::events::MouseInputEventData& eventData)
     {
       return { eventData.y_offset, framework::property::behavior::ePropertyBehaviorTypeRemove };
     }
 
+    typedef framework::property::behavior::tPropertyBehaviorData<framework::property::TPropertyBase<glm::vec2>> PropertyBehaviorVec2Data;
+    PropertyBehaviorVec2Data handleFrameBufferSetEventForViewportSize(const core::events::ViewPortChangeEventData& data)
+    {
+      return { glm::vec2{ data.width, data.height }, framework::property::behavior::ePropertyBehaviorTypeSet };
+    }
+
     typedef framework::property::behavior::tPropertyBehaviorData<framework::property::TPropertyBase<glm::vec3>> PropertyBehaviorVec3Data;
-    PropertyBehaviorVec3Data handleInputEventForPositionProperty(const event::ProcessInputEventData& eventData)
+    PropertyBehaviorVec3Data handleInputEventForPositionProperty(const core::events::ProcessInputEventData& eventData)
     {
       glm::vec3 newPosition = Position->PropertyValue;
       if (enable_camera_movement_z)
@@ -118,7 +128,7 @@ namespace openGL::camera
       return { EntityProperty3Vec(newPosition), framework::property::behavior::ePropertyBehaviorTypeSet };
     }
 
-    PropertyBehaviorVec3Data handleInputEventForOrientationProperty(const event::MouseInputEventData& eventData)
+    PropertyBehaviorVec3Data handleInputEventForOrientationProperty(const core::events::MouseInputEventData& eventData)
     {
       static auto firstMouse = true; // Flag to check if it's the first mouse movement
 
@@ -160,10 +170,7 @@ namespace openGL::camera
 
     float near_plane_ = 0.1f;
     float far_plane_ = 100.0f;
-
-    float width_ = 800;
-    float _height = 600;
-    float get_aspect_ratio() const { return width_ / _height; }
+    float get_aspect_ratio() { return m_viewport_size.PropertyValue.x / m_viewport_size.PropertyValue.y; }
 
     virtual glm::mat4 get_projection_matrix()
     {
@@ -175,7 +182,7 @@ namespace openGL::camera
       return glm::perspective(glm::radians(m_camera_zoom.PropertyValue), aspect_ratio, near_plane, far_plane);
     }
 
-    void handle_yaw_offset(const event::MouseInputEventData& eventData)
+    void handle_yaw_offset(const core::events::MouseInputEventData& eventData)
     {
       if (enable_yaw)
       {
@@ -186,7 +193,7 @@ namespace openGL::camera
       }
     }
 
-    void handle_pitch_offset(const event::MouseInputEventData& eventData)
+    void handle_pitch_offset(const core::events::MouseInputEventData& eventData)
     {
       if (enable_pitch)
       {
@@ -214,35 +221,6 @@ namespace openGL::camera
       up_ = glm::normalize(glm::cross(right_, front_));
     }
 
-    /*
-    void handle_event(std::shared_ptr<event::MouseInputEventData> pEventData) override
-    {
-      static auto firstMouse = true; // Flag to check if it's the first mouse movement
-      if (!pEventData) return; // Handle null pointer case
-
-      if (firstMouse)
-      {
-        last_x_ = pEventData->x_pos; // Initialize lastX_ with the current mouse position
-        last_y_ = pEventData->y_pos; // Initialize lastY_ with the current mouse position
-        firstMouse = false; // Set the flag to false after the first mouse movement
-      }
-
-      if (pEventData->x_pos == 0.0 && pEventData->y_pos == 0.0)
-      {
-        return; // Ignore event with zero position
-      }
-
-      if (!enable_pitch && !enable_yaw)
-      {
-        return; // Ignore event if both axes are disabled
-      }
-
-      handle_yaw_offset(pEventData);
-      handle_pitch_offset(pEventData);
-      update_camera_vectors();
-    }
-    */
-
   protected:
     bool m_restrict_orientation_change_to_rmb_down = false;
 
@@ -263,6 +241,7 @@ namespace openGL::camera
     entity::property::TEntityPropertyBase<bool> m_mouse_capture_rmb = false;
     entity::property::TEntityPropertyBase<bool> m_mouse_capture_lmb = false;
     EntityPropertyFloat m_camera_zoom = EntityPropertyFloat(45.0f, 1.0f, 70.0f);
+    EntityProperty2Vec m_viewport_size = EntityProperty2Vec(glm::vec2(800.0f, 600.0f), glm::vec2(320.0f, 240.0f), glm::vec2(3840.0f, 2160.0f));
     std::shared_ptr<core::OpenGLCore> m_pCore;
 
     float yaw_sensitivity_ = 0.1f;

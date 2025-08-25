@@ -143,6 +143,10 @@
     <ClInclude Include="framework\property\PropertyHostBase.h" />
     <ClInclude Include="framework\property\TPropertyHost.h" />
     <ClInclude Include="framework\property\TPropertyHostBase.h" />
+    <ClInclude Include="openGL\core\events\FrameRenderEvent.h" />
+    <ClInclude Include="openGL\core\events\MouseInputEvent.h" />
+    <ClInclude Include="openGL\core\events\ProcessInputEvent.h" />
+    <ClInclude Include="openGL\core\events\ViewPortChangeEvent.h" />
     <ClInclude Include="openGL\model\EntityModelBase.h" />
     <ClInclude Include="framework\behavior\base\BehaviorBase.h" />
     <ClInclude Include="framework\behavior\base\BehaviorDataBase.h" />
@@ -169,8 +173,6 @@
     <ClInclude Include="openGL\primitives\CirclePrimitive.h" />
     <ClInclude Include="openGL\primitives\CubePrimitive.h" />
     <ClInclude Include="openGL\primitives\GridPrimitive.h" />
-    <ClInclude Include="openGL\event\MouseInputEvent.h" />
-    <ClInclude Include="openGL\event\FrameRenderEvent.h" />
     <ClInclude Include="openGL\camera\CameraBase.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="framework\events\EventSubscriberBase.h" />
@@ -180,7 +182,6 @@
     <ClInclude Include="openGL\core\OpenGLCore.h" />
     <ClInclude Include="openGL\shaders\ShaderProgram.h" />
     <ClInclude Include="openGL\shaders\Shader.h" />
-    <ClInclude Include="openGL\event\ProcessInputEvent.h" />
     <ClInclude Include="openGL\primitives\PlanePrimitive.h" />
     <ClInclude Include="openGL\primitives\TypedPrimitiveBase.h" />
     <ClInclude Include="framework\property\TPropertyBaseMorphOperands.h" />

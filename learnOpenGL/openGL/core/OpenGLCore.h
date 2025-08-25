@@ -3,9 +3,10 @@
 #include "../../config.h"
 #include "../../framework/events/EventPublisher.h"
 #include "../../framework/events/TEventSubscriberBase.h"
-#include "../event/ProcessInputEvent.h"
-#include "../event/FrameRenderEvent.h"
-#include "../event/MouseInputEvent.h"
+#include "events/FrameRenderEvent.h"
+#include "events/MouseInputEvent.h"
+#include "events/ProcessInputEvent.h"
+#include "events/ViewPortChangeEvent.h"
 
 
 namespace openGL::model
@@ -17,23 +18,28 @@ namespace openGL::core
 {
   class OpenGLCore
     : public framework::events::EventPublisher,
-      public framework::events::TEventSubscriberBase<event::ProcessInputEventData>
+      public framework::events::TEventSubscriberBase<core::events::ProcessInputEventData>,
+      public framework::events::TEventSubscriberBase<core::events::ViewPortChangeEventData>
   {
   public:
-    std::shared_ptr<event::ProcessInputEvent> get_process_input_event() const
-    {
-      return std::dynamic_pointer_cast<event::ProcessInputEvent>(get_event_by_type(typeid(event::ProcessInputEvent)));
-    }
-    void handle_event(std::shared_ptr<event::ProcessInputEventData> pEventData) override;
+    void handle_event(std::shared_ptr<events::ViewPortChangeEventData> pEventData) override;
 
-    std::shared_ptr<event::FrameRenderEvent> get_render_event()
+    static void glfwFramebufferSizeCallbackWrapper(GLFWwindow* window, int width, int height);
+  public:
+    std::shared_ptr<core::events::ProcessInputEvent> get_process_input_event() const
     {
-      return std::dynamic_pointer_cast<event::FrameRenderEvent>(get_event_by_type(typeid(event::FrameRenderEvent)));
+      return std::dynamic_pointer_cast<core::events::ProcessInputEvent>(get_event_by_type(typeid(core::events::ProcessInputEvent)));
+    }
+    void handle_event(std::shared_ptr<core::events::ProcessInputEventData> pEventData) override;
+
+    std::shared_ptr<core::events::FrameRenderEvent> get_render_event()
+    {
+      return std::dynamic_pointer_cast<core::events::FrameRenderEvent>(get_event_by_type(typeid(core::events::FrameRenderEvent)));
     }
 
-    std::shared_ptr<event::MouseInputEvent> get_mouse_input_event()
+    std::shared_ptr<core::events::MouseInputEvent> get_mouse_input_event()
     {
-      return std::dynamic_pointer_cast<event::MouseInputEvent>(get_event_by_type(typeid(event::MouseInputEvent)));
+      return std::dynamic_pointer_cast<core::events::MouseInputEvent>(get_event_by_type(typeid(core::events::MouseInputEvent)));
     }
 
     OpenGLCore(int majorVersion, int minorVersion);
@@ -46,7 +52,7 @@ namespace openGL::core
     void create_glfw_window(int width, int height, const char* title);
     static void set_current_context(GLFWwindow* pWindow);
     static void initialize_glad();
-    void set_viewport_and_framebuffer_callback(int width, int height) const;
+    void set_viewport_and_framebuffer_callback(int width, int height);
     std::shared_ptr<GLFWwindow> getWindow();
 
     void addModel(std::shared_ptr<model::ModelBase> model);

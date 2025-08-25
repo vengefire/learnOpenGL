@@ -105,7 +105,7 @@ int main()
 
     auto sphere_model2 = generate_segmented_model(lightedColouredVertexShader,
       openGL::primitives::PrimitiveFactory::UVSphere, glm::vec3(1.0f),
-      glm::vec3(64, 64, 0), glm::vec4(0.753, 0.753, 0.753, 1.0f));
+      glm::vec3(16, 16, 0), glm::vec4(0.753, 0.753, 0.753, 1.0f));
     *sphere_model2->Position += glm::vec3(0.0f, 1.75f, -0.5f);
     *sphere_model2->Scale = glm::vec3(0.75f);
 
@@ -136,9 +136,9 @@ int main()
         shader->set_int("specularFocus", 32);
       };
 
-    cube_model->Orientation->AddEventBehavior<openGL::event::FrameRenderEventData>(
+    cube_model->Orientation->AddEventBehavior<openGL::core::events::FrameRenderEventData>(
       std::shared_ptr<framework::events::EventBase>(renderEvent),
-      [](openGL::event::FrameRenderEventData pEventData)
+      [](openGL::core::events::FrameRenderEventData pEventData)
       {
         return framework::property::behavior::tPropertyBehaviorData<framework::property::TPropertyBase<glm::vec3>>(
           openGL::entity::property::TEntityPropertyBase<glm::vec3>(glm::vec3(1.0f, 1.0f, 1.0f)), framework::property::behavior::ePropertyBehaviorTypeAdd);});

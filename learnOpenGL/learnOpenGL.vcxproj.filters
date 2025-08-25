@@ -68,9 +68,6 @@
     <ClInclude Include="framework\events\EventPublisher.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="openGL\event\ProcessInputEvent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="framework\events\TEventBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -84,12 +81,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="openGL\camera\CameraBase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="openGL\event\FrameRenderEvent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="openGL\event\MouseInputEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="openGL\primitives\PlanePrimitive.h">
@@ -213,6 +204,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="framework\property\TPropertyHostBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="openGL\core\events\FrameRenderEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="openGL\core\events\MouseInputEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="openGL\core\events\ProcessInputEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="openGL\core\events\ViewPortChangeEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

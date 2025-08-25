@@ -13,6 +13,7 @@ namespace openGL::entity
   {
   public:
     typedef property::TEntityPropertyBase<float> EntityPropertyFloat;
+    typedef property::TEntityPropertyBase<glm::vec2> EntityProperty2Vec;
     typedef property::TEntityPropertyBase<glm::vec3> EntityProperty3Vec;
     typedef property::TEntityPropertyBase<glm::vec4> EntityProperty4Vec;
     typedef property::TEntityPropertyBase<int> EntityPropertyInt;

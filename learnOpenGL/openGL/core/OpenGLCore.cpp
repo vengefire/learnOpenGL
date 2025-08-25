@@ -4,7 +4,12 @@
 
 namespace openGL::core
 {
-  void OpenGLCore::handle_event(std::shared_ptr<event::ProcessInputEventData>  pEventData)
+  void OpenGLCore::handle_event(std::shared_ptr<events::ViewPortChangeEventData> pEventData)
+  {
+    glViewport(0, 0, pEventData->width, pEventData->height);
+  }
+
+  void OpenGLCore::handle_event(std::shared_ptr<core::events::ProcessInputEventData>  pEventData)
   {
     if (glfwGetKey(pEventData->window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
     {
@@ -45,13 +50,26 @@ namespace openGL::core
     }
   }
 
-  void OpenGLCore::set_viewport_and_framebuffer_callback(int width, int height) const
+  void OpenGLCore::set_viewport_and_framebuffer_callback(int width, int height)
   {
     glViewport(0, 0, width, height);
-    glfwSetFramebufferSizeCallback(pWindow_.get(), [](GLFWwindow* window, int width, int height)
-    {
-      glViewport(0, 0, width, height);
-    });
+    auto viewPortChangedEvent = add_event(std::make_unique<core::events::ViewPortChangeEvent>());
+    glfwSetFramebufferSizeCallback(
+      pWindow_.get(),
+      [](GLFWwindow* window, int width, int height)
+      {
+        auto pThisCore = static_cast<OpenGLCore*>(glfwGetWindowUserPointer(window));
+        if (pThisCore)
+        {
+          if (auto viewPortChangedEvent = pThisCore->get_event_by_type(typeid(core::events::ViewPortChangeEvent)))
+          {
+            viewPortChangedEvent->emit_event(std::make_shared<core::events::ViewPortChangeEventData>(window, width, height));
+          }
+        }
+      }
+    );
+    glfwSetWindowUserPointer(pWindow_.get(), this);
+    viewPortChangedEvent->register_subscriber(static_cast<TEventSubscriberBase<core::events::ViewPortChangeEventData>*>(this));
   }
 
   void OpenGLCore::create_glfw_window(int width, int height, const char* title)
@@ -67,18 +85,17 @@ namespace openGL::core
       throw std::runtime_error("Failed to create GLFW window");
     }
 
-    add_event(std::make_unique<event::ProcessInputEvent>(pWindow_.get(), 0.0f));
-    add_event(std::make_unique<event::FrameRenderEvent>());
-
+    add_event(std::make_unique<core::events::ProcessInputEvent>(pWindow_.get(), 0.0f));
+    add_event(std::make_unique<core::events::FrameRenderEvent>());
     toggleCursorCaptureMode();
-    static auto mouseInputEvent = add_event(std::make_unique<event::MouseInputEvent>());
+    static auto mouseInputEvent = add_event(std::make_unique<core::events::MouseInputEvent>());
     glfwSetCursorPosCallback(pWindow_.get(), [](GLFWwindow* window, double xpos, double ypos)
       {
         if (!mouseInputEvent)
         {
           return;
         }
-        mouseInputEvent->emit_event(std::make_shared<event::MouseInputEventData>(xpos, ypos, 0, 0, 0, 0));
+        mouseInputEvent->emit_event(std::make_shared<core::events::MouseInputEventData>(xpos, ypos, 0, 0, 0, 0));
       });
 
     glfwSetMouseButtonCallback(pWindow_.get(), [](GLFWwindow* window, int button, int action, int mods)
@@ -87,7 +104,7 @@ namespace openGL::core
         {
           return;
         }
-        mouseInputEvent->emit_event(std::make_shared<event::MouseInputEventData>(0, 0, 0, 0, button, action));
+        mouseInputEvent->emit_event(std::make_shared<core::events::MouseInputEventData>(0, 0, 0, 0, button, action));
       });
 
     glfwSetScrollCallback(pWindow_.get(), [](GLFWwindow* window, double xoffset, double yoffset)
@@ -96,11 +113,11 @@ namespace openGL::core
         {
           return;
         }
-        mouseInputEvent->emit_event(std::make_shared<event::MouseInputEventData>(0, 0, xoffset, yoffset, 0, 0));
+        mouseInputEvent->emit_event(std::make_shared<core::events::MouseInputEventData>(0, 0, xoffset, yoffset, 0, 0));
       });
 
-    TEventSubscriberBase<event::ProcessInputEventData>* me = this;
-    register_subscriber(me, typeid(event::ProcessInputEvent));
+    TEventSubscriberBase<core::events::ProcessInputEventData>* me = this;
+    register_subscriber(me, typeid(core::events::ProcessInputEvent));
   }
 
   void OpenGLCore::createWindow(int width, int height, const char* title)
@@ -128,11 +145,11 @@ namespace openGL::core
       double deltaTime = currentFrame - lastFrame;
       lastFrame = currentFrame;
 
-      emit_event(typeid(event::ProcessInputEvent));
-      emit_event(typeid(event::FrameRenderEvent), std::make_shared<event::FrameRenderEventData>(deltaTime, lastFrame));
+      emit_event(typeid(core::events::ProcessInputEvent));
+      emit_event(typeid(core::events::FrameRenderEvent), std::make_shared<core::events::FrameRenderEventData>(deltaTime, lastFrame));
 
-      //glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-      glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+      glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+      //glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
       // Render your models here
       for (const auto model : models_)

@@ -1,7 +1,7 @@
 #pragma once
-#include "../../framework/events/TEventBase.h"
+#include "../../../framework/events/TEventBase.h"
 
-namespace openGL::event
+namespace openGL::core::events
 {
   class FrameRenderEventData : public framework::events::EventDataBase
   {
