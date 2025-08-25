@@ -3,116 +3,103 @@
 #include <utility>
 
 #include "../../framework/behavior/base/BehaviorBase.h"
+#include "../../framework/property/TPropertyHostBase.h"
 #include "../entity/property/TEntityPropertyBase.h"
 
 namespace openGL::entity
 {
-  class EntityBase
+  class EntityBase : public std::enable_shared_from_this<EntityBase>
+                     , public framework::property::TPropertyHostBase<EntityBase>
   {
+  public:
+    typedef property::TEntityPropertyBase<float> EntityPropertyFloat;
+    typedef property::TEntityPropertyBase<glm::vec3> EntityProperty3Vec;
+    typedef property::TEntityPropertyBase<glm::vec4> EntityProperty4Vec;
+    typedef property::TEntityPropertyBase<int> EntityPropertyInt;
+    
+    typedef framework::property::TPropertyBase<std::string> PropertyString;
+    typedef framework::property::TPropertyBase<float> PropertyFloat;
+    typedef framework::property::TPropertyBase<glm::vec3> Property3Vec;
+    typedef framework::property::TPropertyBase<glm::vec4> Property4Vec;
+
   protected:
     EntityBase()
     {
-    };
+      _properties = {
+        { "Id", std::make_shared<EntityPropertyInt>(0)},
+        { "Name", std::make_shared<PropertyString>("N/A")},
+        { "Position", std::make_shared<EntityProperty3Vec>(glm::vec3(0.0f, 0.0f, 0.0f)) },
+        { "Orientation", std::make_shared<EntityProperty3Vec>(glm::vec3(0.0f, 0.0f, 0.0f)) },
+        { "Scale", std::make_shared<EntityProperty3Vec>(glm::vec3(1.0f, 1.0f, 1.0f)) }
+      };
+    }
 
-    virtual ~EntityBase() = default;
+    virtual void initialize_entity_properties()
+    {
+    }
+
+    ~EntityBase() override = default;
 
   public:
-    [[nodiscard]] std::shared_ptr<property::TEntityPropertyBase<int>> id() const
+    [[nodiscard]] std::shared_ptr<EntityPropertyInt> id() const
     {
-      return std::static_pointer_cast<property::TEntityPropertyBase<int>>(_properties.at("Id"));
+      return std::static_pointer_cast<EntityPropertyInt>(_properties.at("Id"));
     }
 
     void set_id(const int& id)
     {
-      *std::static_pointer_cast<property::TEntityPropertyBase<int>>(_properties.at("Id")) = id;
+      *std::static_pointer_cast<EntityPropertyInt>(_properties.at("Id")) = id;
     }
 
-    __declspec(property(get = id)) std::shared_ptr<property::TEntityPropertyBase<int>> Id;
+    __declspec(property(get = id)) std::shared_ptr<EntityPropertyInt> Id;
 
-    [[nodiscard]] std::shared_ptr<framework::property::TPropertyBase<std::string>> name() const
+    [[nodiscard]] std::shared_ptr<PropertyString> name() const
     {
-      return std::static_pointer_cast<framework::property::TPropertyBase<std::string>>(_properties.at("Name"));
+      return std::static_pointer_cast<PropertyString>(_properties.at("Name"));
     }
 
     void set_name(const std::string& name)
     {
-      *std::static_pointer_cast<framework::property::TPropertyBase<std::string>>(_properties.at("Name")) = name;
+      *std::static_pointer_cast<PropertyString>(_properties.at("Name")) = name;
     }
 
-    __declspec(property(get = name)) std::shared_ptr<framework::property::TPropertyBase<std::string>> Name;
+    __declspec(property(get = name)) std::shared_ptr<PropertyString> Name;
 
-    [[nodiscard]] std::shared_ptr<property::TEntityPropertyBase<glm::vec3>> position()
+    [[nodiscard]] std::shared_ptr<EntityProperty3Vec> position()
     {
-      return std::static_pointer_cast<property::TEntityPropertyBase<glm::vec3>>(_properties.at("Position"));
+      return std::static_pointer_cast<EntityProperty3Vec>(_properties.at("Position"));
     }
 
-    void set_position(const property::TEntityPropertyBase<glm::vec3>& position)
+    void set_position(const EntityProperty3Vec& position)
     {
-      *std::static_pointer_cast<property::TEntityPropertyBase<glm::vec3>>(_properties.at("Position")) = position;
+      *std::static_pointer_cast<EntityProperty3Vec>(_properties.at("Position")) = position;
     }
 
-    __declspec(property(get = position)) std::shared_ptr<property::TEntityPropertyBase<glm::vec3>> Position;
+    __declspec(property(get = position)) std::shared_ptr<EntityProperty3Vec> Position;
 
-    [[nodiscard]] std::shared_ptr<property::TEntityPropertyBase<glm::vec3>> orientation() const
+    [[nodiscard]] std::shared_ptr<EntityProperty3Vec> orientation() const
     {
-      return std::static_pointer_cast<property::TEntityPropertyBase<glm::vec3>>(_properties.at("Orientation"));
+      return std::static_pointer_cast<EntityProperty3Vec>(_properties.at("Orientation"));
     }
 
-    void set_orientation(const property::TEntityPropertyBase<glm::vec3>& orientation)
+    void set_orientation(const EntityProperty3Vec& orientation)
     {
-      *std::static_pointer_cast<property::TEntityPropertyBase<glm::vec3>>(_properties.at("Orientation")) =
+      *std::static_pointer_cast<EntityProperty3Vec>(_properties.at("Orientation")) =
         orientation;
     }
 
-    __declspec(property(get = orientation)) std::shared_ptr<property::TEntityPropertyBase<glm::vec3>> Orientation;
+    __declspec(property(get = orientation)) std::shared_ptr<EntityProperty3Vec> Orientation;
 
-    [[nodiscard]] std::shared_ptr<property::TEntityPropertyBase<glm::vec3>> scale() const
+    [[nodiscard]] std::shared_ptr<EntityProperty3Vec> scale() const
     {
-      return std::static_pointer_cast<property::TEntityPropertyBase<glm::vec3>>(_properties.at("Scale"));
+      return std::static_pointer_cast<EntityProperty3Vec>(_properties.at("Scale"));
     }
 
-    void set_scale(const property::TEntityPropertyBase<glm::vec3>& scale)
+    void set_scale(const EntityProperty3Vec& scale)
     {
-      *std::static_pointer_cast<property::TEntityPropertyBase<glm::vec3>>(_properties.at("Scale")) = scale;
+      *std::static_pointer_cast<EntityProperty3Vec>(_properties.at("Scale")) = scale;
     }
 
-    __declspec(property(get = scale)) std::shared_ptr<property::TEntityPropertyBase<glm::vec3>> Scale;
-
-    // Refactor to use a more generic method to add properties
-    std::pair<std::shared_ptr<framework::property::PropertyBase>, std::shared_ptr<
-                framework::behavior::base::BehaviorBase>> add_property_behavior(
-      std::shared_ptr<framework::property::PropertyBase> property, std::string behavior_name,
-      std::shared_ptr<framework::behavior::base::BehaviorBase> behavior)
-    {
-      if (!_propertyBehaviors.contains(property))
-      {
-        _propertyBehaviors[property] = std::map<std::string, std::shared_ptr<
-                                                  framework::behavior::base::BehaviorBase>>();
-      }
-      _propertyBehaviors[property][behavior_name] = behavior;
-      return {property, behavior};
-    }
-
-    void add_behavior_event(const std::shared_ptr<framework::behavior::base::BehaviorBase>& behavior,
-                            const std::shared_ptr<framework::behavior::event::base::EventBehaviorBase>& eventBehavior,
-                            framework::events::EventBase* pEvent)
-    {
-      _eventBehaviors.push_back(eventBehavior);
-      pEvent->register_subscriber(
-        std::dynamic_pointer_cast<framework::events::EventSubscriberBase>(eventBehavior).get());
-    }
-
-  protected:
-    std::map<std::string, std::shared_ptr<framework::property::PropertyBase>> _properties = {
-      {"Id", std::make_shared<property::TEntityPropertyBase<int>>(0)},
-      {"Name", std::make_shared<framework::property::TPropertyBase<std::string>>("N/A")},
-      {"Position", std::make_shared<property::TEntityPropertyBase<glm::vec3>>(glm::vec3(0.0f, 0.0f, 0.0f))},
-      {"Orientation", std::make_shared<property::TEntityPropertyBase<glm::vec3>>(glm::vec3(0.0f, 0.0f, 0.0f))},
-      {"Scale", std::make_shared<property::TEntityPropertyBase<glm::vec3>>(glm::vec3(1.0f, 1.0f, 1.0f))}
-    };
-
-    std::map<std::shared_ptr<framework::property::PropertyBase>, std::map<
-               std::string, std::shared_ptr<framework::behavior::base::BehaviorBase>>> _propertyBehaviors;
-    std::vector<std::shared_ptr<framework::behavior::event::base::EventBehaviorBase>> _eventBehaviors;
+    __declspec(property(get = scale)) std::shared_ptr<EntityProperty3Vec> Scale;
   };
 }

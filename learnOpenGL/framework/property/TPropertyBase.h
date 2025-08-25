@@ -1,28 +1,77 @@
 #pragma once
+#include <concepts>
 #include "PropertyBase.h"
 
 namespace framework::property
 {
-  template<class TProperty>
+  template<typename TProperty>
+  concept Comparable = std::totally_ordered<TProperty>;
+
+  template  <class TProperty>
   class TPropertyBase : public PropertyBase
   {
   public:
     TPropertyBase() = default;
+
+    TPropertyBase(const std::shared_ptr<PropertyHostBase>& p_property_host, const TProperty& property_value)
+      : PropertyBase(p_property_host),
+        property_value_(property_value)
+    {
+    }
+
     TPropertyBase(const TProperty& property_value)
     {
       this->PropertyValue = property_value;
     }
 
+    TPropertyBase(const TProperty& property_value, const std::optional<TProperty>& min_value,
+      const std::optional<TProperty>& max_value)
+      : property_value_(property_value),
+        min_value_(min_value),
+        max_value_(max_value)
+    {
+    }
+
+    TPropertyBase(const TProperty& property_value, const std::optional<TProperty>& default_value)
+      : property_value_(property_value),
+        default_value_(default_value)
+    {
+    }
+
+    void checkBounds(TProperty& newValue) requires (Comparable<TProperty>)
+    {
+      if (max_value_ && newValue > this->max_value_.value())
+      {
+        std::cout << "Clamping to max value: " << this->max_value_.value();
+        newValue = this->max_value_.value();
+      }
+      else if (min_value_ && newValue < this->min_value_.value())
+      {
+        std::cout << "Clamping to min value: " << this->min_value_.value();
+        newValue = this->min_value_.value();
+      }
+    }
+
+    void checkBounds(TProperty& newValue) requires (!Comparable<TProperty>)
+    {
+      return;
+    }
+
     // Allow derived classes to access the property value directly
     TPropertyBase<TProperty>& operator += (const TProperty& rhs)
     {
-      this->PropertyValue += rhs;
+      auto newValue = this->PropertyValue + rhs;
+      checkBounds(newValue);
+      this->PropertyValue = newValue;
+
       return *this;
     }
 
     TPropertyBase<TProperty>& operator -= (const TProperty& rhs)
     {
-      this->PropertyValue -= rhs;
+      auto newValue = this->PropertyValue - rhs;
+      checkBounds(newValue);
+      this->PropertyValue = newValue;
       return *this;
     }
 
@@ -40,14 +89,25 @@ namespace framework::property
 
     TPropertyBase<TProperty>& operator = (const TProperty& rhs)
     {
-      this->PropertyValue = rhs;
+      auto newValue = rhs;
+      checkBounds(newValue);
+      this->PropertyValue = newValue;
       return *this;
+    }
+
+    operator TProperty&()
+    {
+      return this->PropertyValue;
     }
 
   protected:
     bool has_value_ = false;
     bool dirty_ = false;
     TProperty property_value_;
+    std::optional<TProperty> default_value_;
+    std::optional<TProperty> min_value_;
+    std::optional<TProperty> max_value_;
+
 
   public:
     [[nodiscard]] bool has_value() const

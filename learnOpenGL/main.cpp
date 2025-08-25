@@ -21,9 +21,7 @@ int main()
     auto mouseInputEvent = pCore->get_mouse_input_event();
 
     // Setup the camera
-    auto camera = std::make_shared<openGL::camera::CameraBase>(pCore, glm::vec3(0.0f), glm::vec3(0.0f, 0.0f, 0.04));
-    inputEvent->register_subscriber(
-      static_cast<framework::events::TEventSubscriberBase<openGL::event::ProcessInputEventData>*>(camera.get()));
+    auto camera = openGL::camera::CameraBase::Create(pCore, glm::vec3(0.0f), glm::vec3(0.0f, 0.0f, 0.04));
     mouseInputEvent->register_subscriber(
       static_cast<framework::events::TEventSubscriberBase<openGL::event::MouseInputEventData>*>(camera.get()));
 

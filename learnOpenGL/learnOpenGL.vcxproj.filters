@@ -206,6 +206,15 @@
     <ClInclude Include="framework\behavior\event\base\EventBehaviorBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="framework\property\PropertyHostBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="framework\property\TPropertyHost.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="framework\property\TPropertyHostBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\shader.fs" />
