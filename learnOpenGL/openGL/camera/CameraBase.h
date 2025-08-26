@@ -180,6 +180,7 @@ namespace openGL::camera
     virtual glm::mat4 getProjectionMatrix(float aspect_ratio, float near_plane, float far_plane)
     {
       return glm::perspective(glm::radians(m_camera_zoom.PropertyValue), aspect_ratio, near_plane, far_plane);
+      //return glm::ortho(-5.0f,5.0f,-5 / get_aspect_ratio(),5 / get_aspect_ratio(), -10.0f, 10.0f);
     }
 
     void handle_yaw_offset(const core::events::MouseInputEventData& eventData)

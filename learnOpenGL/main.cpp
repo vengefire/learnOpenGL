@@ -121,9 +121,9 @@ int main()
 
     lightedColouredVertexShader->OnRender = [solidColoredLight, camera, sphere_model](std::shared_ptr<openGL::shaders::ShaderProgram> shader)
       {
-        float x = solidColoredLight->Position->PropertyValue.x + 0.01f * sin(glfwGetTime());
-        float y = solidColoredLight->Position->PropertyValue.y + 0.01f * cos(glfwGetTime());
-        float z = solidColoredLight->Position->PropertyValue.z + 0.01f * sin(glfwGetTime());
+        float x = solidColoredLight->Position->PropertyValue.x + 0.001f * sin(glfwGetTime());
+        float y = solidColoredLight->Position->PropertyValue.y + 0.001f * cos(glfwGetTime());
+        float z = solidColoredLight->Position->PropertyValue.z + 0.001f * sin(glfwGetTime());
         *solidColoredLight->Position = glm::vec3(x, y, z);
         *sphere_model->Position = solidColoredLight->Position->PropertyValue; // Update the sphere position to match the light position
         shader->use();
