@@ -7,5 +7,6 @@ namespace openGL::lighting
   {
   public:
     LightBase() = default;
+    ~LightBase() override = default;
   };
 }

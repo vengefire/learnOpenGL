@@ -29,6 +29,6 @@ namespace openGL::model
       trans = glm::rotate(trans, glm::radians(Orientation->PropertyValue.y), glm::vec3(0.0, 1.0, 0.0));
       trans = glm::rotate(trans, glm::radians(Orientation->PropertyValue.z), glm::vec3(0.0, 0.0, 1.0));
       return trans;
-    };
+    }
   };
 }

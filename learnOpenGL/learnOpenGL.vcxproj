@@ -131,6 +131,7 @@
   <ItemGroup>
     <ClCompile Include="..\dep\glad\glad.c" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="openGL\lighting\base\LightModelBase.cpp" />
     <ClCompile Include="openGL\model\ModelBase.cpp" />
     <ClCompile Include="openGL\core\OpenGLCore.cpp" />
     <ClCompile Include="openGL\shaders\Shader.cpp" />
@@ -143,6 +144,7 @@
     <ClInclude Include="framework\property\PropertyHostBase.h" />
     <ClInclude Include="framework\property\TPropertyHost.h" />
     <ClInclude Include="framework\property\TPropertyHostBase.h" />
+    <ClInclude Include="openGL\lighting\base\LightModelBase.h" />
     <ClInclude Include="openGL\core\events\FrameRenderEvent.h" />
     <ClInclude Include="openGL\core\events\MouseInputEvent.h" />
     <ClInclude Include="openGL\core\events\ProcessInputEvent.h" />

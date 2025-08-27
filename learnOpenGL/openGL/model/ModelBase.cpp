@@ -31,7 +31,7 @@ namespace openGL::model
     }
 
     // Generate an identity matrix
-    glm::mat4 trans = calculate_translation();
+    glm::mat4 trans = this->calculate_translation();
     // view
     glm::mat4 view = glm::mat4(1.0f);
     view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f)); // Move the camera back

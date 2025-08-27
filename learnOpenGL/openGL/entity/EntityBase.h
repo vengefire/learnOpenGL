@@ -2,14 +2,15 @@
 #include <map>
 #include <utility>
 
+#include <glm/glm.hpp>
+
 #include "../../framework/behavior/base/BehaviorBase.h"
 #include "../../framework/property/TPropertyHostBase.h"
 #include "../entity/property/TEntityPropertyBase.h"
 
 namespace openGL::entity
 {
-  class EntityBase : public std::enable_shared_from_this<EntityBase>
-                     , public framework::property::TPropertyHostBase<EntityBase>
+  class EntityBase : public framework::property::TPropertyHostBase<EntityBase>
   {
   public:
     typedef property::TEntityPropertyBase<float> EntityPropertyFloat;

@@ -1,5 +1,7 @@
 #pragma once
 #include <concepts>
+#include <optional>
+#include <iostream>
 #include "PropertyBase.h"
 
 namespace framework::property

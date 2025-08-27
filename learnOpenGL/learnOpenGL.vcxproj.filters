@@ -39,6 +39,9 @@
     <ClCompile Include="openGL\model\ModelBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="openGL\lighting\base\LightModelBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h">
@@ -216,6 +219,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="openGL\core\events\ViewPortChangeEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="openGL\lighting\base\LightModelBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

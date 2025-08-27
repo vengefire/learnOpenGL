@@ -37,7 +37,6 @@ int main()
 
     // Default shader program for coloured vertices
     // First setup the simple colored light...
-    auto solidColoredLight = std::make_shared<openGL::lighting::SolidColoredLight>(glm::vec4(0.8f));
     auto lightedColouredVertexShader = std::make_shared<openGL::shaders::ShaderProgram>("Lighted Coloured Shader");
     lightedColouredVertexShader->load_shader_from_file("./res/shaders/colored_normals_shader.vs", GL_VERTEX_SHADER);
     lightedColouredVertexShader->load_shader_from_file("./res/shaders/light-shader.fs", GL_FRAGMENT_SHADER);
@@ -99,9 +98,12 @@ int main()
     auto sphere_model = generate_segmented_model(defaultColouredVertexShader,
                                                  openGL::primitives::PrimitiveFactory::UVSphere, glm::vec3(1.0f),
                                                  glm::vec3(12, 12, 0), glm::vec4(1.0f, 1.0, 1.0, 1.0));
-    *sphere_model->Position += glm::vec3(2.0f, 2.0f, -3.0f);
-    *sphere_model->Scale = glm::vec3(0.5f);
-    *solidColoredLight->Position = sphere_model->Position->PropertyValue; // Set the light position to the sphere position
+
+    auto solidColoredLight = std::make_shared<openGL::lighting::SolidColoredLight>(glm::vec4(1.0f), sphere_model->Mesh, defaultColouredVertexShader, camera);
+    *solidColoredLight->Position += glm::vec3(2.0f, 2.0f, -3.0f);
+    *solidColoredLight->Scale = glm::vec3(0.5f);
+    /*auto solidColoredLight = std::make_shared<openGL::lighting::SolidColoredLight>(glm::vec4(0.8f));
+    *solidColoredLight->Position = sphere_model->Position->PropertyValue; // Set the light position to the sphere position*/
 
     auto sphere_model2 = generate_segmented_model(lightedColouredVertexShader,
       openGL::primitives::PrimitiveFactory::UVSphere, glm::vec3(1.0f),
@@ -114,7 +116,7 @@ int main()
     pCore->addModel(plane_model);
     pCore->addModel(triangle_Model);
     pCore->addModel(cube_model);
-    pCore->addModel(sphere_model);
+    pCore->addModel(solidColoredLight);
     pCore->addModel(sphere_model2);
 
     camera->set_position(glm::vec3(0.0f, 2.0f, 5.0f)); // Set the camera position
@@ -125,7 +127,7 @@ int main()
         float y = solidColoredLight->Position->PropertyValue.y + 0.001f * cos(glfwGetTime());
         float z = solidColoredLight->Position->PropertyValue.z + 0.001f * sin(glfwGetTime());
         *solidColoredLight->Position = glm::vec3(x, y, z);
-        *sphere_model->Position = solidColoredLight->Position->PropertyValue; // Update the sphere position to match the light position
+        //*sphere_model->Position = solidColoredLight->Position->PropertyValue; // Update the sphere position to match the light position
         shader->use();
         shader->set_vec4("lightColor", solidColoredLight->Color.PropertyValue);
         shader->set_vec3("lightPosition", solidColoredLight->Position->PropertyValue);
@@ -141,7 +143,7 @@ int main()
       [](openGL::core::events::FrameRenderEventData pEventData)
       {
         return framework::property::behavior::tPropertyBehaviorData<framework::property::TPropertyBase<glm::vec3>>(
-          openGL::entity::property::TEntityPropertyBase<glm::vec3>(glm::vec3(1.0f, 1.0f, 1.0f)), framework::property::behavior::ePropertyBehaviorTypeAdd);});
+          openGL::entity::property::TEntityPropertyBase<glm::vec3>(glm::vec3(0.1f, 0.1f, 0.1f)), framework::property::behavior::ePropertyBehaviorTypeAdd);});
 
     pCore->enable_depth_testing();
     //pCore->toggleWireFrameMode();
